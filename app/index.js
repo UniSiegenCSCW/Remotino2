@@ -7,7 +7,7 @@ import routes from './routes';
 import configureStore from './store/configureStore';
 import './app.global.css';
 
-import fixJohnnyFive from './johnny-five/johnny-five-fix';
+import fixJohnnyFive from './utils/johnny-five-fix';
 
 fixJohnnyFive();
 
