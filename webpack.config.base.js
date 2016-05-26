@@ -9,6 +9,9 @@ export default {
     }, {
       test: /\.json$/,
       loader: 'json-loader'
+    }, {
+      test: /\.html$/,
+      loader: 'html' 
     }]
   },
   output: {
