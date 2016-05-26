@@ -38,7 +38,7 @@ export default class Microcontroller extends Component {
       <div>
         {connectView(connectionState)}
         <div className="pin-list">
-          {pins.map((pin)=> <Pin key={pin.id} changeMode={changeMode} pin={pin} listen={listenToPinChanges}/>)}
+          {pins.map(pinView)}
         </div>
       </div>
     );

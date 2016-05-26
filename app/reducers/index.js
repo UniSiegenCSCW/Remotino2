@@ -4,7 +4,7 @@ import microcontroller from './microcontroller';
 
 const rootReducer = combineReducers({
   microcontroller,
-  routing
+  routing,
 });
 
 export default rootReducer;
