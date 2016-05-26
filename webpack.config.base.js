@@ -1,5 +1,6 @@
 import path from 'path';
 
+
 export default {
   module: {
     loaders: [{
@@ -27,7 +28,7 @@ export default {
 
   ],
   externals: [
-    "bindings"
+    "serialport"
     // put your node 3rd party libraries which can't be built with webpack here
     // (mysql, mongodb, and so on..)
   ]
