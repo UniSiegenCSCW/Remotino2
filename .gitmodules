@@ -1,0 +1,3 @@
+[submodule "libfoo"]
+    path = tools/react-devtools
+    url = git@github.com:facebook/react-devtools.git
