@@ -11,7 +11,7 @@ export default {
       loader: 'json-loader'
     }, {
       test: /\.html$/,
-      loader: 'html' 
+      loader: 'html'
     }]
   },
   output: {
@@ -27,6 +27,7 @@ export default {
 
   ],
   externals: [
+    "bindings"
     // put your node 3rd party libraries which can't be built with webpack here
     // (mysql, mongodb, and so on..)
   ]
