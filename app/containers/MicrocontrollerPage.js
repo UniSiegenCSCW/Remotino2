@@ -5,10 +5,9 @@ import { bindActionCreators } from 'redux';
 
 function mapStateToProps(state) {
   return {
-    microcontroller: state.microcontroller
+    microcontroller: state.microcontroller,
   };
 }
-
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(MicrocontrollerActions, dispatch);
