@@ -37,3 +37,6 @@ main.js.map
 
 # ESLint cache
 .eslintcache
+
+#intellij
+.idea
