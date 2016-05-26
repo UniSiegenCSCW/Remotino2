@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import { MODE_NAMES, MODES } from '../reducers/microcontrollerEnums';
 import { filter, propOr, ifElse} from 'ramda';
+import styles from './Pin.sass';
 
 export default class Pin extends Component {
   static propTypes = {
@@ -23,14 +24,36 @@ export default class Pin extends Component {
         )}
       </select>
     );
-    return <li>
-      {id} - Value: {value}, Reporting: {report}, {modeSelector(id, mode, supportedModes)}
-      {ifElse(()=>pin.isHWSerialPort,()=><span className="bg--blue px1 mx1">Hardware Serialport</span>,()=><span/>)()}
-      {ifElse(()=>pin.isSWSerialPort, ()=><span className="bg--blue px1 mx1">Software Serialport</span>,()=><span/>)()}
-      {ifElse(()=>pin.isAnalogPin,()=><span className="bg--green px1 mx1">Analog Pin</span>,()=><span/>)()}
-      {ifElse(()=>pin.mode === MODES.INPUT || pin.mode === MODES.ANALOG,
-        ()=><span className="btn--blue btn--s px1 mx1" onClick={()=> listen(pin.id, pin.mode)}>Listen</span>,
-        ()=><span>{pin.mode} {MODES.ANALOG}</span>)()}
-    </li>;
+
+    const pinClass = "pin " + (pin.isAnalogPin ? "pin--analog" : "pin--digital");
+
+    let tags = [];
+    if (pin.isHWSerialPort) {
+      tags.push("Hardware Serialport");
+    }
+    if (pin.isSWSerialPort) {
+      tags.push("Software Serialport");
+    }
+    if (pin.isAnalogPin) {
+      tags.push("Analog Pin");
+    }
+
+    return (
+      <div className={pinClass}>
+        <div className="pin__header">
+          <h2 className="pin__name">Pin {id}</h2>
+          {tags.map((tag) =>
+            <div className="pin__tag">{tag}</div>
+          )}
+        </div>
+        <div className="pin__body">
+          Value: {value}, Reporting: {report}, {modeSelector(id, mode, supportedModes)}
+
+          {ifElse(()=>pin.mode === MODES.INPUT || pin.mode === MODES.ANALOG,
+            ()=><span className="btn--blue btn--s px1 mx1" onClick={()=> listen(pin.id, pin.mode)}>Listen</span>,
+            ()=><span>{pin.mode} {MODES.ANALOG}</span>)()}
+        </div>
+      </div>
+    );
   }
 }
