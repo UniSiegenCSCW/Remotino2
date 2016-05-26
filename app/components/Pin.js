@@ -51,7 +51,7 @@ export default class Pin extends Component {
         <div className="pin__header">
           <h2 className="pin__name">Pin {id}</h2>
           {tags.map((tag) =>
-            <div className="pin__tag">{tag}</div>
+            <div key={tag} className="pin__tag">{tag}</div>
           )}
         </div>
         <div className="pin__body">
