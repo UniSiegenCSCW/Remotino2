@@ -102,7 +102,6 @@ export function listenToPinChanges(id, mode) {
     dispatch(startListeningToPinChanges(pinId));
     const pinListener = (value) => dispatch(pinValueChanged(pinId, value));
     if (mode === MODES.ANALOG) {
-      console.log(pinId);
       board.analogRead(pinId, pinListener);
     }
 
