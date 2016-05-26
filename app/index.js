@@ -7,11 +7,6 @@ import routes from './routes';
 import configureStore from './store/configureStore';
 import './app.global.sass';
 
-import fixJohnnyFive from './utils/johnny-five-fix';
-
-fixJohnnyFive();
-
-
 const store = configureStore();
 const history = syncHistoryWithStore(hashHistory, store);
 

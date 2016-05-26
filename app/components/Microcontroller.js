@@ -1,8 +1,7 @@
-import React, {Component, PropTypes} from 'react';
-import {Link} from 'react-router';
+import React, { Component, PropTypes } from 'react';
 import Pin from './Pin';
 import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
-
+import spinner from '../static-html/spinner.html';
 
 export default class Microcontroller extends Component {
   static propTypes = {
@@ -13,26 +12,33 @@ export default class Microcontroller extends Component {
   };
 
   render() {
-    const {changeMode, connectToBoard, microcontroller, listenToPinChanges} = this.props;
-    const {pins, connectionState} = microcontroller;
+    const { changeMode, connectToBoard, microcontroller, listenToPinChanges } = this.props;
+    const { pins, connectionState } = microcontroller;
 
-    const createSpinner = () => ({__html: require('../static-html/spinner.html')});
+    const createSpinner = () => ({ __html: spinner });
 
-    const connectView = (connectionState) => {
-        switch (connectionState){
-          case CONNECTION_STATE.NOT_CONNECTED:
-                return <div className="btn--blue" onClick={connectToBoard}>Connect to Arduino</div>;
-          case CONNECTION_STATE.CONNECTING:
-                return <div className="btn--blue"> <span dangerouslySetInnerHTML={createSpinner()}/> Connecting...</div>
-          default:
-                return <div></div>;
-        }
+    const connectView = (currentState) => {
+      switch (currentState) {
+        case CONNECTION_STATE.NOT_CONNECTED:
+          return <div className="btn--blue" onClick={connectToBoard}>Connect to Arduino</div>;
+        case CONNECTION_STATE.CONNECTING:
+          return (<div className="btn--blue">
+            <span dangerouslySetInnerHTML={createSpinner()} /> Connecting...
+          </div>);
+        default:
+          return <div></div>;
+      }
     };
+
+    const pinView = (pin) => (
+      <Pin key={pin.id} changeMode={changeMode} pin={pin} listen={listenToPinChanges} />
+    );
+
     return (
       <div>
         {connectView(connectionState)}
         <ul>
-          {pins.map((pin)=> <Pin key={pin.id} changeMode={changeMode} pin={pin} listen={listenToPinChanges}/>)}
+          {pins.map(pinView)}
         </ul>
       </div>
     );

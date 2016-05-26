@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import Microcontroller from '../components/Microcontroller';
 import * as MicrocontrollerActions from '../actions/microcontroller';
 import { connect } from 'react-redux';

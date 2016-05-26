@@ -17,7 +17,12 @@ export default {
     }, {
       test: /\.sass$/,
       loader: 'style!css!sass?includePaths[]=' + bourbon
-    }]
+    },{
+      test: /\.js$/,
+      loader: "eslint-loader",
+      exclude: /node_modules/
+    }
+  ]
   },
   output: {
     path: path.join(__dirname, 'dist'),

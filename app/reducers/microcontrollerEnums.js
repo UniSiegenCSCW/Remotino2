@@ -1,4 +1,3 @@
-import { invertObj } from 'ramda';
 export const CONNECTION_STATE = Object.freeze({
   NOT_CONNECTED: 0,
   CONNECTING: 1,
@@ -6,11 +5,11 @@ export const CONNECTION_STATE = Object.freeze({
 });
 
 export const MODE_NAMES = Object.freeze({
-  0: "Digital Input",
-  1: "Digital Output",
-  2: "Analog Input",
-  3: "Analog Output",
-  16: "Not Set"
+  0: 'Digital Input',
+  1: 'Digital Output',
+  2: 'Analog Input',
+  3: 'Analog Output',
+  16: 'Not Set'
 });
 
 export const MODES = Object.freeze({
@@ -20,4 +19,3 @@ export const MODES = Object.freeze({
   PWM: 3,
   NOT_SET: 16
 });
-
