@@ -1,4 +1,5 @@
 import path from 'path';
+import bourbon from 'node-bourbon';
 
 export default {
   module: {
@@ -12,6 +13,9 @@ export default {
     }, {
       test: /\.html$/,
       loader: 'html'
+    }, {
+      test: /\.sass$/,
+      loader: 'style!css!sass?includePaths[]=' + bourbon
     }]
   },
   output: {
