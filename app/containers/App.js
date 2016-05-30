@@ -15,6 +15,7 @@ export default class App extends Component {
               const DevTools = require('./DevTools'); // eslint-disable-line global-require
               return <DevTools />;
             }
+            return <span />;
           })()
         }
       </div>

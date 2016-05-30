@@ -15,15 +15,13 @@ export default class Microcontroller extends Component {
     const { changeMode, connectToBoard, microcontroller, listenToPinChanges } = this.props;
     const { pins, connectionState } = microcontroller;
 
-    const createSpinner = () => ({ __html: spinner });
-
     const connectView = (currentState) => {
       switch (currentState) {
         case CONNECTION_STATE.NOT_CONNECTED:
           return <div className="btn--blue" onClick={connectToBoard}>Connect to Arduino</div>;
         case CONNECTION_STATE.CONNECTING:
           return (<div className="btn--blue">
-            <span dangerouslySetInnerHTML={createSpinner()} /> Connecting...
+            <span dangerouslySetInnerHTML={{ __html: spinner }} /> Connecting...
           </div>);
         default:
           return <div></div>;

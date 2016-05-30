@@ -22,13 +22,14 @@ const createPin = (action) => (
   }
 );
 
-const updatePins = (state, id, newProps) => updatePinsFromCurrent(state, id, () => newProps);
-
 const updateItemFromCurrent = (id, fun) => (
   (pin) => ((pin.id.toString() === id.toString()) ? Object.assign(pin, fun(pin)) : pin)
 );
 
 const updatePinsFromCurrent = (state, id, fun) => map(updateItemFromCurrent(id, fun), state);
+
+const updatePins = (state, id, newProps) => updatePinsFromCurrent(state, id, () => newProps);
+
 
 const updateState = (state, newAttrib) => Object.assign({}, state, newAttrib);
 

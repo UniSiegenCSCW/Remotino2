@@ -21,6 +21,20 @@ export function updatePin(id, mode, value, report, analogChannel, supportedModes
   };
 }
 
+export const CONNECTING_TO_BOARD = 'CONNECTING_TO_BOARD';
+export function connectingToBoard() {
+  return {
+    type: CONNECTING_TO_BOARD,
+  };
+}
+
+export const CONNECTED_TO_BOARD = 'CONNECTED_TO_BOARD';
+export function connectedToBoard() {
+  return {
+    type: CONNECTED_TO_BOARD,
+  };
+}
+
 export function connectToBoard() {
   const updatePinFromObj = (obj, id) => {
     const serialPorts = invertObj(board.io.SERIAL_PORT_IDs);
@@ -52,20 +66,6 @@ export function connectToBoard() {
       const actions = actionsFromPins([...board.io.pins]);
       forEach(dispatch, actions);
     });
-  };
-}
-
-export const CONNECTING_TO_BOARD = 'CONNECTING_TO_BOARD';
-export function connectingToBoard() {
-  return {
-    type: CONNECTING_TO_BOARD,
-  };
-}
-
-export const CONNECTED_TO_BOARD = 'CONNECTED_TO_BOARD';
-export function connectedToBoard() {
-  return {
-    type: CONNECTED_TO_BOARD,
   };
 }
 
