@@ -1,0 +1,150 @@
+{
+  "name": "Arduino MKR1000",
+  "pins": {
+    "0": {
+      "name": "D0",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "1": {
+      "name": "D1",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "2": {
+      "name": "D2",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "3": {
+      "name": "D3",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "4": {
+      "name": "D4",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "5": {
+      "name": "D5",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "6": {
+      "name": "D6",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "7": {
+      "name": "D7",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "8": {
+      "name": "D8",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "9": {
+      "name": "D9",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "10": {
+      "name": "D10",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "11": {
+      "name": "D11",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "12": {
+      "name": "D12",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "13": {
+      "name": "D13",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "14": {
+      "name": "D14",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "15": {
+      "name": "A0",
+      "categories": [
+        "Analog",
+        "PWM"
+      ]
+    },
+    "16": {
+      "name": "A1",
+      "categories": [
+        "Analog"
+      ]
+    },
+    "17": {
+      "name": "A2",
+      "categories": [
+        "Analog"
+      ]
+    },
+    "18": {
+      "name": "A3",
+      "categories": [
+        "Analog",
+        "PWM"
+      ]
+    },
+    "19": {
+      "name": "A4",
+      "categories": [
+        "Analog",
+        "PWM"
+      ]
+    },
+    "20": {
+      "name": "A5",
+      "categories": [
+        "Analog"
+      ]
+    },
+    "21": {
+      "name": "A6",
+      "categories": [
+        "Analog"
+      ]
+    }
+  }
+}
