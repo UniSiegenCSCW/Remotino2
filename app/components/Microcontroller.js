@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Pin from './Pin';
 import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import spinner from '../static-html/spinner.html';
-import { defaultTo } from 'ramda';
+import { defaultTo, values } from 'ramda';
 
 export default class Microcontroller extends Component {
   static propTypes = {
@@ -48,7 +48,7 @@ export default class Microcontroller extends Component {
       <div>
         {connectView(connectionState)}
         <div className="pin-list">
-          {pins.map(pinView)}
+          {values(pins).map(pinView)}
         </div>
       </div>
     );

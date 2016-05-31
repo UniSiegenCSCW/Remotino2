@@ -6,12 +6,13 @@ import {
   CONNECTED_TO_BOARD,
   IDENTIFIED_BOARD
 } from '../actions/microcontroller';
-import { map } from 'ramda';
+
 import { CONNECTION_STATE } from './microcontrollerEnums';
+import update from 'react/lib/update';
 
 const initialState = {
   connectionState: CONNECTION_STATE.NOT_CONNECTED,
-  pins: [],
+  pins: {},
   mapping: {},
 };
 
@@ -29,33 +30,20 @@ const createPin = (action) => (
   }
 );
 
-const updateItemFromCurrent = (id, fun) => (
-  (pin) => ((pin.id.toString() === id.toString()) ? Object.assign(pin, fun(pin)) : pin)
-);
-
-const updatePinsFromCurrent = (state, id, fun) => map(updateItemFromCurrent(id, fun), state);
-
-const updatePins = (state, id, newProps) => updatePinsFromCurrent(state, id, () => newProps);
-
-
-const updateState = (state, newAttrib) => Object.assign({}, state, newAttrib);
-
 export default function board(state = initialState, action) {
   switch (action.type) {
     case CONNECTING_TO_BOARD:
-      return updateState(state, { connectionState: CONNECTION_STATE.CONNECTING });
+      return update(state, { connectionState: { $set: CONNECTION_STATE.CONNECTING } });
     case CONNECTED_TO_BOARD:
-      return updateState(state, { connectionState: CONNECTION_STATE.CONNECTED });
+      return update(state, { connectionState: { $set: CONNECTION_STATE.CONNECTED } });
     case UPDATE_PIN:
-      return updateState(state, { pins: [...state.pins, createPin(action)] });
+      return update(state, { pins: { [action.id]: { $set: createPin(action) } } });
     case CHANGE_MODE:
-      return updateState(state, { pins: updatePins(state.pins, action.id, { mode: action.mode }) });
+      return update(state, { pins: { [action.id]: { mode: { $set: action.mode } } } });
     case PIN_VALUE_CHANGED:
-      return (
-        updateState(state, { pins: updatePins(state.pins, action.id, { value: action.value }) })
-      );
+      return update(state, { pins: { [action.id]: { value: { $set: action.value } } } });
     case IDENTIFIED_BOARD:
-      return updateState(state, { mapping: action.mapping });
+      return update(state, { mapping: { $set: action.mapping } });
     default:
       return state;
   }
