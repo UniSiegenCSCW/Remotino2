@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Pin from './Pin';
 import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import spinner from '../static-html/spinner.html';
+import { defaultTo } from 'ramda';
 
 export default class Microcontroller extends Component {
   static propTypes = {
@@ -13,7 +14,7 @@ export default class Microcontroller extends Component {
 
   render() {
     const { changeMode, connectToBoard, microcontroller, listenToPinChanges } = this.props;
-    const { pins, connectionState } = microcontroller;
+    const { pins, connectionState, mapping } = microcontroller;
 
     const connectView = (currentState) => {
       switch (currentState) {
@@ -28,9 +29,20 @@ export default class Microcontroller extends Component {
       }
     };
 
-    const pinView = (pin) => (
-      <Pin key={pin.id} changeMode={changeMode} pin={pin} listen={listenToPinChanges} />
-    );
+    const pinView = (pin) => {
+      const name = defaultTo(`Pin ${pin.id}`, mapping[pin.id].name);
+      const tags = defaultTo([], mapping[pin.id].categories);
+      return (
+        <Pin
+          key={pin.id}
+          name={name}
+          tags={tags}
+          changeMode={changeMode}
+          pin={pin}
+          listen={listenToPinChanges}
+        />
+      );
+    };
 
     return (
       <div>
