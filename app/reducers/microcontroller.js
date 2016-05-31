@@ -1,11 +1,18 @@
-import { UPDATE_PIN, CHANGE_MODE, PIN_VALUE_CHANGED, CONNECTING_TO_BOARD, CONNECTED_TO_BOARD }
-  from '../actions/microcontroller';
+import {
+  UPDATE_PIN,
+  CHANGE_MODE,
+  PIN_VALUE_CHANGED,
+  CONNECTING_TO_BOARD,
+  CONNECTED_TO_BOARD,
+  IDENTIFIED_BOARD
+} from '../actions/microcontroller';
 import { map } from 'ramda';
 import { CONNECTION_STATE } from './microcontrollerEnums';
 
 const initialState = {
   connectionState: CONNECTION_STATE.NOT_CONNECTED,
   pins: [],
+  mapping: {},
 };
 
 const createPin = (action) => (
@@ -47,6 +54,8 @@ export default function board(state = initialState, action) {
       return (
         updateState(state, { pins: updatePins(state.pins, action.id, { value: action.value }) })
       );
+    case IDENTIFIED_BOARD:
+      return updateState(state, { mapping: action.mapping });
     default:
       return state;
   }
