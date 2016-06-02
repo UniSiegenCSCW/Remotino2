@@ -1,8 +1,8 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "ElectronReact",
+  "name": "remotino",
+  "productName": "Remotino",
   "version": "0.10.0",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "description": "Remotino lets you remote control your Aruino",
   "main": "main.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha --compilers js:babel-register --recursive --require ./test/setup.js test/**/*.spec.js",
@@ -28,24 +28,24 @@
     "url": "git+https://github.com/chentsulin/electron-react-boilerplate.git"
   },
   "author": {
-    "name": "C. T. Lin",
-    "email": "chentsulin@gmail.com",
-    "url": "https://github.com/chentsulin"
+    "name": "Julian Dax",
+    "email": "julian.dax@uni-siegen.dei",
+    "url": "https://github.com/UniSiegenCSCW/remotino"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/chentsulin/electron-react-boilerplate/issues"
+    "url": "https://github.com/UniSiegenCSCW/remotino/issues"
   },
   "keywords": [
     "electron",
-    "boilerplate",
+    "aruino",
     "react",
     "react-router",
     "flux",
     "webpack",
     "react-hot"
   ],
-  "homepage": "https://github.com/chentsulin/electron-react-boilerplate#readme",
+  "homepage": "https://github.com/UniSiegenCSCW/remotino",
   "devDependencies": {
     "asar": "^0.11.0",
     "babel-core": "^6.7.6",
