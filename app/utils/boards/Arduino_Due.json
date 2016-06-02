@@ -1,0 +1,403 @@
+{
+  "name": "Arduino Due",
+  "pins": {
+    "0": {
+      "name": "D0",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "1": {
+      "name": "D1",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "2": {
+      "name": "D2",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "3": {
+      "name": "D3",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "4": {
+      "name": "D4",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "5": {
+      "name": "D5",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "6": {
+      "name": "D6",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "7": {
+      "name": "D7",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "8": {
+      "name": "D8",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "9": {
+      "name": "D9",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "10": {
+      "name": "D10",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "11": {
+      "name": "D11",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "12": {
+      "name": "D12",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "13": {
+      "name": "D13",
+      "categories": [
+        "Digital",
+        "PWM"
+      ]
+    },
+    "20": {
+      "name": "D20",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "21": {
+      "name": "D21",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "22": {
+      "name": "D22",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "23": {
+      "name": "D23",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "24": {
+      "name": "D24",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "25": {
+      "name": "D25",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "26": {
+      "name": "D26",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "27": {
+      "name": "D27",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "28": {
+      "name": "D28",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "29": {
+      "name": "D29",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "30": {
+      "name": "D30",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "31": {
+      "name": "D31",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "32": {
+      "name": "D32",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "33": {
+      "name": "D33",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "34": {
+      "name": "D34",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "35": {
+      "name": "D35",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "36": {
+      "name": "D36",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "37": {
+      "name": "D37",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "38": {
+      "name": "D38",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "39": {
+      "name": "D39",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "40": {
+      "name": "D40",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "41": {
+      "name": "D41",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "42": {
+      "name": "D42",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "43": {
+      "name": "D43",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "44": {
+      "name": "D44",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "45": {
+      "name": "D45",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "46": {
+      "name": "D46",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "47": {
+      "name": "D47",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "48": {
+      "name": "D48",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "49": {
+      "name": "D49",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "50": {
+      "name": "D50",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "51": {
+      "name": "D51",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "52": {
+      "name": "D52",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "53": {
+      "name": "D53",
+      "categories": [
+        "Digital"
+      ]
+    },
+    "54": {
+      "name": "A0",
+      "categories": [
+        "Analog"
+      ]
+    },
+    "55": {
+      "name": "A1",
+      "categories": [
+        "Analog"
+      ]
+    },
+    "56": {
+      "name": "A2",
+      "categories": [
+        "Analog"
+      ]
+    },
+    "57": {
+      "name": "A3",
+      "categories": [
+        "Analog"
+      ]
+    },
+    "58": {
+      "name": "A4",
+      "categories": [
+        "Analog"
+      ]
+    },
+    "59": {
+      "name": "A5",
+      "categories": [
+        "Analog"
+      ]
+    },
+    "60": {
+      "name": "A6",
+      "categories": [
+        "Analog"
+      ]
+    },
+    "61": {
+      "name": "A7",
+      "categories": [
+        "Analog"
+      ]
+    },
+    "62": {
+      "name": "A8",
+      "categories": [
+        "Analog"
+      ]
+    },
+    "63": {
+      "name": "A9",
+      "categories": [
+        "Analog"
+      ]
+    },
+    "64": {
+      "name": "A10",
+      "categories": [
+        "Analog"
+      ]
+    },
+    "65": {
+      "name": "A11",
+      "categories": [
+        "Analog"
+      ]
+    },
+    "66": {
+      "name": "DAC0",
+      "categories": [
+        "Analog",
+        "PWM"
+      ]
+    },
+    "67": {
+      "name": "DAC1",
+      "categories": [
+        "Analog",
+        "PWM"
+      ]
+    },
+    "68": {
+      "name": "CANRX",
+      "categories": [
+        "Analog"
+      ]
+    },
+    "69": {
+      "name": "CANTX",
+      "categories": [
+        "Analog"
+      ]
+    }
+  }
+}

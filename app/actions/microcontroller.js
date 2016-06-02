@@ -1,6 +1,7 @@
 import * as five from 'johnny-five';
 import { forEach, keys, mapObjIndexed, length, invertObj, has, contains } from 'ramda';
 import { MODES } from '../reducers/microcontrollerEnums';
+import { identify } from '../utils/boards';
 
 let board;
 
@@ -35,6 +36,14 @@ export function connectedToBoard() {
   };
 }
 
+export const IDENTIFIED_BOARD = 'IDENTIFIED_BOARD';
+export function identifiedBoard(mapping) {
+  return {
+    type: IDENTIFIED_BOARD,
+    mapping: mapping.pins,
+  };
+}
+
 export function connectToBoard() {
   const updatePinFromObj = (obj, id) => {
     const serialPorts = invertObj(board.io.SERIAL_PORT_IDs);
@@ -63,6 +72,11 @@ export function connectToBoard() {
     board = new five.Board({ repl: false });
     board.on('ready', () => {
       dispatch(connectedToBoard());
+
+      const mapping = identify(board);
+      if (mapping) {
+        dispatch(identifiedBoard(mapping));
+      }
       const actions = actionsFromPins([...board.io.pins]);
       forEach(dispatch, actions);
     });

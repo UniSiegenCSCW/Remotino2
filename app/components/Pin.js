@@ -5,13 +5,15 @@ import styles from './Pin.sass'; // eslint-disable-line no-unused-vars
 
 export default class Pin extends Component {
   static propTypes = {
+    name: PropTypes.string.isRequired,
+    tags: PropTypes.array.isRequired,
     pin: PropTypes.object.isRequired,
     changeMode: PropTypes.func.isRequired,
     listen: PropTypes.func.isRequired
   };
 
   render() {
-    const { changeMode, listen, pin } = this.props;
+    const { changeMode, listen, pin, name, tags } = this.props;
     const { id, mode, value, report } = pin;
     const supportedModes = intersection(
       pin.supportedModes,
@@ -35,21 +37,10 @@ export default class Pin extends Component {
 
     const pinClass = pin.isAnalogPin ? 'pin pin--analog' : 'pin pin--digital';
 
-    const tags = [];
-    if (pin.isHWSerialPort) {
-      tags.push('Hardware Serialport');
-    }
-    if (pin.isSWSerialPort) {
-      tags.push('Software Serialport');
-    }
-    if (pin.isAnalogPin) {
-      tags.push('Analog Pin');
-    }
-
     return (
       <div className={pinClass}>
         <div className="pin__header">
-          <h2 className="pin__name">Pin {id}</h2>
+          <h2 className="pin__name">{name}</h2>
           {tags.map((tag) =>
             <div key={tag} className="pin__tag">{tag}</div>
           )}
