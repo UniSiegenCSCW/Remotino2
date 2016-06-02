@@ -4,3 +4,6 @@
 [submodule "app/sass/bourbon"]
 	path = app/sass/bourbon
 	url = git@github.com:thoughtbot/bourbon.git
+[submodule "app/sass/neat"]
+	path = app/sass/neat
+	url = git@github.com:thoughtbot/neat.git
