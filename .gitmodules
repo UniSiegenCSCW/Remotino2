@@ -7,3 +7,6 @@
 [submodule "app/sass/neat"]
 	path = app/sass/neat
 	url = git@github.com:thoughtbot/neat.git
+[submodule "app/sass/bitters"]
+	path = app/sass/bitters
+	url = git@github.com:thoughtbot/bitters.git
