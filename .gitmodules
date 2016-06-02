@@ -1,3 +1,15 @@
 [submodule "libfoo"]
     path = tools/react-devtools
     url = git@github.com:facebook/react-devtools.git
+[submodule "app/sass/bourbon"]
+	path = app/sass/bourbon
+	url = git@github.com:thoughtbot/bourbon.git
+[submodule "app/sass/neat"]
+	path = app/sass/neat
+	url = git@github.com:thoughtbot/neat.git
+[submodule "app/sass/bitters"]
+	path = app/sass/bitters
+	url = git@github.com:thoughtbot/bitters.git
+[submodule "app/sass/refills"]
+	path = app/sass/refills
+	url = git@github.com:thoughtbot/refills.git
