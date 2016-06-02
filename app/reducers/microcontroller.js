@@ -9,6 +9,7 @@ import {
 
 import { CONNECTION_STATE } from './microcontrollerEnums';
 import update from 'react/lib/update';
+import { timestamp } from '../utils/utils';
 
 const initialState = {
   connectionState: CONNECTION_STATE.NOT_CONNECTED,
@@ -20,7 +21,7 @@ const createPin = (action) => (
   {
     id: action.id,
     mode: action.mode,
-    value: action.value,
+    values: [{ x: timestamp(), y: 0 }],
     report: action.report,
     supportedModes: action.supportedModes,
     analogChannel: action.analogChannel,
@@ -41,7 +42,12 @@ export default function board(state = initialState, action) {
     case CHANGE_MODE:
       return update(state, { pins: { [action.id]: { mode: { $set: action.mode } } } });
     case PIN_VALUE_CHANGED:
-      return update(state, { pins: { [action.id]: { value: { $set: action.value } } } });
+      return update(
+        state,
+        { pins: { [action.id]: { values: { $push:
+          [{ x: action.timestamp, y: action.value }]
+        } } } }
+      );
     case IDENTIFIED_BOARD:
       return update(state, { mapping: { $set: action.mapping } });
     default:

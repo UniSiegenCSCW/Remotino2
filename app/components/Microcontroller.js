@@ -36,6 +36,7 @@ export default class Microcontroller extends Component {
       return (
         <Pin
           key={pin.id}
+          values={pin.values}
           name={name}
           tags={tags}
           changeMode={changeMode}

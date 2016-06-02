@@ -102,11 +102,13 @@
   },
   "dependencies": {
     "css-modules-require-hook": "^4.0.0",
+    "d3": "^3.5.17",
     "electron-debug": "^0.6.0",
     "font-awesome": "^4.6.1",
     "johnny-five": "rwaldron/johnny-five",
     "postcss": "^5.0.19",
     "ramda": "^0.21.0",
+    "rd3": "^0.6.3",
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
     "react-redux": "^4.4.5",
