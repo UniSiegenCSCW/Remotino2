@@ -2,6 +2,7 @@ import * as five from 'johnny-five';
 import { forEach, keys, mapObjIndexed, length, invertObj, has, contains } from 'ramda';
 import { MODES } from '../reducers/microcontrollerEnums';
 import { identify } from '../utils/boards';
+import { timestamp } from '../utils/utils';
 
 let board;
 
@@ -105,21 +106,23 @@ export const PIN_VALUE_CHANGED = 'PIN_VALUE_CHANGED';
 export function pinValueChanged(id, value) {
   return {
     type: PIN_VALUE_CHANGED,
+    timestamp: timestamp(),
     id,
     value,
   };
 }
 
-export function listenToPinChanges(id, mode) {
+export function listenToPinChanges(id, mode, name) {
   return (dispatch) => {
     const pinId = parseInt(id, 10);
     dispatch(startListeningToPinChanges(pinId));
     const pinListener = (value) => dispatch(pinValueChanged(pinId, value));
     if (mode === MODES.ANALOG) {
-      board.analogRead(pinId, pinListener);
-    }
-
-    if (mode === MODES.INPUT) {
+      const sensor = new five.Sensor({ pin: name, freq: 200 });
+      sensor.on('data', function onChange() {
+        dispatch(pinValueChanged(pinId, this.fscaleTo([0, 100])));
+      });
+    } else if (mode === MODES.INPUT) {
       board.digitalRead(pinId, pinListener);
     }
   };
