@@ -2,37 +2,53 @@ import React, { Component, PropTypes } from 'react';
 import Pin from './Pin';
 import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import spinner from '../static-html/spinner.html';
-import { defaultTo, values } from 'ramda';
+import { defaultTo } from 'ramda';
 import styles from './Microcontroller.sass'; // eslint-disable-line no-unused-vars
 
 export default class Microcontroller extends Component {
   static propTypes = {
-    microcontroller: PropTypes.object.isRequired,
     changeMode: PropTypes.func.isRequired,
     connectToBoard: PropTypes.func.isRequired,
-    listenToPinChanges: PropTypes.func.isRequired
+    listenToPinChanges: PropTypes.func.isRequired,
+    pins: PropTypes.array.isRequired,
+    connectionState: PropTypes.number.isRequired,
+    mapping: PropTypes.object.isRequired,
   };
 
   render() {
-    const { changeMode, connectToBoard, microcontroller, listenToPinChanges } = this.props;
-    const { pins, connectionState, mapping, name } = microcontroller;
+    const {
+      changeMode,
+      connectToBoard,
+      listenToPinChanges,
+      pins,
+      connectionState,
+      mapping,
+    } = this.props;
 
     const connectView = (currentState) => {
       switch (currentState) {
         case CONNECTION_STATE.NOT_CONNECTED:
-          return <button onClick={connectToBoard}>Connect to Arduino</button>;
+          return (
+            <button
+              className="button-submit"
+              onClick={connectToBoard}
+            >
+            Connect to Arduino
+            </button>);
         case CONNECTION_STATE.CONNECTING:
-          return (<button>
-            <span dangerouslySetInnerHTML={{ __html: spinner }} /> Connecting...
-          </button>);
+          return (
+            <p><span dangerouslySetInnerHTML={{ __html: spinner }} /> Connecting...</p>
+          );
         default:
-          return <div>Connected to {name}</div>;
+          return (
+            <p>{`Connected to ${mapping.name}`}</p>
+          );
       }
     };
 
     const pinView = (pin) => {
-      const pinName = defaultTo(`Pin ${pin.id}`, mapping[pin.id].name);
-      const tags = defaultTo([], mapping[pin.id].categories);
+      const pinName = defaultTo(`Pin ${pin.id}`, mapping.pins[pin.id].name);
+      const tags = defaultTo([], mapping.pins[pin.id].categories);
       return (
         <Pin
           key={pin.id}
@@ -48,10 +64,11 @@ export default class Microcontroller extends Component {
 
     return (
       <div>
-        <nav className="refills-header"></nav>
-        {connectView(connectionState)}
+        <header>
+          {connectView(connectionState)}
+        </header>
         <div className="pin-list">
-          {values(pins).map(pinView)}
+          {pins.map(pinView)}
         </div>
       </div>
     );

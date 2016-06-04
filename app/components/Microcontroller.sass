@@ -1,1 +1,25 @@
+header
+  padding: 1.5em
+  background: #ecf0f1
+  p
+    margin: 0
 
+$blue: #3498db
+$green: #2ecc71
+$red: #e74c3c
+
+@mixin button($color)
+  background-color: $color
+  border: none
+  font-size: 1em
+  border-radius: 5px
+  padding: .25em .5em
+  color: white
+  
+  &:hover
+    cursor: pointer
+    background-color: mix(black, $color, 15%)
+    border-color: mix(black, $color, 40%)
+
+.button-submit
+  @include button($blue)
