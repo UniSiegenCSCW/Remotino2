@@ -41,7 +41,7 @@ export const IDENTIFIED_BOARD = 'IDENTIFIED_BOARD';
 export function identifiedBoard(mapping) {
   return {
     type: IDENTIFIED_BOARD,
-    mapping: mapping.pins,
+    pins: mapping.pins,
     name: mapping.name,
   };
 }
