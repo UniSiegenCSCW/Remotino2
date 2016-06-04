@@ -1,6 +1,4 @@
 import path from 'path';
-import bourbon from 'node-bourbon';
-
 
 export default {
   module: {
@@ -16,10 +14,10 @@ export default {
       loader: 'html'
     }, {
       test: /\.sass$/,
-      loader: 'style!css!sass?includePaths[]=' + bourbon
-    },{
+      loader: 'style!css!sass?'
+    }, {
       test: /\.js$/,
-      loader: "eslint-loader",
+      loader: 'eslint-loader',
       exclude: /node_modules/
     }
   ]
@@ -37,7 +35,7 @@ export default {
 
   ],
   externals: [
-    "serialport"
+    'serialport'
     // put your node 3rd party libraries which can't be built with webpack here
     // (mysql, mongodb, and so on..)
   ]
