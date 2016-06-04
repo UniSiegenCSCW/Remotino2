@@ -42,6 +42,7 @@ export function identifiedBoard(mapping) {
   return {
     type: IDENTIFIED_BOARD,
     mapping: mapping.pins,
+    name: mapping.name,
   };
 }
 

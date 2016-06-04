@@ -15,6 +15,7 @@ const initialState = {
   connectionState: CONNECTION_STATE.NOT_CONNECTED,
   pins: {},
   mapping: {},
+  name: 'Unknown',
 };
 
 const createPin = (action) => (
@@ -49,7 +50,7 @@ export default function board(state = initialState, action) {
         } } } }
       );
     case IDENTIFIED_BOARD:
-      return update(state, { mapping: { $set: action.mapping } });
+      return update(state, { mapping: { $set: action.mapping }, name: { $set: action.name } });
     default:
       return state;
   }

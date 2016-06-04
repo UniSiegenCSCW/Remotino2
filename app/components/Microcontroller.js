@@ -14,7 +14,7 @@ export default class Microcontroller extends Component {
 
   render() {
     const { changeMode, connectToBoard, microcontroller, listenToPinChanges } = this.props;
-    const { pins, connectionState, mapping } = microcontroller;
+    const { pins, connectionState, mapping, name } = microcontroller;
 
     const connectView = (currentState) => {
       switch (currentState) {
@@ -25,18 +25,18 @@ export default class Microcontroller extends Component {
             <span dangerouslySetInnerHTML={{ __html: spinner }} /> Connecting...
           </div>);
         default:
-          return <div></div>;
+          return <div>Connected to {name}</div>;
       }
     };
 
     const pinView = (pin) => {
-      const name = defaultTo(`Pin ${pin.id}`, mapping[pin.id].name);
+      const pinName = defaultTo(`Pin ${pin.id}`, mapping[pin.id].name);
       const tags = defaultTo([], mapping[pin.id].categories);
       return (
         <Pin
           key={pin.id}
           values={pin.values}
-          name={name}
+          name={pinName}
           tags={tags}
           changeMode={changeMode}
           pin={pin}
