@@ -3,6 +3,7 @@ import Pin from './Pin';
 import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import spinner from '../static-html/spinner.html';
 import { defaultTo, values } from 'ramda';
+import styles from './Microcontroller.sass'; // eslint-disable-line no-unused-vars
 
 export default class Microcontroller extends Component {
   static propTypes = {
@@ -19,11 +20,11 @@ export default class Microcontroller extends Component {
     const connectView = (currentState) => {
       switch (currentState) {
         case CONNECTION_STATE.NOT_CONNECTED:
-          return <div className="btn--blue" onClick={connectToBoard}>Connect to Arduino</div>;
+          return <button onClick={connectToBoard}>Connect to Arduino</button>;
         case CONNECTION_STATE.CONNECTING:
-          return (<div className="btn--blue">
+          return (<button>
             <span dangerouslySetInnerHTML={{ __html: spinner }} /> Connecting...
-          </div>);
+          </button>);
         default:
           return <div>Connected to {name}</div>;
       }
@@ -47,6 +48,7 @@ export default class Microcontroller extends Component {
 
     return (
       <div>
+        <nav className="refills-header"></nav>
         {connectView(connectionState)}
         <div className="pin-list">
           {values(pins).map(pinView)}
