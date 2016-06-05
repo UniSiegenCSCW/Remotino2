@@ -60,6 +60,10 @@ export default class Microcontroller extends Component {
                 <FilterLink filter="SHOW_ANALOG">
                   Analog
                 </FilterLink>
+                {", "}
+                <FilterLink filter="SHOW_ENABLED">
+                  Enabled
+                </FilterLink>
               </p>
             </div>
           );

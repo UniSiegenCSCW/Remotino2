@@ -12,8 +12,10 @@ const getVisiblePins = (pins, filter) => {
       return pins.filter(pin => !pin.isAnalogPin);
     case 'SHOW_ANALOG':
       return pins.filter(pin => pin.isAnalogPin);
+    case 'SHOW_ENABLED':
+      return pins.filter(pin => pin.enabled);
     default:
-      return pins;
+      return [];
   }
 };
 
