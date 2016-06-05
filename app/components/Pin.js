@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { MODE_NAMES, MODES } from '../reducers/microcontrollerEnums';
+// import { intersection, range, propOr, ifElse } from 'ramda';
 import { intersection, propOr, ifElse } from 'ramda';
 import styles from './Pin.sass'; // eslint-disable-line no-unused-vars
 import rd3 from 'rd3';
@@ -33,20 +34,21 @@ export default class Pin extends Component {
 
 
     const AreaChart = rd3.AreaChart;
-    const chart = (
+    const chart = values.length === 0 ? <p>No data</p> : (
       <AreaChart
         data={data}
         width="100%"
-        height={400}
+        height={200}
         viewBoxObject={{
           x: 0,
           y: 0,
           width: 500,
-          height: 400
+          height: 200
         }}
         title="Line Chart"
-        yAxisLabel="Altitude"
-        xAxisLabel="Elapsed Time (sec)"
+        yAxisLabel="Value (%)"
+        xAxisTickValues={[]}
+        xAxisLabel="Elapsed Time"
         domain={{ y: [0, 100] }}
         gridHorizontal
       />

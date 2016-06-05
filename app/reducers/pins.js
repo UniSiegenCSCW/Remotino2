@@ -7,14 +7,11 @@ import {
 
 import update from 'react/lib/update';
 
-// TODO: Remove all non-pure functions
-import { timestamp } from '../utils/utils';
-
 const createPin = (action) => (
   {
     id: action.id,
     mode: action.mode,
-    values: [{ x: timestamp(), y: 0 }],
+    values: [],
     report: action.report,
     enabled: true,
     supportedModes: action.supportedModes,
@@ -25,6 +22,11 @@ const createPin = (action) => (
   }
 );
 
+const addValue = (values, newValue, limit) => {
+  const oldValues = values;
+  oldValues.unshift(newValue);
+  return oldValues.slice(0, limit);
+};
 
 const pins = (state = {}, action) => {
   switch (action.type) {
@@ -37,9 +39,9 @@ const pins = (state = {}, action) => {
     case PIN_VALUE_CHANGED:
       return update(
         state,
-        { [action.id]: { values: { $push:
-          [{ x: action.timestamp, y: action.value }]
-        } } }
+        { [action.id]: { values:
+          { $apply: values => addValue(values, { x: action.timestamp, y: action.value }, 100) }
+        } }
       );
     default:
       return state;
