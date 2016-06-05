@@ -56,9 +56,8 @@ export default class Pin extends Component {
           height: 200
         }}
         title="Line Chart"
-        yAxisLabel="Value (%)"
         xAxisTickValues={[]}
-        xAxisLabel="Elapsed Time"
+        yAxisTicks="2"
         domain={{ y: [0, 100] }}
         gridHorizontal
       />
