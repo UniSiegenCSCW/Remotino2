@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Pin from './Pin';
+import FilterLink from '../containers/FilterLink';
 import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import spinner from '../static-html/spinner.html';
 import { defaultTo } from 'ramda';
@@ -41,7 +42,24 @@ export default class Microcontroller extends Component {
           );
         default:
           return (
-            <p>{`Connected to ${mapping.name}`}</p>
+            <div>
+              <p>{`Connected to ${mapping.name}`}</p>
+              <p>
+                Show:
+                {" "}
+                <FilterLink filter="SHOW_ALL">
+                  All
+                </FilterLink>
+                {", "}
+                <FilterLink filter="SHOW_DIGITAL">
+                  Digital
+                </FilterLink>
+                {", "}
+                <FilterLink filter="SHOW_ANALOG">
+                  Analog
+                </FilterLink>
+              </p>
+            </div>
           );
       }
     };

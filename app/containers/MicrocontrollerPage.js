@@ -4,13 +4,26 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { values } from 'ramda';
 
+const getVisiblePins = (pins, filter) => {
+  switch (filter) {
+    case 'SHOW_ALL':
+      return pins;
+    case 'SHOW_DIGITAL':
+      return pins.filter(pin => !pin.isAnalogPin);
+    case 'SHOW_ANALOG':
+      return pins.filter(pin => pin.isAnalogPin);
+    default:
+      return pins;
+  }
+};
+
 function mapStateToProps(state) {
   return {
-    pins: values(state.microcontroller.pins),
+    pins: getVisiblePins(values(state.microcontroller.pins),
+              state.microcontroller.visibilityFilter),
     connectionState: state.microcontroller.connectionState,
     mapping: state.microcontroller.mapping,
     name: state.microcontroller.name,
-    filter: state.microcontroller.filter,
   };
 }
 
