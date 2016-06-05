@@ -30,7 +30,7 @@ export function identify(board) {
     ArduinoYun
   ];
 
-  if (board.TYPE === 'MEGA') {
+  if (board.type === 'MEGA') {
     return ArduinoMega;
   }
 
