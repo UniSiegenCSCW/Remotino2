@@ -1,8 +1,14 @@
 header
-  padding: 1.5em
   background: #ecf0f1
   p
     margin: 0
+  .header--connection
+    display: inline-block
+    padding: 1.5em
+    font-weight: bold
+  .header--filter
+    display: inline-block
+    padding: 1.5em
 
 $blue: #3498db
 $green: #2ecc71
@@ -23,3 +29,7 @@ $red: #e74c3c
 
 .button-submit
   @include button($blue)
+
+.pin-list
+  width: 600px
+  margin-left: 2em

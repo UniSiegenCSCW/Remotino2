@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { MODE_NAMES, MODES } from '../reducers/microcontrollerEnums';
-// import { intersection, range, propOr, ifElse } from 'ramda';
 import { intersection, propOr } from 'ramda';
-import styles from './Pin.sass'; // eslint-disable-line no-unused-vars
+import './Pin.sass';
 import rd3 from 'rd3';
 
 export default class Pin extends Component {
@@ -28,7 +27,7 @@ export default class Pin extends Component {
       name,
       tags
     } = this.props;
-    const { id, mode, report, values } = pin;
+    const { id, mode, values } = pin;
 
     const supportedModes = intersection(
       pin.supportedModes,
@@ -96,16 +95,13 @@ export default class Pin extends Component {
           );
         case MODES.OUTPUT:
           return (
-            <div>
-              <button
-                className="button-submit"
-                onClick={() => digitalWrite(id, 1)}
-              >On</button>
-              <button
-                className="button-submit"
-                onClick={() => digitalWrite(id, 0)}
-              >Off</button>
-            </div>
+            <label className="label-switch">
+              <input
+                type="checkbox"
+                onChange={(e) => digitalWrite(id, e.target.checked ? 1 : 0)}
+              />
+              <div className="checkbox"></div>
+            </label>
           );
         case MODES.PWM:
           return (
@@ -133,12 +129,7 @@ export default class Pin extends Component {
             <div key={tag} className="pin__tag">{tag}</div>
           )}
         </div>
-        <div className="pin__body">
-          Reporting: {report},
-          {modeSelector}
-          {pinControls(mode)}
-        </div>
-        <div className="pin__footer">
+        <div className="pin__settings">
           <input
             type="checkbox"
             name="Enabled"
@@ -146,6 +137,10 @@ export default class Pin extends Component {
             onChange={(e) => setEnabled(pin.id, e.target.checked)}
           />
           Enabled
+          {modeSelector}
+        </div>
+        <div className="pin__controls">
+          {pinControls(mode)}
         </div>
       </div>
     );

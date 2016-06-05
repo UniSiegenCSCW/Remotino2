@@ -39,45 +39,54 @@ export default class Microcontroller extends Component {
       switch (currentState) {
         case CONNECTION_STATE.NOT_CONNECTED:
           return (
-            <button
-              className="button-submit"
-              onClick={connectToBoard}
-            >
-            Connect to Arduino
-            </button>);
+            <div className="header--connection">
+              <button
+                className="button-submit"
+                onClick={connectToBoard}
+              >
+              Connect to Arduino
+              </button>
+            </div>
+          );
         case CONNECTION_STATE.CONNECTING:
           return (
-            <p><span dangerouslySetInnerHTML={{ __html: spinner }} /> Connecting...</p>
+            <div className="header--connection">
+              <p><span dangerouslySetInnerHTML={{ __html: spinner }} /> Connecting...</p>
+            </div>
           );
         default:
           return (
             <div>
-              <p>{`Connected to ${mapping.name}`}</p>
-              <p>
-                Filter by:
-                {" "}
-                <input
-                  type="checkbox"
-                  name="Enabled"
-                  checked={visibilityFilter.enabled}
-                  onChange={(e) => setVisibilityFilter('enabled', e.target.checked)}
-                />
-                Enabled
-                <input
-                  type="checkbox"
-                  name="Digital"
-                  checked={visibilityFilter.digital}
-                  onChange={(e) => setVisibilityFilter('digital', e.target.checked)}
-                />
-                Digital
-                <input
-                  type="checkbox"
-                  name="Analog"
-                  checked={visibilityFilter.analog}
-                  onChange={(e) => setVisibilityFilter('analog', e.target.checked)}
-                />
-                Analog
-              </p>
+              <div className="header--connection">
+                <p>{`Connected to ${mapping.name}`}</p>
+              </div>
+              <div className="header--filter">
+                <p>
+                  Filter by:
+                  {" "}
+                  <input
+                    type="checkbox"
+                    name="Enabled"
+                    checked={visibilityFilter.enabled}
+                    onChange={(e) => setVisibilityFilter('enabled', e.target.checked)}
+                  />
+                  Enabled
+                  <input
+                    type="checkbox"
+                    name="Digital"
+                    checked={visibilityFilter.digital}
+                    onChange={(e) => setVisibilityFilter('digital', e.target.checked)}
+                  />
+                  Digital
+                  <input
+                    type="checkbox"
+                    name="Analog"
+                    checked={visibilityFilter.analog}
+                    onChange={(e) => setVisibilityFilter('analog', e.target.checked)}
+                  />
+                  Analog
+                </p>
+              </div>
             </div>
           );
       }
