@@ -8,6 +8,7 @@ import configureStore from './store/configureStore';
 import './app.global.sass';
 
 const store = configureStore();
+document.store = store;
 const history = syncHistoryWithStore(hashHistory, store);
 
 render(
