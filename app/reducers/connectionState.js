@@ -5,7 +5,8 @@ import {
 
 import { CONNECTION_STATE } from './microcontrollerEnums';
 
-export function connectionState(state = CONNECTION_STATE.NOT_CONNECTED, action) {
+
+const connectionState = (state = CONNECTION_STATE.NOT_CONNECTED, action) => {
   switch (action.type) {
     case CONNECTING_TO_BOARD:
       return CONNECTION_STATE.CONNECTING;
@@ -14,4 +15,6 @@ export function connectionState(state = CONNECTION_STATE.NOT_CONNECTED, action) 
     default:
       return state;
   }
-}
+};
+
+export default connectionState;

@@ -22,7 +22,7 @@ const createPin = (action) => (
 );
 
 
-export function pins(state = {}, action) {
+const pins = (state = {}, action) => {
   switch (action.type) {
     case UPDATE_PIN:
       return update(state, { [action.id]: { $set: createPin(action) } });
@@ -38,4 +38,6 @@ export function pins(state = {}, action) {
     default:
       return state;
   }
-}
+};
+
+export default pins;

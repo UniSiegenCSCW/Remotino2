@@ -4,11 +4,13 @@ import {
 
 import update from 'react/lib/update';
 
-export function mapping(state = { name: 'UNKNOWN DEVICE', mapping: {} }, action) {
+const mapping = (state = { name: 'UNKNOWN DEVICE', mapping: {} }, action) => {
   switch (action.type) {
     case IDENTIFIED_BOARD:
       return update(state, { pins: { $set: action.pins }, name: { $set: action.name } });
     default:
       return state;
   }
-}
+};
+
+export default mapping;
