@@ -114,10 +114,11 @@ export function pinValueChanged(id, value) {
 }
 
 export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
-export function setVisibilityFilter(filter) {
+export function setVisibilityFilter(property, value) {
   return {
     type: SET_VISIBILITY_FILTER,
-    filter,
+    property,
+    value,
   };
 }
 

@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import Pin from './Pin';
-import FilterLink from '../containers/FilterLink';
 import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import spinner from '../static-html/spinner.html';
 import { defaultTo } from 'ramda';
@@ -11,10 +10,12 @@ export default class Microcontroller extends Component {
     changeMode: PropTypes.func.isRequired,
     setEnabled: PropTypes.func.isRequired,
     connectToBoard: PropTypes.func.isRequired,
+    setVisibilityFilter: PropTypes.func.isRequired,
     listenToPinChanges: PropTypes.func.isRequired,
     pins: PropTypes.array.isRequired,
     connectionState: PropTypes.number.isRequired,
     mapping: PropTypes.object.isRequired,
+    visibilityFilter: PropTypes.object.isRequired,
   };
 
   render() {
@@ -26,6 +27,8 @@ export default class Microcontroller extends Component {
       pins,
       connectionState,
       mapping,
+      visibilityFilter,
+      setVisibilityFilter,
     } = this.props;
 
     const connectView = (currentState) => {
@@ -47,23 +50,29 @@ export default class Microcontroller extends Component {
             <div>
               <p>{`Connected to ${mapping.name}`}</p>
               <p>
-                Show:
+                Filter by:
                 {" "}
-                <FilterLink filter="SHOW_ALL">
-                  All
-                </FilterLink>
-                {", "}
-                <FilterLink filter="SHOW_DIGITAL">
-                  Digital
-                </FilterLink>
-                {", "}
-                <FilterLink filter="SHOW_ANALOG">
-                  Analog
-                </FilterLink>
-                {", "}
-                <FilterLink filter="SHOW_ENABLED">
-                  Enabled
-                </FilterLink>
+                <input
+                  type="checkbox"
+                  name="Enabled"
+                  checked={visibilityFilter.enabled}
+                  onChange={(e) => setVisibilityFilter('enabled', e.target.checked)}
+                />
+                Enabled
+                <input
+                  type="checkbox"
+                  name="Digital"
+                  checked={visibilityFilter.digital}
+                  onChange={(e) => setVisibilityFilter('digital', e.target.checked)}
+                />
+                Digital
+                <input
+                  type="checkbox"
+                  name="Analog"
+                  checked={visibilityFilter.analog}
+                  onChange={(e) => setVisibilityFilter('analog', e.target.checked)}
+                />
+                Analog
               </p>
             </div>
           );

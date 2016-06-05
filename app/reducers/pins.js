@@ -6,6 +6,8 @@ import {
 } from '../actions/microcontroller';
 
 import update from 'react/lib/update';
+
+// TODO: Remove all non-pure functions
 import { timestamp } from '../utils/utils';
 
 const createPin = (action) => (
