@@ -80,10 +80,11 @@ export default class Microcontroller extends Component {
     };
 
     const pinView = (pin) => {
+      // TODO: Fix me
       const pinName = defaultTo(`Pin ${pin.id}`,
-          mapping && mapping.pins && mapping.pins[pin.id].name);
+          mapping && mapping.pins && mapping.pins[pin.id] && mapping.pins[pin.id].name);
       const tags = defaultTo([],
-          mapping && mapping.pins && mapping.pins[pin.id].categories);
+          mapping && mapping.pins && mapping.pins[pin.id] && mapping.pins[pin.id].categories);
       return (
         <Pin
           key={pin.id}
