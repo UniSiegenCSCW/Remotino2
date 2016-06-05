@@ -135,14 +135,17 @@ export function listenToPinChanges(id, mode, name) {
   return (dispatch) => {
     const pinId = parseInt(id, 10);
     dispatch(startListeningToPinChanges(pinId));
-    const pinListener = (value) => dispatch(pinValueChanged(pinId, value));
+
     if (mode === MODES.ANALOG) {
       const sensor = new five.Sensor({ pin: name, freq: 200 });
       sensor.on('data', function onChange() {
         dispatch(pinValueChanged(pinId, this.fscaleTo([0, 100])));
       });
     } else if (mode === MODES.INPUT) {
-      board.digitalRead(pinId, pinListener);
+      const sensor = new five.Sensor.Digital({ pin: id, freq: 200 });
+      sensor.on('data', function onChange() {
+        dispatch(pinValueChanged(pinId, this.value));
+      });
     }
   };
 }

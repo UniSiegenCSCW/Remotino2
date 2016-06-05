@@ -44,7 +44,7 @@ export default class Pin extends Component {
 
 
     const AreaChart = rd3.AreaChart;
-    const chart = values.length === 0 ? <p>No data</p> : (
+    const analogChart = values.length === 0 ? <p>No data</p> : (
       <AreaChart
         data={data}
         width="100%"
@@ -57,8 +57,24 @@ export default class Pin extends Component {
         }}
         title="Line Chart"
         xAxisTickValues={[]}
-        yAxisTicks="2"
         domain={{ y: [0, 100] }}
+        gridHorizontal
+      />
+    );
+    const digitalChart = values.length === 0 ? <p>No data</p> : (
+      <AreaChart
+        data={data}
+        width="100%"
+        height={200}
+        viewBoxObject={{
+          x: 0,
+          y: 0,
+          width: 500,
+          height: 200
+        }}
+        title="Line Chart"
+        xAxisTickValues={[]}
+        domain={{ y: [0, 1] }}
         gridHorizontal
       />
     );
@@ -83,13 +99,21 @@ export default class Pin extends Component {
     const pinControls = () => {
       switch (mode) {
         case MODES.INPUT:
+          return (
+            <div>
+              <span className="btn--blue btn--s px1 mx1" onClick={() => listen(id, mode, name)}>
+                Listen
+              </span>
+              {digitalChart}
+            </div>
+          );
         case MODES.ANALOG:
           return (
             <div>
               <span className="btn--blue btn--s px1 mx1" onClick={() => listen(id, mode, name)}>
                 Listen
               </span>
-              {chart}
+              {analogChart}
             </div>
           );
         case MODES.OUTPUT:
