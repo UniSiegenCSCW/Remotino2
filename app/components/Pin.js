@@ -105,16 +105,13 @@ export default class Pin extends Component {
           );
         case MODES.PWM:
           return (
-            <div>
-              PWM:
-              <input
-                type="range"
-                name="pwm"
-                min="0" max="255"
-                defaultValue="0"
-                onChange={(e) => analogWrite(id, e.target.value)}
-              />
-            </div>
+            <input
+              type="range"
+              name="pwm"
+              min="0" max="255"
+              defaultValue="0"
+              onChange={(e) => analogWrite(id, e.target.value)}
+            />
           );
         default:
           return <div></div>;
