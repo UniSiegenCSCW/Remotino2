@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { MODE_NAMES, MODES } from '../reducers/microcontrollerEnums';
 // import { intersection, range, propOr, ifElse } from 'ramda';
-import { intersection, propOr, ifElse } from 'ramda';
+import { intersection, propOr } from 'ramda';
 import styles from './Pin.sass'; // eslint-disable-line no-unused-vars
 import rd3 from 'rd3';
 
@@ -12,11 +12,22 @@ export default class Pin extends Component {
     pin: PropTypes.object.isRequired,
     changeMode: PropTypes.func.isRequired,
     setEnabled: PropTypes.func.isRequired,
-    listen: PropTypes.func.isRequired
+    listen: PropTypes.func.isRequired,
+    digitalWrite: PropTypes.func.isRequired,
+    analogWrite: PropTypes.func.isRequired,
   };
 
   render() {
-    const { changeMode, setEnabled, listen, pin, name, tags } = this.props;
+    const {
+      changeMode,
+      setEnabled,
+      listen,
+      digitalWrite,
+      analogWrite,
+      pin,
+      name,
+      tags
+    } = this.props;
     const { id, mode, report, values } = pin;
 
     const supportedModes = intersection(
@@ -71,6 +82,49 @@ export default class Pin extends Component {
 
     const pinClass = pin.isAnalogPin ? 'pin pin--analog' : 'pin pin--digital';
 
+    const pinControls = () => {
+      switch (mode) {
+        case MODES.INPUT:
+        case MODES.ANALOG:
+          return (
+            <div>
+              <span className="btn--blue btn--s px1 mx1" onClick={() => listen(id, mode, name)}>
+                Listen
+              </span>
+              {chart}
+            </div>
+          );
+        case MODES.OUTPUT:
+          return (
+            <div>
+              <button
+                className="button-submit"
+                onClick={() => digitalWrite(id, 1)}
+              >On</button>
+              <button
+                className="button-submit"
+                onClick={() => digitalWrite(id, 0)}
+              >Off</button>
+            </div>
+          );
+        case MODES.PWM:
+          return (
+            <div>
+              PWM:
+              <input
+                type="range"
+                name="pwm"
+                min="0" max="255"
+                defaultValue="0"
+                onChange={(e) => analogWrite(id, e.target.value)}
+              />
+            </div>
+          );
+        default:
+          return <div></div>;
+      }
+    };
+
     return (
       <div className={pinClass}>
         <div className="pin__header">
@@ -82,18 +136,7 @@ export default class Pin extends Component {
         <div className="pin__body">
           Reporting: {report},
           {modeSelector}
-
-          {ifElse(() => mode === MODES.INPUT || mode === MODES.ANALOG,
-            () => (
-              <span className="btn--blue btn--s px1 mx1" onClick={() => listen(id, mode, name)}>
-                Listen
-                {chart}
-              </span>
-            ),
-            () =>
-              <span>
-                {mode} {MODES.ANALOG}
-              </span>)()}
+          {pinControls(mode)}
         </div>
         <div className="pin__footer">
           <input

@@ -146,3 +146,19 @@ export function listenToPinChanges(id, mode, name) {
     }
   };
 }
+
+export function digitalWrite(id, value) {
+  return (dispatch) => {
+    const pinId = parseInt(id, 10);
+    board.digitalWrite(pinId, value);
+    dispatch(pinValueChanged(pinId, value));
+  };
+}
+
+export function analogWrite(id, value) {
+  return (dispatch) => {
+    const pinId = parseInt(id, 10);
+    board.analogWrite(pinId, value);
+    dispatch(pinValueChanged(pinId, value));
+  };
+}

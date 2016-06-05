@@ -12,6 +12,8 @@ export default class Microcontroller extends Component {
     connectToBoard: PropTypes.func.isRequired,
     setVisibilityFilter: PropTypes.func.isRequired,
     listenToPinChanges: PropTypes.func.isRequired,
+    digitalWrite: PropTypes.func.isRequired,
+    analogWrite: PropTypes.func.isRequired,
     pins: PropTypes.array.isRequired,
     connectionState: PropTypes.number.isRequired,
     mapping: PropTypes.object.isRequired,
@@ -24,6 +26,8 @@ export default class Microcontroller extends Component {
       setEnabled,
       connectToBoard,
       listenToPinChanges,
+      digitalWrite,
+      analogWrite,
       pins,
       connectionState,
       mapping,
@@ -93,6 +97,8 @@ export default class Microcontroller extends Component {
           tags={tags}
           changeMode={changeMode}
           setEnabled={setEnabled}
+          digitalWrite={digitalWrite}
+          analogWrite={analogWrite}
           pin={pin}
           listen={listenToPinChanges}
         />
