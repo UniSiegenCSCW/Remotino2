@@ -10,11 +10,12 @@ export default class Pin extends Component {
     tags: PropTypes.array.isRequired,
     pin: PropTypes.object.isRequired,
     changeMode: PropTypes.func.isRequired,
+    setEnabled: PropTypes.func.isRequired,
     listen: PropTypes.func.isRequired
   };
 
   render() {
-    const { changeMode, listen, pin, name, tags } = this.props;
+    const { changeMode, setEnabled, listen, pin, name, tags } = this.props;
     const { id, mode, report, values } = pin;
 
     const supportedModes = intersection(
@@ -91,6 +92,15 @@ export default class Pin extends Component {
               <span>
                 {mode} {MODES.ANALOG}
               </span>)()}
+        </div>
+        <div className="pin__footer">
+          <input
+            type="checkbox"
+            name="Enabled"
+            checked={pin.enabled}
+            onChange={(e) => setEnabled(pin.id, e.target.checked)}
+          />
+          Enabled
         </div>
       </div>
     );

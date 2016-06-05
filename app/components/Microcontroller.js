@@ -9,6 +9,7 @@ import styles from './Microcontroller.sass'; // eslint-disable-line no-unused-va
 export default class Microcontroller extends Component {
   static propTypes = {
     changeMode: PropTypes.func.isRequired,
+    setEnabled: PropTypes.func.isRequired,
     connectToBoard: PropTypes.func.isRequired,
     listenToPinChanges: PropTypes.func.isRequired,
     pins: PropTypes.array.isRequired,
@@ -19,6 +20,7 @@ export default class Microcontroller extends Component {
   render() {
     const {
       changeMode,
+      setEnabled,
       connectToBoard,
       listenToPinChanges,
       pins,
@@ -74,6 +76,7 @@ export default class Microcontroller extends Component {
           name={pinName}
           tags={tags}
           changeMode={changeMode}
+          setEnabled={setEnabled}
           pin={pin}
           listen={listenToPinChanges}
         />

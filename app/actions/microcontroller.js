@@ -121,6 +121,15 @@ export function setVisibilityFilter(filter) {
   };
 }
 
+export const SET_ENABLED = 'SET_ENABLED';
+export function setEnabled(id, value) {
+  return {
+    type: SET_ENABLED,
+    id,
+    value,
+  };
+}
+
 export function listenToPinChanges(id, mode, name) {
   return (dispatch) => {
     const pinId = parseInt(id, 10);

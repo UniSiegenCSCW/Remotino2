@@ -1,6 +1,7 @@
 import {
   UPDATE_PIN,
   CHANGE_MODE,
+  SET_ENABLED,
   PIN_VALUE_CHANGED,
 } from '../actions/microcontroller';
 
@@ -13,6 +14,7 @@ const createPin = (action) => (
     mode: action.mode,
     values: [{ x: timestamp(), y: 0 }],
     report: action.report,
+    enabled: true,
     supportedModes: action.supportedModes,
     analogChannel: action.analogChannel,
     isHWSerialPort: action.isHWSerialPort,
@@ -28,6 +30,8 @@ const pins = (state = {}, action) => {
       return update(state, { [action.id]: { $set: createPin(action) } });
     case CHANGE_MODE:
       return update(state, { [action.id]: { mode: { $set: action.mode } } });
+    case SET_ENABLED:
+      return update(state, { [action.id]: { enabled: { $set: action.value } } });
     case PIN_VALUE_CHANGED:
       return update(
         state,
