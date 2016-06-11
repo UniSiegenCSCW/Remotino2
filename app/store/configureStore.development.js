@@ -5,6 +5,7 @@ import createLogger from 'redux-logger';
 import { hashHistory } from 'react-router';
 import { routerMiddleware } from 'react-router-redux';
 import { replayMiddleware } from './replayMiddleware';
+import { boardIOMiddleware } from './boardIOMiddleware';
 import rootReducer from '../reducers';
 import DevTools from '../containers/DevTools';
 
@@ -16,7 +17,7 @@ const logger = createLogger({
 const router = routerMiddleware(hashHistory);
 
 const enhancer = compose(
-  applyMiddleware(thunk, replayMiddleware, router, logger),
+  applyMiddleware(thunk, replayMiddleware, boardIOMiddleware, router, logger),
   DevTools.instrument(),
   persistState(
     window.location.href.match(
