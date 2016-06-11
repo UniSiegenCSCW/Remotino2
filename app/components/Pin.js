@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { MODE_NAMES, MODES } from '../reducers/microcontrollerEnums';
 import { intersection, propOr } from 'ramda';
+import DigitalInput from './Pin/DigitalInput';
+import AnalogInput from './Pin/AnalogInput';
 import './Pin.sass';
-import rd3 from 'rd3';
 
 export default class Pin extends Component {
   static propTypes = {
@@ -35,50 +36,6 @@ export default class Pin extends Component {
     );
     const getModeDescriptionForModeNumber = (num) => propOr('Not Set', num, MODE_NAMES);
 
-    const data = [
-      {
-        name: 'series1',
-        values,
-      },
-    ];
-
-
-    const AreaChart = rd3.AreaChart;
-    const analogChart = values.length === 0 ? <p>No data</p> : (
-      <AreaChart
-        data={data}
-        width="100%"
-        height={200}
-        viewBoxObject={{
-          x: 0,
-          y: 0,
-          width: 500,
-          height: 200
-        }}
-        title="Line Chart"
-        xAxisTickValues={[]}
-        domain={{ y: [0, 100] }}
-        gridHorizontal
-      />
-    );
-    const digitalChart = values.length === 0 ? <p>No data</p> : (
-      <AreaChart
-        data={data}
-        width="100%"
-        height={200}
-        viewBoxObject={{
-          x: 0,
-          y: 0,
-          width: 500,
-          height: 200
-        }}
-        title="Line Chart"
-        xAxisTickValues={[]}
-        domain={{ y: [0, 1] }}
-        gridHorizontal
-      />
-    );
-
     const modeSelector = (
       <select
         defaultValue="{defaultMode}"
@@ -99,23 +56,9 @@ export default class Pin extends Component {
     const pinControls = () => {
       switch (mode) {
         case MODES.INPUT:
-          return (
-            <div>
-              <span className="btn--blue btn--s px1 mx1" onClick={() => listen(id, mode, name)}>
-                Listen
-              </span>
-              {digitalChart}
-            </div>
-          );
+          return <DigitalInput listen={() => listen(id, mode, name)} values={values} />;
         case MODES.ANALOG:
-          return (
-            <div>
-              <span className="btn--blue btn--s px1 mx1" onClick={() => listen(id, mode, name)}>
-                Listen
-              </span>
-              {analogChart}
-            </div>
-          );
+          return <AnalogInput listen={() => listen(id, mode, name)} values={values} />;
         case MODES.OUTPUT:
           return (
             <label className="label-switch">
