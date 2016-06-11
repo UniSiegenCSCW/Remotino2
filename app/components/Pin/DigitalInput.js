@@ -7,7 +7,6 @@ export default class DigitalInput extends Component {
     values: PropTypes.array.isRequired,
   };
 
-
   render() {
     const {
       listen,

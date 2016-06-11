@@ -3,6 +3,8 @@ import { MODE_NAMES, MODES } from '../reducers/microcontrollerEnums';
 import { intersection, propOr } from 'ramda';
 import DigitalInput from './Pin/DigitalInput';
 import AnalogInput from './Pin/AnalogInput';
+import DigitalOutput from './Pin/DigitalOutput';
+import AnalogOutput from './Pin/AnalogOutput';
 import './Pin.sass';
 
 export default class Pin extends Component {
@@ -60,25 +62,9 @@ export default class Pin extends Component {
         case MODES.ANALOG:
           return <AnalogInput listen={() => listen(id, mode, name)} values={values} />;
         case MODES.OUTPUT:
-          return (
-            <label className="label-switch">
-              <input
-                type="checkbox"
-                onChange={(e) => digitalWrite(id, e.target.checked ? 1 : 0)}
-              />
-              <div className="checkbox"></div>
-            </label>
-          );
+          return <DigitalOutput write={(value) => digitalWrite(id, value)} />;
         case MODES.PWM:
-          return (
-            <input
-              type="range"
-              name="pwm"
-              min="0" max="255"
-              defaultValue="0"
-              onChange={(e) => analogWrite(id, e.target.value)}
-            />
-          );
+          return <AnalogOutput write={(value) => analogWrite(id, value)} />;
         default:
           return <div></div>;
       }
