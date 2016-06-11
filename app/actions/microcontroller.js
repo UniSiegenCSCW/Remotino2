@@ -92,6 +92,7 @@ export function changeMode(id, mode) {
     type: CHANGE_MODE,
     id,
     mode: parseInt(mode, 10),
+    replayable: true,
   };
 }
 
