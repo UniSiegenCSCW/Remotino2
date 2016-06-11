@@ -4,7 +4,6 @@ import {
   SET_ENABLED,
   PIN_VALUE_CHANGED,
 } from '../actions/microcontroller';
-
 import update from 'react/lib/update';
 
 const createPin = (action) => (
