@@ -87,11 +87,11 @@ export function connectToBoard() {
 
 export const CHANGE_MODE = 'CHANGE_MODE_PIN';
 export function changeMode(id, mode) {
-  board.pinMode(id, mode);
   return {
     type: CHANGE_MODE,
     id,
     mode: parseInt(mode, 10),
+    boardIO: () => board.pinMode(id, mode),
     replayable: true,
   };
 }
@@ -151,18 +151,24 @@ export function listenToPinChanges(id, mode, name) {
   };
 }
 
+export const DIGITAL_WRITE = 'DIGITAL_WRITE';
 export function digitalWrite(id, value) {
-  return (dispatch) => {
-    const pinId = parseInt(id, 10);
-    board.digitalWrite(pinId, value);
-    dispatch(pinValueChanged(pinId, value));
+  const pinId = parseInt(id, 10);
+
+  return {
+    type: DIGITAL_WRITE,
+    boardIO: () => board.digitalWrite(pinId, value),
+    replayable: true,
   };
 }
 
+export const ANALOG_WRITE = 'ANALOG_WRITE';
 export function analogWrite(id, value) {
-  return (dispatch) => {
-    const pinId = parseInt(id, 10);
-    board.analogWrite(pinId, value);
-    dispatch(pinValueChanged(pinId, value));
+  const pinId = parseInt(id, 10);
+
+  return {
+    type: ANALOG_WRITE,
+    boardIO: () => board.analogWrite(pinId, value),
+    replayable: true,
   };
 }
