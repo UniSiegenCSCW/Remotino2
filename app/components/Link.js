@@ -2,11 +2,16 @@ import React, { PropTypes } from 'react';
 
 const Link = ({ active, children, onClick }) => {
   if (active) {
-    return <span>{children}</span>;
+    return (
+      <span className="link">
+        {children}
+      </span>
+    );
   }
 
   return (
     <a
+      className="link"
       href="#"
       onClick={e => {
         e.preventDefault();
