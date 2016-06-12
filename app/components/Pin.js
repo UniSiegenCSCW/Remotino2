@@ -58,13 +58,29 @@ export default class Pin extends Component {
     const pinControls = () => {
       switch (mode) {
         case MODES.INPUT:
-          return <DigitalInput listen={() => listen(id, mode, name)} values={values} />;
+          return (
+            <div className="pin__controls">
+              <DigitalInput listen={() => listen(id, mode, name)} values={values} />
+            </div>
+          );
         case MODES.ANALOG:
-          return <AnalogInput listen={() => listen(id, mode, name)} values={values} />;
+          return (
+            <div className="pin__controls">
+              <AnalogInput listen={() => listen(id, mode, name)} values={values} />
+            </div>
+          );
         case MODES.OUTPUT:
-          return <DigitalOutput write={(value) => digitalWrite(id, value)} />;
+          return (
+            <div className="pin__controls">
+              <DigitalOutput write={(value) => digitalWrite(id, value)} />
+            </div>
+          );
         case MODES.PWM:
-          return <AnalogOutput write={(value) => analogWrite(id, value)} />;
+          return (
+            <div className="pin__controls">
+              <AnalogOutput write={(value) => analogWrite(id, value)} />
+            </div>
+          );
         default:
           return <div></div>;
       }
@@ -88,9 +104,7 @@ export default class Pin extends Component {
           Enabled
           {modeSelector}
         </div>
-        <div className="pin__controls">
-          {pinControls(mode)}
-        </div>
+        {pinControls(mode)}
       </div>
     );
   }
