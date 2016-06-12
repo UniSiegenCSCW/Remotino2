@@ -19,6 +19,9 @@ export default {
       test: /\.js$/,
       loader: 'eslint-loader',
       exclude: /node_modules/
+    }, {
+      test: /\.png$/,
+      loader: 'file?name=[path][name].[hash].[ext]'
     }
   ]
   },
