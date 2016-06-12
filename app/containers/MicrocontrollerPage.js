@@ -24,12 +24,14 @@ const getVisiblePins = (inPins, filter) => {
 
 function mapStateToProps(state) {
   return {
-    pins: getVisiblePins(values(state.microcontroller.pins),
+    pins: getVisiblePins(
+              values(state.microcontroller.pins),
               state.microcontroller.visibilityFilter),
     connectionState: state.microcontroller.connectionState,
     mapping: state.microcontroller.mapping,
     name: state.microcontroller.name,
     visibilityFilter: state.microcontroller.visibilityFilter,
+    replay: state.microcontroller.replay,
   };
 }
 
