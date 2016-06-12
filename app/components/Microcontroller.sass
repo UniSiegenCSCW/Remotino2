@@ -30,6 +30,24 @@ $red: #e74c3c
 .button-submit
   @include button($blue)
 
+#main
+  display: flex
+  flex-direction: column
+  height: 100vh
+
+header
+  flex: auto
+
 .pin-list
-  width: 600px
-  margin-left: 2em
+  flex: 100%
+  width: 100%
+  overflow-y: scroll
+
+.replay
+  flex: auto
+  width: 100%
+  border-top: 1px solid gray
+  .controls
+    padding: 1em
+  .link
+    margin-right: 1em

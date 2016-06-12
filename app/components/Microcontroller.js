@@ -1,9 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import Pin from './Pin';
+import Link from './Link';
 import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import spinner from '../static-html/spinner.html';
 import { defaultTo } from 'ramda';
 import styles from './Microcontroller.sass'; // eslint-disable-line no-unused-vars
+import { replayEvents } from '../utils/replayEvents';
+import Timeline from './Timeline';
 
 export default class Microcontroller extends Component {
   static propTypes = {
@@ -14,10 +17,13 @@ export default class Microcontroller extends Component {
     listenToPinChanges: PropTypes.func.isRequired,
     digitalWrite: PropTypes.func.isRequired,
     analogWrite: PropTypes.func.isRequired,
+    startRecording: PropTypes.func.isRequired,
+    stopRecording: PropTypes.func.isRequired,
     pins: PropTypes.array.isRequired,
     connectionState: PropTypes.number.isRequired,
     mapping: PropTypes.object.isRequired,
     visibilityFilter: PropTypes.object.isRequired,
+    replay: PropTypes.object.isRequired,
   };
 
   render() {
@@ -28,11 +34,14 @@ export default class Microcontroller extends Component {
       listenToPinChanges,
       digitalWrite,
       analogWrite,
+      startRecording,
+      stopRecording,
       pins,
       connectionState,
       mapping,
       visibilityFilter,
       setVisibilityFilter,
+      replay,
     } = this.props;
 
     const connectView = (currentState) => {
@@ -114,13 +123,50 @@ export default class Microcontroller extends Component {
       );
     };
 
+    const options = {
+      width: '100%',
+      height: '200px',
+      stack: true,
+      showMajorLabels: true,
+      showCurrentTime: true,
+      zoomMin: 10 * 1000,
+      type: 'background',
+      format: {
+        minorLabels: {
+          minute: 'h:mma',
+          hour: 'ha'
+        }
+      }
+    };
+
+    const items = replay.events.map((event, index) => ({
+      id: index,
+      start: new Date(event.timestamp),
+      content: `Event ${index}`,
+      type: 'point',
+    }));
+
     return (
-      <div>
+      <div id="main">
         <header>
           {connectView(connectionState)}
         </header>
         <div className="pin-list">
           {pins.map(pinView)}
+        </div>
+        <div className="replay">
+          <div className="controls">
+            <Link active={replay.recording} onClick={startRecording}>
+              Record
+            </Link>
+            <Link active={!replay.recording} onClick={stopRecording}>
+              Stop
+            </Link>
+            <Link active={false} onClick={() => replayEvents(replay.events, replay.start)}>
+              Replay
+            </Link>
+          </div>
+          <Timeline options={options} items={items} />
         </div>
       </div>
     );
