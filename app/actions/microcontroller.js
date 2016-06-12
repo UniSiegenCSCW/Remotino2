@@ -172,3 +172,17 @@ export function analogWrite(id, value) {
     replayable: true,
   };
 }
+
+export const START_RECORDING = 'START_RECORDING';
+export function startRecording() {
+  return {
+    type: START_RECORDING,
+    timestamp: timestamp(),
+  };
+}
+export const STOP_RECORDING = 'STOP_RECORDING';
+export function stopRecording() {
+  return {
+    type: STOP_RECORDING,
+  };
+}
