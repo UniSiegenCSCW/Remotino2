@@ -85,25 +85,6 @@ export function connectToBoard() {
   };
 }
 
-export const CHANGE_MODE = 'CHANGE_MODE_PIN';
-export function changeMode(id, mode) {
-  return {
-    type: CHANGE_MODE,
-    id,
-    mode: parseInt(mode, 10),
-    boardIO: () => board.pinMode(id, mode),
-    replayable: true,
-  };
-}
-
-export const START_LISTENING_TO_PIN_CHANGES = 'START_LISTENING_TO_PIN_CHANGES';
-export function startListeningToPinChanges(id) {
-  return {
-    type: START_LISTENING_TO_PIN_CHANGES,
-    id,
-  };
-}
-
 export const PIN_VALUE_CHANGED = 'PIN_VALUE_CHANGED';
 export function pinValueChanged(id, value) {
   return {
@@ -114,21 +95,11 @@ export function pinValueChanged(id, value) {
   };
 }
 
-export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
-export function setVisibilityFilter(property, value) {
+export const START_LISTENING_TO_PIN_CHANGES = 'START_LISTENING_TO_PIN_CHANGES';
+export function startListeningToPinChanges(id) {
   return {
-    type: SET_VISIBILITY_FILTER,
-    property,
-    value,
-  };
-}
-
-export const SET_ENABLED = 'SET_ENABLED';
-export function setEnabled(id, value) {
-  return {
-    type: SET_ENABLED,
+    type: START_LISTENING_TO_PIN_CHANGES,
     id,
-    value,
   };
 }
 
@@ -150,6 +121,53 @@ export function listenToPinChanges(id, mode, name) {
     }
   };
 }
+
+export const CHANGE_MODE = 'CHANGE_MODE';
+export function changeMode(pin, mode) {
+  return (dispatch) => {
+    const pinMode = parseInt(mode, 10);
+
+    console.log(pin);
+    dispatch({
+      type: CHANGE_MODE,
+      id: pin.id,
+      mode: pinMode,
+      boardIO: () => board.pinMode(pin.id, mode),
+      replayable: true,
+    });
+
+    if (pinMode === MODES.ANALOG) {
+      const sensor = new five.Sensor({ pin: pin.analogChannel, freq: 200 });
+      sensor.on('data', function onChange() {
+        dispatch(pinValueChanged(pin.id, this.fscaleTo([0, 100])));
+      });
+    } else if (pinMode === MODES.INPUT) {
+      const sensor = new five.Sensor.Digital({ pin: pin.id, freq: 200 });
+      sensor.on('data', function onChange() {
+        dispatch(pinValueChanged(pin.id, this.value));
+      });
+    }
+  };
+}
+
+export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
+export function setVisibilityFilter(property, value) {
+  return {
+    type: SET_VISIBILITY_FILTER,
+    property,
+    value,
+  };
+}
+
+export const SET_ENABLED = 'SET_ENABLED';
+export function setEnabled(id, value) {
+  return {
+    type: SET_ENABLED,
+    id,
+    value,
+  };
+}
+
 
 export const DIGITAL_WRITE = 'DIGITAL_WRITE';
 export function digitalWrite(id, value) {

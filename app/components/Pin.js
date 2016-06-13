@@ -41,7 +41,7 @@ export default class Pin extends Component {
     const modeSelector = (
       <select
         defaultValue="{defaultMode}"
-        onChange={event => changeMode(id, event.target.value)}
+        onChange={event => changeMode(pin, event.target.value)}
         disabled={supportedModes.length === 0}
       >
         {supportedModes.map((supportedMode) => (

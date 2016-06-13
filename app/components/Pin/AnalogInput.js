@@ -3,15 +3,11 @@ import rd3 from 'rd3';
 
 export default class DigitalInput extends Component {
   static propTypes = {
-    listen: PropTypes.func.isRequired,
     values: PropTypes.array.isRequired,
   };
 
   render() {
-    const {
-      listen,
-      values,
-    } = this.props;
+    const { values } = this.props;
 
     const data = [
       {
@@ -32,7 +28,6 @@ export default class DigitalInput extends Component {
           width: 500,
           height: 200
         }}
-        title="Line Chart"
         xAxisTickValues={[]}
         domain={{ y: [0, 100] }}
         gridHorizontal
@@ -41,9 +36,6 @@ export default class DigitalInput extends Component {
 
     return (
       <div>
-        <span className="btn--blue btn--s px1 mx1" onClick={() => listen()}>
-          Listen
-        </span>
         {chart}
       </div>
     );
