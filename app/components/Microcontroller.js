@@ -19,6 +19,7 @@ export default class Microcontroller extends Component {
     analogWrite: PropTypes.func.isRequired,
     startRecording: PropTypes.func.isRequired,
     stopRecording: PropTypes.func.isRequired,
+    changeRange: PropTypes.func.isRequired,
     pins: PropTypes.array.isRequired,
     connectionState: PropTypes.number.isRequired,
     mapping: PropTypes.object.isRequired,
@@ -36,6 +37,7 @@ export default class Microcontroller extends Component {
       analogWrite,
       startRecording,
       stopRecording,
+      changeRange,
       pins,
       connectionState,
       mapping,
@@ -126,22 +128,11 @@ export default class Microcontroller extends Component {
     const options = {
       width: '100%',
       height: '200px',
-      stack: true,
-      showMajorLabels: true,
-      showCurrentTime: true,
-      zoomMin: 10 * 1000,
-      type: 'background',
-      format: {
-        minorLabels: {
-          minute: 'h:mma',
-          hour: 'ha'
-        }
-      }
     };
 
     const items = replay.events.map((event, index) => ({
       id: index,
-      start: new Date(event.timestamp),
+      start: event.time,
       content: `Event ${index}`,
       type: 'point',
     }));
@@ -162,11 +153,14 @@ export default class Microcontroller extends Component {
             <Link active={!replay.recording} onClick={stopRecording}>
               Stop
             </Link>
-            <Link active={false} onClick={() => replayEvents(replay.events, replay.start)}>
+            <Link
+              active={false}
+              onClick={() => replayEvents(replay.events, replay.start, replay.end)}
+            >
               Replay
             </Link>
           </div>
-          <Timeline options={options} items={items} />
+          <Timeline options={options} items={items} rangechangeHandler={changeRange} />
         </div>
       </div>
     );

@@ -1,17 +1,21 @@
-export function replayEvents(events, currentTime) {
+export function replayEvents(events, start, end) {
   const head = events[0];
   const tail = events.slice(1);
+
+  console.log(events);
+  console.log(start);
+  console.log(end);
 
   // Exit condition, no events
   if (head === undefined) return;
 
-  if (head.timestamp > currentTime) {
-    const delay = head.timestamp - currentTime;
+  if (head.time > start && head.time < end) {
+    const delay = head.time - start;
     setTimeout(() => {
       head.replay();
-      replayEvents(tail, head.timestamp);
+      replayEvents(tail, head.time);
     }, delay);
   } else {
-    replayEvents(tail, currentTime);
+    replayEvents(tail, start);
   }
 }

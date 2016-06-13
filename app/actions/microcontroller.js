@@ -180,9 +180,19 @@ export function startRecording() {
     timestamp: timestamp(),
   };
 }
+
 export const STOP_RECORDING = 'STOP_RECORDING';
 export function stopRecording() {
   return {
     type: STOP_RECORDING,
+  };
+}
+
+export const CHANGE_RANGE = 'CHANGE_RANGE';
+export function changeRange(range) {
+  return {
+    type: CHANGE_RANGE,
+    start: range.start,
+    end: range.end,
   };
 }
