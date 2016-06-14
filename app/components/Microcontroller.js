@@ -4,7 +4,7 @@ import Link from './Link';
 import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import spinner from '../static-html/spinner.html';
 import { defaultTo } from 'ramda';
-import styles from './Microcontroller.sass'; // eslint-disable-line no-unused-vars
+import './Microcontroller.sass';
 import { replayEvents } from '../utils/replayEvents';
 import Timeline from '../containers/Timeline';
 import { getNested } from '../utils/utils';
