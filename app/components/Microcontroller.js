@@ -6,7 +6,7 @@ import spinner from '../static-html/spinner.html';
 import { defaultTo } from 'ramda';
 import styles from './Microcontroller.sass'; // eslint-disable-line no-unused-vars
 import { replayEvents } from '../utils/replayEvents';
-import Timeline from './Timeline';
+import Timeline from '../containers/Timeline';
 
 export default class Microcontroller extends Component {
   static propTypes = {
@@ -18,7 +18,6 @@ export default class Microcontroller extends Component {
     analogWrite: PropTypes.func.isRequired,
     startRecording: PropTypes.func.isRequired,
     stopRecording: PropTypes.func.isRequired,
-    changeRange: PropTypes.func.isRequired,
     pins: PropTypes.array.isRequired,
     connectionState: PropTypes.number.isRequired,
     mapping: PropTypes.object.isRequired,
@@ -35,7 +34,6 @@ export default class Microcontroller extends Component {
       analogWrite,
       startRecording,
       stopRecording,
-      changeRange,
       pins,
       connectionState,
       mapping,
@@ -122,20 +120,6 @@ export default class Microcontroller extends Component {
       );
     };
 
-    const options = {
-      width: '100%',
-      height: '200px',
-      start: replay.start,
-      end: replay.end,
-    };
-
-    const items = replay.events.map((event, index) => ({
-      id: index,
-      start: event.time,
-      content: event.description,
-      type: 'point',
-    }));
-
     return (
       <div id="main">
         <header>
@@ -159,7 +143,7 @@ export default class Microcontroller extends Component {
               Replay
             </Link>
           </div>
-          <Timeline options={options} items={items} rangechangeHandler={changeRange} />
+          <Timeline />
         </div>
       </div>
     );

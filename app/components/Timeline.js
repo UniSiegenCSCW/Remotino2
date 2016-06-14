@@ -3,29 +3,13 @@
 import vis from 'vis';
 import React, { Component, PropTypes } from 'react';
 
-const events = [
-  'currentTimeTick',
-  'click',
-  'contextmenu',
-  'doubleClick',
-  'groupDragged',
-  'changed',
-  'rangechange',
-  'rangechanged',
-  'select',
-  'timechange',
-  'timechanged'
-];
-
 const eventPropTypes = {};
 const eventDefaultProps = {};
 
-events.forEach(event => {
-  eventPropTypes[event] = PropTypes.func;
-  eventDefaultProps[`${event}Handler`] = () => {};
-});
-
 export default class Timeline extends Component {
+  static propTypes = {
+    changeRange: PropTypes.func.isRequired,
+  };
 
   componentWillMount() {
     this.state = {};
@@ -59,7 +43,7 @@ export default class Timeline extends Component {
     const { container } = this.refs;
     let $el = this.TimelineElement;
 
-    const { items, options } = this.props;
+    const { items, options, changeRange } = this.props;
 
     const timelineItems = new vis.DataSet(items);
 
@@ -69,9 +53,7 @@ export default class Timeline extends Component {
     } else {
       $el = this.TimelineElement = new vis.Timeline(container, timelineItems, options);
 
-      events.forEach(event => {
-        $el.on(event, this.props[`${event}Handler`]);
-      });
+      $el.on('rangechanged', changeRange);
     }
   }
 
