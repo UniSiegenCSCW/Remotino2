@@ -76,7 +76,12 @@ export default class Timeline extends Component {
   }
 
   render() {
-    return <div ref="container" />;
+    return (
+      <div>
+        <a className="link" onClick={() => this.TimelineElement.fit()}>Snap</a>
+        <div ref="container" />
+      </div>
+    );
   }
 }
 

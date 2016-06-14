@@ -1,6 +1,6 @@
 import * as five from 'johnny-five';
 import { forEach, keys, mapObjIndexed, length, invertObj, has, contains } from 'ramda';
-import { MODES } from '../reducers/microcontrollerEnums';
+import { MODES, MODE_NAMES } from '../reducers/microcontrollerEnums';
 import { identify } from '../utils/boards';
 import { timestamp } from '../utils/utils';
 
@@ -104,7 +104,7 @@ export function startListeningToPinChanges(id) {
 }
 
 export const CHANGE_MODE = 'CHANGE_MODE';
-export function changeMode(pin, mode) {
+export function changeMode(pin, mode, name) {
   return (dispatch) => {
     const pinMode = parseInt(mode, 10);
 
@@ -114,6 +114,7 @@ export function changeMode(pin, mode) {
       mode: pinMode,
       boardIO: () => board.pinMode(pin.id, mode),
       replayable: true,
+      description: `${name}: Mode = ${MODE_NAMES[mode]}`
     });
 
     if (pinMode === MODES.ANALOG) {
@@ -150,24 +151,26 @@ export function setEnabled(id, value) {
 
 
 export const DIGITAL_WRITE = 'DIGITAL_WRITE';
-export function digitalWrite(id, value) {
+export function digitalWrite(id, value, name) {
   const pinId = parseInt(id, 10);
 
   return {
     type: DIGITAL_WRITE,
     boardIO: () => board.digitalWrite(pinId, value),
     replayable: true,
+    description: `${name}: Digital write ${value}`
   };
 }
 
 export const ANALOG_WRITE = 'ANALOG_WRITE';
-export function analogWrite(id, value) {
+export function analogWrite(id, value, name) {
   const pinId = parseInt(id, 10);
 
   return {
     type: ANALOG_WRITE,
     boardIO: () => board.analogWrite(pinId, value),
     replayable: true,
+    description: `${name}: Analog write ${value}`
   };
 }
 

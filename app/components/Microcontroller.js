@@ -125,12 +125,14 @@ export default class Microcontroller extends Component {
     const options = {
       width: '100%',
       height: '200px',
+      start: replay.start,
+      end: replay.end,
     };
 
     const items = replay.events.map((event, index) => ({
       id: index,
       start: event.time,
-      content: `Event ${index}`,
+      content: event.description,
       type: 'point',
     }));
 

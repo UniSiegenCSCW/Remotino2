@@ -39,7 +39,7 @@ export default class Pin extends Component {
     const modeSelector = (
       <select
         defaultValue="{defaultMode}"
-        onChange={event => changeMode(pin, event.target.value)}
+        onChange={event => changeMode(pin, event.target.value, name)}
         disabled={supportedModes.length === 0}
       >
         {supportedModes.map((supportedMode) => (
@@ -70,13 +70,13 @@ export default class Pin extends Component {
         case MODES.OUTPUT:
           return (
             <div className="pin__controls">
-              <DigitalOutput write={(value) => digitalWrite(id, value)} />
+              <DigitalOutput write={(value) => digitalWrite(id, value, name)} />
             </div>
           );
         case MODES.PWM:
           return (
             <div className="pin__controls">
-              <AnalogOutput write={(value) => analogWrite(id, value)} />
+              <AnalogOutput write={(value) => analogWrite(id, value, name)} />
             </div>
           );
         default:

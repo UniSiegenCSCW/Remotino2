@@ -2,10 +2,6 @@ export function replayEvents(events, start, end) {
   const head = events[0];
   const tail = events.slice(1);
 
-  console.log(events);
-  console.log(start);
-  console.log(end);
-
   // Exit condition, no events
   if (head === undefined) return;
 
@@ -13,9 +9,9 @@ export function replayEvents(events, start, end) {
     const delay = head.time - start;
     setTimeout(() => {
       head.replay();
-      replayEvents(tail, head.time);
+      replayEvents(tail, head.time, end);
     }, delay);
   } else {
-    replayEvents(tail, start);
+    replayEvents(tail, start, end);
   }
 }
