@@ -1,22 +1,16 @@
 import React, { Component, PropTypes } from 'react';
-import Pin from './Pin';
+import Pin from '../containers/Pin';
 import Link from './Link';
 import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import spinner from '../static-html/spinner.html';
-import { defaultTo } from 'ramda';
 import './Microcontroller.sass';
 import { replayEvents } from '../utils/replayEvents';
 import Timeline from '../containers/Timeline';
-import { getNested } from '../utils/utils';
 
 export default class Microcontroller extends Component {
   static propTypes = {
-    changeMode: PropTypes.func.isRequired,
-    setEnabled: PropTypes.func.isRequired,
     connectToBoard: PropTypes.func.isRequired,
     setVisibilityFilter: PropTypes.func.isRequired,
-    digitalWrite: PropTypes.func.isRequired,
-    analogWrite: PropTypes.func.isRequired,
     startRecording: PropTypes.func.isRequired,
     stopRecording: PropTypes.func.isRequired,
     pins: PropTypes.array.isRequired,
@@ -28,11 +22,7 @@ export default class Microcontroller extends Component {
 
   render() {
     const {
-      changeMode,
-      setEnabled,
       connectToBoard,
-      digitalWrite,
-      analogWrite,
       startRecording,
       stopRecording,
       pins,
@@ -100,31 +90,13 @@ export default class Microcontroller extends Component {
       }
     };
 
-    const pinView = (pin) => {
-      const pinName = defaultTo(`Pin ${pin.id}`, getNested(mapping, ['pins', pin.id, 'name']));
-      const tags = defaultTo([], getNested(mapping, ['pins', pin.id, 'categories']));
-      return (
-        <Pin
-          key={pin.id}
-          values={pin.values}
-          name={pinName}
-          tags={tags}
-          changeMode={changeMode}
-          setEnabled={setEnabled}
-          digitalWrite={digitalWrite}
-          analogWrite={analogWrite}
-          pin={pin}
-        />
-      );
-    };
-
     return (
       <div id="main">
         <header>
           {connectView(connectionState)}
         </header>
         <div className="pin-list">
-          {pins.map(pinView)}
+          {pins.map((pin) => <Pin key={pin.id} pin={pin} />)}
         </div>
         <div className="replay">
           <div className="controls">
