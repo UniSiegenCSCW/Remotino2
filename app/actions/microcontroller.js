@@ -108,7 +108,6 @@ export function changeMode(pin, mode) {
   return (dispatch) => {
     const pinMode = parseInt(mode, 10);
 
-    console.log(pin);
     dispatch({
       type: CHANGE_MODE,
       id: pin.id,
