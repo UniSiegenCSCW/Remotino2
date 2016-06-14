@@ -7,6 +7,7 @@ import { defaultTo } from 'ramda';
 import styles from './Microcontroller.sass'; // eslint-disable-line no-unused-vars
 import { replayEvents } from '../utils/replayEvents';
 import Timeline from '../containers/Timeline';
+import { getNested } from '../utils/utils';
 
 export default class Microcontroller extends Component {
   static propTypes = {
@@ -100,11 +101,8 @@ export default class Microcontroller extends Component {
     };
 
     const pinView = (pin) => {
-      // TODO: Fix me
-      const pinName = defaultTo(`Pin ${pin.id}`,
-          mapping && mapping.pins && mapping.pins[pin.id] && mapping.pins[pin.id].name);
-      const tags = defaultTo([],
-          mapping && mapping.pins && mapping.pins[pin.id] && mapping.pins[pin.id].categories);
+      const pinName = defaultTo(`Pin ${pin.id}`, getNested(mapping, ['pins', pin.id, 'name']));
+      const tags = defaultTo([], getNested(mapping, ['pins', pin.id, 'categories']));
       return (
         <Pin
           key={pin.id}
