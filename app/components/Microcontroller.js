@@ -14,7 +14,6 @@ export default class Microcontroller extends Component {
     setEnabled: PropTypes.func.isRequired,
     connectToBoard: PropTypes.func.isRequired,
     setVisibilityFilter: PropTypes.func.isRequired,
-    listenToPinChanges: PropTypes.func.isRequired,
     digitalWrite: PropTypes.func.isRequired,
     analogWrite: PropTypes.func.isRequired,
     startRecording: PropTypes.func.isRequired,
@@ -32,7 +31,6 @@ export default class Microcontroller extends Component {
       changeMode,
       setEnabled,
       connectToBoard,
-      listenToPinChanges,
       digitalWrite,
       analogWrite,
       startRecording,
@@ -120,7 +118,6 @@ export default class Microcontroller extends Component {
           digitalWrite={digitalWrite}
           analogWrite={analogWrite}
           pin={pin}
-          listen={listenToPinChanges}
         />
       );
     };
