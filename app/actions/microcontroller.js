@@ -5,6 +5,7 @@ import { identify } from '../utils/boards';
 import { timestamp } from '../utils/utils';
 
 let board;
+const sensors = {};
 
 export const UPDATE_PIN = 'UPDATE_PIN';
 export function updatePin(id, mode, value, report, analogChannel, supportedModes, isHWSerialPort,
@@ -117,16 +118,26 @@ export function changeMode(pin, mode, name) {
       description: `${name}: Mode = ${MODE_NAMES[mode]}`
     });
 
+
+    // Disable the old listener
+    if (sensors[pin.id]) {
+      sensors[pin.id].disable();
+    }
+
     if (pinMode === MODES.ANALOG) {
       const sensor = new five.Sensor({ pin: pin.analogChannel, freq: 200 });
       sensor.on('data', function onChange() {
         dispatch(pinValueChanged(pin.id, this.fscaleTo([0, 100])));
       });
+
+      sensors[pin.id] = sensor;
     } else if (pinMode === MODES.INPUT) {
       const sensor = new five.Sensor.Digital({ pin: pin.id, freq: 200 });
       sensor.on('data', function onChange() {
         dispatch(pinValueChanged(pin.id, this.value));
       });
+
+      sensors[pin.id] = sensor;
     }
   };
 }
