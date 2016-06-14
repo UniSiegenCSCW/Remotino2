@@ -14,7 +14,6 @@ export default class Pin extends Component {
     pin: PropTypes.object.isRequired,
     changeMode: PropTypes.func.isRequired,
     setEnabled: PropTypes.func.isRequired,
-    listen: PropTypes.func.isRequired,
     digitalWrite: PropTypes.func.isRequired,
     analogWrite: PropTypes.func.isRequired,
   };
@@ -23,7 +22,6 @@ export default class Pin extends Component {
     const {
       changeMode,
       setEnabled,
-      listen,
       digitalWrite,
       analogWrite,
       pin,
@@ -60,13 +58,13 @@ export default class Pin extends Component {
         case MODES.INPUT:
           return (
             <div className="pin__controls">
-              <DigitalInput listen={() => listen(id, mode, name)} values={values} />
+              <DigitalInput values={values} />
             </div>
           );
         case MODES.ANALOG:
           return (
             <div className="pin__controls">
-              <AnalogInput listen={() => listen(id, mode, name)} values={values} />
+              <AnalogInput values={values} />
             </div>
           );
         case MODES.OUTPUT:
