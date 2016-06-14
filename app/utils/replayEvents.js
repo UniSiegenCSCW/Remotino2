@@ -1,6 +1,5 @@
 export function replayEvents(events, start, end) {
-  const head = events[0];
-  const tail = events.slice(1);
+  const [head, ...tail] = events;
 
   // Exit condition, no events
   if (head === undefined) return;
