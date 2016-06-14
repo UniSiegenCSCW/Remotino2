@@ -1,36 +1,29 @@
 import React, { Component, PropTypes } from 'react';
 import Pin from '../containers/Pin';
-import Link from './Link';
 import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import spinner from '../static-html/spinner.html';
 import './Microcontroller.sass';
-import { replayEvents } from '../utils/replayEvents';
 import Timeline from '../containers/Timeline';
+import ReplayControls from '../containers/ReplayControls';
 
 export default class Microcontroller extends Component {
   static propTypes = {
     connectToBoard: PropTypes.func.isRequired,
     setVisibilityFilter: PropTypes.func.isRequired,
-    startRecording: PropTypes.func.isRequired,
-    stopRecording: PropTypes.func.isRequired,
     pins: PropTypes.array.isRequired,
     connectionState: PropTypes.number.isRequired,
     mapping: PropTypes.object.isRequired,
     visibilityFilter: PropTypes.object.isRequired,
-    replay: PropTypes.object.isRequired,
   };
 
   render() {
     const {
       connectToBoard,
-      startRecording,
-      stopRecording,
       pins,
       connectionState,
       mapping,
       visibilityFilter,
       setVisibilityFilter,
-      replay,
     } = this.props;
 
     const connectView = (currentState) => {
@@ -99,20 +92,7 @@ export default class Microcontroller extends Component {
           {pins.map((pin) => <Pin key={pin.id} pin={pin} />)}
         </div>
         <div className="replay">
-          <div className="controls">
-            <Link active={replay.recording} onClick={startRecording}>
-              Record
-            </Link>
-            <Link active={!replay.recording} onClick={stopRecording}>
-              Stop
-            </Link>
-            <Link
-              active={false}
-              onClick={() => replayEvents(replay.events, replay.start, replay.end)}
-            >
-              Replay
-            </Link>
-          </div>
+          <ReplayControls />
           <Timeline />
         </div>
       </div>
