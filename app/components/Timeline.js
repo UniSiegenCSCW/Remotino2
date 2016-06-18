@@ -9,6 +9,7 @@ export default class Timeline extends Component {
   static propTypes = {
     changeRange: PropTypes.func.isRequired,
     removeItem: PropTypes.func.isRequired,
+    moveItem: PropTypes.func.isRequired,
   };
 
   componentWillMount() {
@@ -43,10 +44,16 @@ export default class Timeline extends Component {
     const { container } = this.refs;
     let $el = this.TimelineElement;
 
-    const { items, changeRange, removeItem } = this.props;
+    const {
+      items,
+      options,
+      changeRange,
+      removeItem,
+      moveItem,
+    } = this.props;
     const timelineItems = new vis.DataSet(items);
 
-    const options = {
+    const fullOptions = Object.assign({
       editable: {
         add: false,
         updateTime: true,
@@ -56,11 +63,15 @@ export default class Timeline extends Component {
       onRemove: (item, callback) => {
         removeItem(item.id);
         callback(null);
+      },
+      onMove: (item, callback) => {
+        moveItem(item.id, item.start);
+        callback(null);
       }
-    };
+    }, options);
 
     if (!!$el) {
-      $el.setOptions(options);
+      $el.setOptions(fullOptions);
       $el.setItems(timelineItems);
     } else {
       $el = this.TimelineElement = new vis.Timeline(container, timelineItems, options);

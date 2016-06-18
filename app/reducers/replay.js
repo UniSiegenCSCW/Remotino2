@@ -3,9 +3,11 @@ import {
   STOP_RECORDING,
   CHANGE_RANGE,
   REMOVE_ITEM,
+  MOVE_ITEM,
 } from '../actions/microcontroller';
 import { ADD_REPLAY_EVENT } from '../store/replayMiddleware';
 import update from 'react/lib/update';
+import R from 'ramda';
 
 const replay = (state = { recording: false, events: [], start: 0, end: 0 }, action) => {
   switch (action.type) {
@@ -30,7 +32,15 @@ const replay = (state = { recording: false, events: [], start: 0, end: 0 }, acti
       });
     case REMOVE_ITEM:
       return update(state, {
-        events: { $splice: [[action.index, 1]] },
+        events: { $apply: R.remove(action.id, 1) },
+      });
+    case MOVE_ITEM:
+      return update(state, {
+        events: {
+          $apply: R.update(
+              action.id,
+              update(state.events[action.id], { time: { $set: action.time } })
+          ) },
       });
     default:
       return state;

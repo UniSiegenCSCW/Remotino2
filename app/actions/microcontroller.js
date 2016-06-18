@@ -216,3 +216,12 @@ export function removeItem(id) {
     id,
   };
 }
+
+export const MOVE_ITEM = 'MOVE_ITEM';
+export function moveItem(id, time) {
+  return {
+    type: MOVE_ITEM,
+    id,
+    time,
+  };
+}
