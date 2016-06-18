@@ -4,11 +4,11 @@ import vis from 'vis';
 import React, { Component, PropTypes } from 'react';
 
 const eventPropTypes = {};
-const eventDefaultProps = {};
 
 export default class Timeline extends Component {
   static propTypes = {
     changeRange: PropTypes.func.isRequired,
+    removeItem: PropTypes.func.isRequired,
   };
 
   componentWillMount() {
@@ -43,9 +43,21 @@ export default class Timeline extends Component {
     const { container } = this.refs;
     let $el = this.TimelineElement;
 
-    const { items, options, changeRange } = this.props;
-
+    const { items, changeRange, removeItem } = this.props;
     const timelineItems = new vis.DataSet(items);
+
+    const options = {
+      editable: {
+        add: false,
+        updateTime: true,
+        updateGroup: false,
+        remove: true
+      },
+      onRemove: (item, callback) => {
+        removeItem(item.id);
+        callback(null);
+      }
+    };
 
     if (!!$el) {
       $el.setOptions(options);
@@ -71,9 +83,3 @@ Timeline.propTypes = Object.assign({
   items: PropTypes.array,
   options: PropTypes.object,
 }, eventPropTypes);
-
-Timeline.defaultProps = Object.assign({
-  items: [],
-  options: {},
-  customTimes: {},
-}, eventDefaultProps);

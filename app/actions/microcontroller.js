@@ -208,3 +208,11 @@ export function changeRange(range) {
     end: range.end,
   };
 }
+
+export const REMOVE_ITEM = 'REMOVE_ITEM';
+export function removeItem(id) {
+  return {
+    type: REMOVE_ITEM,
+    id,
+  };
+}

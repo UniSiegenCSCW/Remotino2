@@ -2,6 +2,7 @@ import {
   START_RECORDING,
   STOP_RECORDING,
   CHANGE_RANGE,
+  REMOVE_ITEM,
 } from '../actions/microcontroller';
 import { ADD_REPLAY_EVENT } from '../store/replayMiddleware';
 import update from 'react/lib/update';
@@ -26,6 +27,10 @@ const replay = (state = { recording: false, events: [], start: 0, end: 0 }, acti
       return update(state, {
         start: { $set: action.start },
         end: { $set: action.end },
+      });
+    case REMOVE_ITEM:
+      return update(state, {
+        events: { $splice: [[action.index, 1]] },
       });
     default:
       return state;
