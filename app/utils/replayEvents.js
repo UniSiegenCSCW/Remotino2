@@ -4,7 +4,7 @@ export function replayEvents(events, start, end) {
   // Exit condition, no events
   if (head === undefined) return;
 
-  if (head.time > start && head.time < end) {
+  if (head.time >= start && head.time <= end) {
     const delay = head.time - start;
     setTimeout(() => {
       head.replay();
