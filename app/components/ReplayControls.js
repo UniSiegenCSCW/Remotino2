@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { replayEvents } from '../utils/replayEvents';
 import Link from './Link';
+import FontAwesome from 'react-fontawesome';
 
 export default class ReplayControls extends Component {
   static propTypes = {
@@ -16,19 +17,30 @@ export default class ReplayControls extends Component {
       replay,
     } = this.props;
 
+    const button = () => {
+      if (!replay.recording) {
+        return (
+          <Link active={false} onClick={startRecording}>
+            <FontAwesome name="circle" /> Record
+          </Link>
+        );
+      } else {
+        return (
+          <Link active={false} onClick={stopRecording}>
+            <FontAwesome name="stop" /> Stop
+          </Link>
+        );
+      }
+    };
+
     return (
-      <div className="controls">
-        <Link active={replay.recording} onClick={startRecording}>
-          Record
-        </Link>
-        <Link active={!replay.recording} onClick={stopRecording}>
-          Stop
-        </Link>
+      <div className="replay-controls">
+        {button()}
         <Link
           active={false}
           onClick={() => replayEvents(replay.events, replay.start, replay.end)}
         >
-          Replay
+          <FontAwesome name="play" /> Replay
         </Link>
       </div>
     );

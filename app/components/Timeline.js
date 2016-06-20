@@ -2,6 +2,9 @@
 
 import vis from 'vis';
 import React, { Component, PropTypes } from 'react';
+import ReplayControls from '../containers/ReplayControls';
+import Link from './Link';
+import FontAwesome from 'react-fontawesome';
 
 const eventPropTypes = {};
 
@@ -83,7 +86,14 @@ export default class Timeline extends Component {
   render() {
     return (
       <div>
-        <a className="link" onClick={() => this.TimelineElement.fit()}>Snap</a>
+        <div className="controls">
+          <ReplayControls />
+          <div className="timeline-controls">
+            <Link active={false} onClick={() => { this.TimelineElement.fit(); }}>
+              <FontAwesome name="arrows-h" /> Focus recorded events
+            </Link>
+          </div>
+        </div>
         <div ref="container" />
       </div>
     );

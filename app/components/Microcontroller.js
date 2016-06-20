@@ -4,7 +4,6 @@ import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import spinner from '../static-html/spinner.html';
 import './Microcontroller.sass';
 import Timeline from '../containers/Timeline';
-import ReplayControls from '../containers/ReplayControls';
 
 export default class Microcontroller extends Component {
   static propTypes = {
@@ -92,7 +91,6 @@ export default class Microcontroller extends Component {
           {pins.map((pin) => <Pin key={pin.id} pin={pin} />)}
         </div>
         <div className="replay">
-          <ReplayControls />
           <Timeline />
         </div>
       </div>
