@@ -8,40 +8,57 @@ export default class ReplayControls extends Component {
     replay: PropTypes.object.isRequired,
     startRecording: PropTypes.func.isRequired,
     stopRecording: PropTypes.func.isRequired,
+    startReplay: PropTypes.func.isRequired,
+    stopReplay: PropTypes.func.isRequired,
   };
 
   render() {
     const {
       startRecording,
       stopRecording,
+      startReplay,
+      stopReplay,
       replay,
     } = this.props;
 
-    const button = () => {
-      if (!replay.recording) {
-        return (
-          <Link active={false} onClick={startRecording}>
-            <FontAwesome name="circle" /> Record
-          </Link>
-        );
-      } else {
-        return (
-          <Link active={false} onClick={stopRecording}>
-            <FontAwesome name="stop" /> Stop
-          </Link>
-        );
-      }
+    const recordButton = () => (
+      !replay.recording ?
+        <Link active={false} onClick={startRecording}>
+          <FontAwesome name="circle" /> Record
+        </Link> :
+        <Link active={false} onClick={stopRecording}>
+          <FontAwesome name="stop" /> Stop
+        </Link>
+    );
+
+    const startReplayWrapper = () => {
+      const time = replay.end - replay.start;
+      const fn = () => replayEvents(replay.events, replay.start, replay.end);
+      fn();
+      this.loop = setInterval(fn, time);
+      startReplay();
     };
+
+    const stopReplayWrapper = () => {
+      clearInterval(this.loop);
+      this.playing = false;
+      stopReplay();
+    };
+
+    const replayButton = () => (
+      !replay.playing ?
+        <Link active={false} onClick={startReplayWrapper} >
+          <FontAwesome name="play" /> Replay
+        </Link> :
+        <Link active={false} onClick={stopReplayWrapper} >
+          <FontAwesome name="pause" /> Pause
+        </Link>
+    );
 
     return (
       <div className="replay-controls">
-        {button()}
-        <Link
-          active={false}
-          onClick={() => replayEvents(replay.events, replay.start, replay.end)}
-        >
-          <FontAwesome name="play" /> Replay
-        </Link>
+        {recordButton()}
+        {replayButton()}
       </div>
     );
   }

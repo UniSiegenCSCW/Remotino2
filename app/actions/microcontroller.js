@@ -195,9 +195,17 @@ export function startRecording() {
 
 export const STOP_RECORDING = 'STOP_RECORDING';
 export function stopRecording() {
-  return {
-    type: STOP_RECORDING,
-  };
+  return { type: STOP_RECORDING };
+}
+
+export const START_REPLAY = 'START_REPLAY';
+export function startReplay() {
+  return { type: START_REPLAY };
+}
+
+export const STOP_REPLAY = 'STOP_REPLAY';
+export function stopReplay() {
+  return { type: STOP_REPLAY };
 }
 
 export const CHANGE_RANGE = 'CHANGE_RANGE';
