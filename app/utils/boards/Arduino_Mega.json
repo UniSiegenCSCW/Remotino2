@@ -97,16 +97,54 @@
         "PWM"
       ]
     },
+    "14": {
+      "name": "TX3",
+      "categories": [
+        "Serial"
+      ]
+    },
+    "15": {
+      "name": "RX3",
+      "categories": [
+        "Serial"
+      ]
+    },
+    "16": {
+      "name": "TX2",
+      "categories": [
+        "Serial"
+      ]
+    },
+    "17": {
+      "name": "RX3",
+      "categories": [
+        "Serial"
+      ]
+    },
+    "18": {
+      "name": "TX1",
+      "categories": [
+        "Serial"
+      ]
+    },
+    "19": {
+      "name": "RX1",
+      "categories": [
+        "Serial"
+      ]
+    },
     "20": {
       "name": "D20",
       "categories": [
-        "Digital"
+        "Digital",
+        "SDA"
       ]
     },
     "21": {
       "name": "D21",
       "categories": [
-        "Digital"
+        "Digital",
+        "SCL"
       ]
     },
     "22": {
