@@ -1,5 +1,10 @@
+import {
+  CHANGE_MODE,
+  ANALOG_WRITE,
+  DIGITAL_WRITE,
+} from '../actions/microcontroller';
+
 import React, { Component, PropTypes } from 'react';
-import { replayEvents } from '../utils/replayEvents';
 import Link from './Link';
 import FontAwesome from 'react-fontawesome';
 
@@ -10,6 +15,9 @@ export default class ReplayControls extends Component {
     stopRecording: PropTypes.func.isRequired,
     startReplay: PropTypes.func.isRequired,
     stopReplay: PropTypes.func.isRequired,
+    analogWrite: PropTypes.func.isRequired,
+    digitalWrite: PropTypes.func.isRequired,
+    changeMode: PropTypes.func.isRequired,
   };
 
   render() {
@@ -19,7 +27,43 @@ export default class ReplayControls extends Component {
       startReplay,
       stopReplay,
       replay,
+      digitalWrite,
+      analogWrite,
+      changeMode,
     } = this.props;
+
+    const replayEvent = (event) => {
+      switch (event.type) {
+        case DIGITAL_WRITE:
+          digitalWrite(event.id, event.value);
+          break;
+        case ANALOG_WRITE:
+          analogWrite(event.id, event.value);
+          break;
+        case CHANGE_MODE:
+          changeMode(event.pin, event.mode);
+          break;
+        default:
+          break;
+      }
+    };
+
+    const replayEvents = (events, start, end) => {
+      const [head, ...tail] = events;
+
+      // Exit condition, no events
+      if (head === undefined) return;
+
+      if (head.time >= start && head.time <= end) {
+        const delay = head.time - start;
+        setTimeout(() => {
+          replayEvent(head.replay);
+          replayEvents(tail, head.time, end);
+        }, delay);
+      } else {
+        replayEvents(tail, start, end);
+      }
+    };
 
     const recordButton = () => (
       !replay.recording ?
@@ -54,6 +98,7 @@ export default class ReplayControls extends Component {
           <FontAwesome name="pause" /> Pause
         </Link>
     );
+
 
     return (
       <div className="replay-controls">

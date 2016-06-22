@@ -7,6 +7,16 @@ import { timestamp } from '../utils/utils';
 let board;
 const sensors = {};
 
+export const ADD_REPLAY_EVENT = 'ADD_REPLAY_EVENT';
+export function addReplayEvent(replay, description, time = new Date()) {
+  return {
+    type: ADD_REPLAY_EVENT,
+    replay,
+    description,
+    time,
+  };
+}
+
 export const UPDATE_PIN = 'UPDATE_PIN';
 export function updatePin(id, mode, value, report, analogChannel, supportedModes, isHWSerialPort,
                           isSWSerialPort, isAnalogPin) {
@@ -109,16 +119,16 @@ export const CHANGE_MODE = 'CHANGE_MODE';
 export function changeMode(pin, mode) {
   return (dispatch) => {
     const pinMode = parseInt(mode, 10);
+    board.pinMode(pin.id, mode);
 
     dispatch({
       type: CHANGE_MODE,
       id: pin.id,
       mode: pinMode,
-      boardIO: () => board.pinMode(pin.id, mode),
-      replayable: true,
-      description: `${pin.name}: Mode = ${MODE_NAMES[mode]}`
     });
 
+    dispatch(addReplayEvent({ type: CHANGE_MODE, pin, mode },
+                            `${pin.name}: Mode = ${MODE_NAMES[mode]}`));
 
     // Disable the old listener
     if (sensors[pin.id]) {
@@ -161,29 +171,22 @@ export function setEnabled(id, value) {
   };
 }
 
-
 export const DIGITAL_WRITE = 'DIGITAL_WRITE';
 export function digitalWrite(id, value, name) {
   const pinId = parseInt(id, 10);
+  board.digitalWrite(pinId, value);
 
-  return {
-    type: DIGITAL_WRITE,
-    boardIO: () => board.digitalWrite(pinId, value),
-    replayable: true,
-    description: `${name}: Digital write ${value}`
-  };
+  return addReplayEvent({ type: DIGITAL_WRITE, id, value },
+                        `${name}: Digital write ${value}`);
 }
 
 export const ANALOG_WRITE = 'ANALOG_WRITE';
 export function analogWrite(id, value, name) {
   const pinId = parseInt(id, 10);
+  board.analogWrite(pinId, value);
 
-  return {
-    type: ANALOG_WRITE,
-    boardIO: () => board.analogWrite(pinId, value),
-    replayable: true,
-    description: `${name}: Analog write ${value}`
-  };
+  return addReplayEvent({ type: ANALOG_WRITE, id, value },
+                        `${name}: Analog write ${value}`);
 }
 
 export const START_RECORDING = 'START_RECORDING';

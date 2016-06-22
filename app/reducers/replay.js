@@ -6,8 +6,9 @@ import {
   CHANGE_RANGE,
   REMOVE_ITEM,
   MOVE_ITEM,
+  ADD_REPLAY_EVENT,
 } from '../actions/microcontroller';
-import { ADD_REPLAY_EVENT } from '../store/replayMiddleware';
+
 import update from 'react/lib/update';
 import R from 'ramda';
 
