@@ -107,6 +107,7 @@
     "electron-debug": "^0.6.0",
     "font-awesome": "^4.6.1",
     "johnny-five": "rwaldron/johnny-five",
+    "jsonfile": "^2.3.1",
     "postcss": "^5.0.19",
     "ramda": "^0.21.0",
     "rd3": "^0.6.3",

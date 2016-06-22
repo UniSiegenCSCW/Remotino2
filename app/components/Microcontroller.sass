@@ -2,13 +2,17 @@ header
   background: #ecf0f1
   p
     margin: 0
-  .header--connection
-    display: inline-block
-    padding: 1.5em
-    font-weight: bold
-  .header--filter
-    display: inline-block
-    padding: 1.5em
+  flex: auto
+  padding: 1.5em
+  display: flex
+  .header-left
+    flex: 1
+    .header--connection
+      display: inline-block
+      font-weight: bold
+      margin-right: 1em
+    .header--filter
+      display: inline-block
 
 $blue: #3498db
 $green: #2ecc71
@@ -35,9 +39,6 @@ $red: #e74c3c
   flex-direction: column
   height: 100vh
 
-header
-  flex: auto
-
 .pin-list
   flex: 100%
   width: 100%
@@ -52,7 +53,8 @@ header
     display: flex
     .replay-controls
       flex: 1
-  .link
-    margin-right: 1em
-    &:last-child
-      margin-right: 0em
+
+.link
+  margin-right: 1em
+  &:last-child
+    margin-right: 0em

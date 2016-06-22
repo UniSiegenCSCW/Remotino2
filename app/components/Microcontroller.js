@@ -4,25 +4,34 @@ import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import spinner from '../static-html/spinner.html';
 import './Microcontroller.sass';
 import Timeline from '../containers/Timeline';
+import Link from '../components/Link';
+import { map, pick } from 'ramda';
+import FontAwesome from 'react-fontawesome';
+
+import { remote } from 'electron';
+const { dialog } = remote;
+import jsonfile from 'jsonfile';
 
 export default class Microcontroller extends Component {
   static propTypes = {
     connectToBoard: PropTypes.func.isRequired,
-    setVisibilityFilter: PropTypes.func.isRequired,
-    pins: PropTypes.array.isRequired,
     connectionState: PropTypes.number.isRequired,
+    pins: PropTypes.array.isRequired,
     mapping: PropTypes.object.isRequired,
     visibilityFilter: PropTypes.object.isRequired,
+    setVisibilityFilter: PropTypes.func.isRequired,
+    setEnabled: PropTypes.func.isRequired,
   };
 
   render() {
     const {
       connectToBoard,
-      pins,
       connectionState,
+      pins,
       mapping,
       visibilityFilter,
       setVisibilityFilter,
+      setEnabled,
     } = this.props;
 
     const connectView = (currentState) => {
@@ -82,10 +91,45 @@ export default class Microcontroller extends Component {
       }
     };
 
+    const handleImport = () => {
+      const file = dialog.showOpenDialog({ properties: ['openFile'] })[0];
+      if (file) {
+        jsonfile.readFile(file, (err, config) => {
+          if (err) {
+            // TODO: use error dialogs
+            console.error(err);
+          } else {
+            config.forEach((pin) => setEnabled(pin.id, pin.enabled));
+          }
+        });
+      }
+    };
+
+    const handleExport = () => {
+      const config = map(pick(['id', 'enabled']), pins);
+      const file = dialog.showSaveDialog({ properties: ['openFile'] });
+      if (file) {
+        jsonfile.writeFile(file, config, (err) => {
+          // TODO: use error dialogs
+          console.error(err);
+        });
+      }
+    };
+
     return (
       <div id="main">
         <header>
-          {connectView(connectionState)}
+          <div className="header-left">
+            {connectView(connectionState)}
+          </div>
+          <div className="header-right">
+            <Link active={false} onClick={handleImport}>
+              <FontAwesome name="upload" /> Import
+            </Link>
+            <Link active={false} onClick={handleExport}>
+              <FontAwesome name="download" /> Export
+            </Link>
+          </div>
         </header>
         <div className="pin-list">
           {pins.map((pin) => <Pin key={pin.id} pin={pin} />)}
