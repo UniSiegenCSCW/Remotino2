@@ -92,7 +92,13 @@ export default class Microcontroller extends Component {
     };
 
     const handleImport = () => {
-      const file = dialog.showOpenDialog({ properties: ['openFile'] })[0];
+      const file = dialog.showOpenDialog({
+        properties: ['openFile'],
+        filters: [
+          { name: 'Configuration Files', extensions: ['json'] },
+        ]
+      })[0];
+
       if (file) {
         jsonfile.readFile(file, (err, config) => {
           if (err) {
@@ -113,7 +119,12 @@ export default class Microcontroller extends Component {
         pins: map(pick(['id', 'enabled']), pins),
         visibilityFilter,
       };
-      const file = dialog.showSaveDialog({ properties: ['openFile'] });
+      const file = dialog.showSaveDialog({
+        filters: [
+          { name: 'Configuration Files', extensions: ['json'] },
+        ]
+      });
+
       if (file) {
         jsonfile.writeFile(file, config, (err) => {
           // TODO: use error dialogs
