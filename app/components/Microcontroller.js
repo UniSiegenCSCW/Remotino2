@@ -99,19 +99,27 @@ export default class Microcontroller extends Component {
             // TODO: use error dialogs
             console.error(err);
           } else {
-            config.forEach((pin) => setEnabled(pin.id, pin.enabled));
+            config.pins.forEach((pin) => setEnabled(pin.id, pin.enabled));
+            Object.keys(config.visibilityFilter).forEach(
+              (key) => setVisibilityFilter(key, config.visibilityFilter[key])
+            );
           }
         });
       }
     };
 
     const handleExport = () => {
-      const config = map(pick(['id', 'enabled']), pins);
+      const config = {
+        pins: map(pick(['id', 'enabled']), pins),
+        visibilityFilter,
+      };
       const file = dialog.showSaveDialog({ properties: ['openFile'] });
       if (file) {
         jsonfile.writeFile(file, config, (err) => {
           // TODO: use error dialogs
-          console.error(err);
+          if (err) {
+            console.error(err);
+          }
         });
       }
     };
