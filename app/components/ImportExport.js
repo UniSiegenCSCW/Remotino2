@@ -11,9 +11,14 @@ export default class Microcontroller extends Component {
   static propTypes = {
     changeMode: PropTypes.func.isRequired,
     pins: PropTypes.object.isRequired,
+    replay: PropTypes.object.isRequired,
     visibilityFilter: PropTypes.object.isRequired,
     setVisibilityFilter: PropTypes.func.isRequired,
     setEnabled: PropTypes.func.isRequired,
+    addReplayEvent: PropTypes.func.isRequired,
+    startRecording: PropTypes.func.isRequired,
+    stopRecording: PropTypes.func.isRequired,
+    // changeRange: PropTypes.func.isRequired,
   };
 
   render() {
@@ -23,6 +28,11 @@ export default class Microcontroller extends Component {
       visibilityFilter,
       setVisibilityFilter,
       setEnabled,
+      addReplayEvent,
+      replay,
+      startRecording,
+      stopRecording,
+      // changeRange,
     } = this.props;
 
     const handleImport = () => {
@@ -43,6 +53,14 @@ export default class Microcontroller extends Component {
               setEnabled(configPin.id, configPin.enabled);
               changeMode(pins[configPin.id], configPin.mode);
             });
+            startRecording();
+            config.replay.events.forEach((replayEvent) => {
+              addReplayEvent(replayEvent.replay,
+                             replayEvent.description,
+                             new Date(replayEvent.time));
+            });
+            stopRecording();
+            // changeRange(config.replay.start, config.replay.end);
             Object.keys(config.visibilityFilter).forEach(
               (key) => setVisibilityFilter(key, config.visibilityFilter[key])
             );
@@ -55,6 +73,7 @@ export default class Microcontroller extends Component {
       const config = {
         pins: map(pick(['id', 'enabled', 'mode']), values(pins)),
         visibilityFilter,
+        replay,
       };
       const file = dialog.showSaveDialog({
         filters: [
