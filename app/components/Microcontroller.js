@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import Pin from '../containers/Pin';
 import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
-import spinner from '../static-html/spinner.html';
 import './Microcontroller.sass';
 import Timeline from '../containers/Timeline';
 import ImportExport from '../containers/ImportExport';
+import FontAwesome from 'react-fontawesome';
 
 export default class Microcontroller extends Component {
   static propTypes = {
@@ -42,7 +42,9 @@ export default class Microcontroller extends Component {
         case CONNECTION_STATE.CONNECTING:
           return (
             <div className="header--connection">
-              <p><span dangerouslySetInnerHTML={{ __html: spinner }} /> Connecting...</p>
+              <p>
+                <FontAwesome spin name="spinner" /> Connecting...
+              </p>
             </div>
           );
         default:
