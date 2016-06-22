@@ -106,7 +106,7 @@ export function startListeningToPinChanges(id) {
 }
 
 export const CHANGE_MODE = 'CHANGE_MODE';
-export function changeMode(pin, mode, name) {
+export function changeMode(pin, mode) {
   return (dispatch) => {
     const pinMode = parseInt(mode, 10);
 
@@ -116,7 +116,7 @@ export function changeMode(pin, mode, name) {
       mode: pinMode,
       boardIO: () => board.pinMode(pin.id, mode),
       replayable: true,
-      description: `${name}: Mode = ${MODE_NAMES[mode]}`
+      description: `${pin.name}: Mode = ${MODE_NAMES[mode]}`
     });
 
 
