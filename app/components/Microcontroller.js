@@ -4,13 +4,7 @@ import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import spinner from '../static-html/spinner.html';
 import './Microcontroller.sass';
 import Timeline from '../containers/Timeline';
-import Link from '../components/Link';
-import { map, pick } from 'ramda';
-import FontAwesome from 'react-fontawesome';
-
-import { remote } from 'electron';
-const { dialog } = remote;
-import jsonfile from 'jsonfile';
+import ImportExport from '../containers/ImportExport';
 
 export default class Microcontroller extends Component {
   static propTypes = {
@@ -20,7 +14,6 @@ export default class Microcontroller extends Component {
     mapping: PropTypes.object.isRequired,
     visibilityFilter: PropTypes.object.isRequired,
     setVisibilityFilter: PropTypes.func.isRequired,
-    setEnabled: PropTypes.func.isRequired,
   };
 
   render() {
@@ -31,7 +24,6 @@ export default class Microcontroller extends Component {
       mapping,
       visibilityFilter,
       setVisibilityFilter,
-      setEnabled,
     } = this.props;
 
     const connectView = (currentState) => {
@@ -91,50 +83,6 @@ export default class Microcontroller extends Component {
       }
     };
 
-    const handleImport = () => {
-      const file = dialog.showOpenDialog({
-        properties: ['openFile'],
-        filters: [
-          { name: 'Configuration Files', extensions: ['json'] },
-        ]
-      })[0];
-
-      if (file) {
-        jsonfile.readFile(file, (err, config) => {
-          if (err) {
-            // TODO: use error dialogs
-            console.error(err);
-          } else {
-            config.pins.forEach((pin) => setEnabled(pin.id, pin.enabled));
-            Object.keys(config.visibilityFilter).forEach(
-              (key) => setVisibilityFilter(key, config.visibilityFilter[key])
-            );
-          }
-        });
-      }
-    };
-
-    const handleExport = () => {
-      const config = {
-        pins: map(pick(['id', 'enabled']), pins),
-        visibilityFilter,
-      };
-      const file = dialog.showSaveDialog({
-        filters: [
-          { name: 'Configuration Files', extensions: ['json'] },
-        ]
-      });
-
-      if (file) {
-        jsonfile.writeFile(file, config, (err) => {
-          // TODO: use error dialogs
-          if (err) {
-            console.error(err);
-          }
-        });
-      }
-    };
-
     return (
       <div id="main">
         <header>
@@ -142,12 +90,7 @@ export default class Microcontroller extends Component {
             {connectView(connectionState)}
           </div>
           <div className="header-right">
-            <Link active={false} onClick={handleImport}>
-              <FontAwesome name="upload" /> Import
-            </Link>
-            <Link active={false} onClick={handleExport}>
-              <FontAwesome name="download" /> Export
-            </Link>
+            <ImportExport />
           </div>
         </header>
         <div className="pin-list">

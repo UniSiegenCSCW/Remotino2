@@ -26,7 +26,8 @@ function mapStateToProps(state) {
   return {
     pins: getVisiblePins(
               values(state.microcontroller.pins),
-              state.microcontroller.visibilityFilter),
+              state.microcontroller.visibilityFilter
+          ),
     connectionState: state.microcontroller.connectionState,
     mapping: state.microcontroller.mapping,
     name: state.microcontroller.name,
