@@ -76,12 +76,13 @@ export function connectToBoard() {
     board.on('ready', () => {
       dispatch(connectedToBoard());
 
+      const actions = actionsFromPins([...board.io.pins]);
+      forEach(dispatch, actions);
+
       const mapping = identify(board);
       if (mapping) {
         dispatch(identifiedBoard(mapping));
       }
-      const actions = actionsFromPins([...board.io.pins]);
-      forEach(dispatch, actions);
     });
   };
 }

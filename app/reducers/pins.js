@@ -1,15 +1,19 @@
 import {
-  UPDATE_PIN,
   CHANGE_MODE,
-  SET_ENABLED,
+  IDENTIFIED_BOARD,
   PIN_VALUE_CHANGED,
+  SET_ENABLED,
+  UPDATE_PIN,
 } from '../actions/microcontroller';
 import update from 'react/lib/update';
+import { mapObjIndexed, merge } from 'ramda';
 
 const createPin = (action) => (
   {
     id: action.id,
+    name: `Pin ${action.id}`,
     mode: action.mode,
+    categories: [],
     values: [],
     report: action.report,
     enabled: true,
@@ -42,6 +46,11 @@ const pins = (state = {}, action) => {
           { $apply: values => addValue(values, { x: action.timestamp, y: action.value }, 100) }
         } }
       );
+    case IDENTIFIED_BOARD:
+      // Update name and categories for each pin
+      //   state = {0: {name: 'Pin 0', categories: [], mode: 1, ...}, 1: ...}
+      //   action.pins = {0: {name: 'D0', categories: ['PWM', 'Digital']}, 1: ...}
+      return mapObjIndexed((value, key) => merge(value, action.pins[key]), state);
     default:
       return state;
   }

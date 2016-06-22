@@ -9,8 +9,6 @@ import './Pin.sass';
 
 export default class Pin extends Component {
   static propTypes = {
-    name: PropTypes.string.isRequired,
-    tags: PropTypes.array.isRequired,
     pin: PropTypes.object.isRequired,
     changeMode: PropTypes.func.isRequired,
     setEnabled: PropTypes.func.isRequired,
@@ -24,11 +22,9 @@ export default class Pin extends Component {
       setEnabled,
       digitalWrite,
       analogWrite,
-      pin,
-      name,
-      tags
+      pin
     } = this.props;
-    const { id, mode, values } = pin;
+    const { id, mode, name, categories, values } = pin;
 
     const supportedModes = intersection(
       pin.supportedModes,
@@ -88,8 +84,8 @@ export default class Pin extends Component {
       <div className={pinClass}>
         <div className="pin__header">
           <h2 className="pin__name">{name}</h2>
-          {tags.map((tag) =>
-            <div key={tag} className="pin__tag">{tag}</div>
+          {categories.map((category) =>
+            <div key={category} className="pin__tag">{category}</div>
           )}
         </div>
         <div className="pin__settings">
