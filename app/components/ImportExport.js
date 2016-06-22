@@ -18,7 +18,6 @@ export default class Microcontroller extends Component {
     addReplayEvent: PropTypes.func.isRequired,
     startRecording: PropTypes.func.isRequired,
     stopRecording: PropTypes.func.isRequired,
-    // changeRange: PropTypes.func.isRequired,
   };
 
   render() {
@@ -32,7 +31,6 @@ export default class Microcontroller extends Component {
       replay,
       startRecording,
       stopRecording,
-      // changeRange,
     } = this.props;
 
     const handleImport = () => {
