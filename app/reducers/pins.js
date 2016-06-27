@@ -3,26 +3,20 @@ import {
   IDENTIFIED_BOARD,
   PIN_VALUE_CHANGED,
   SET_ENABLED,
-  UPDATE_PIN,
+  UPDATE_PINS,
 } from '../actions/microcontroller';
 import update from 'react/lib/update';
 import { mapObjIndexed, merge } from 'ramda';
 
 const createPin = (action) => (
-  {
-    id: action.id,
-    name: `Pin ${action.id}`,
-    mode: action.mode,
-    categories: [],
-    values: [],
-    report: action.report,
-    enabled: true,
-    supportedModes: action.supportedModes,
-    analogChannel: action.analogChannel,
-    isHWSerialPort: action.isHWSerialPort,
-    isSWSerialPort: action.isSWSerialPort,
-    isAnalogPin: action.isAnalogPin,
-  }
+    Object.assign({
+      name: `Pin ${action.id}`,
+      mode: action.mode,
+      categories: [],
+      values: [],
+      report: action.report,
+      enabled: true,
+    }, action)
 );
 
 const addValue = (values, newValue, limit) => {
@@ -33,8 +27,8 @@ const addValue = (values, newValue, limit) => {
 
 const pins = (state = {}, action) => {
   switch (action.type) {
-    case UPDATE_PIN:
-      return update(state, { [action.id]: { $set: createPin(action) } });
+    case UPDATE_PINS:
+      return mapObjIndexed(createPin, action.pins);
     case CHANGE_MODE:
       return update(state, { [action.id]: { mode: { $set: action.mode } } });
     case SET_ENABLED:

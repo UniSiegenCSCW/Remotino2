@@ -1,5 +1,5 @@
 import * as five from 'johnny-five';
-import { forEach, keys, mapObjIndexed, length, invertObj, has, contains } from 'ramda';
+import { values, mapObjIndexed, invertObj, has, contains } from 'ramda';
 import { MODES, MODE_NAMES } from '../reducers/microcontrollerEnums';
 import { identify } from '../utils/boards';
 import { timestamp } from '../utils/utils';
@@ -17,20 +17,11 @@ export function addReplayEvent(replay, description, time = new Date()) {
   };
 }
 
-export const UPDATE_PIN = 'UPDATE_PIN';
-export function updatePin(id, mode, value, report, analogChannel, supportedModes, isHWSerialPort,
-                          isSWSerialPort, isAnalogPin) {
+export const UPDATE_PINS = 'UPDATE_PINS';
+export function updatePins(pins) {
   return {
-    type: UPDATE_PIN,
-    id,
-    mode,
-    value,
-    report,
-    analogChannel,
-    supportedModes,
-    isHWSerialPort,
-    isSWSerialPort,
-    isAnalogPin,
+    type: UPDATE_PINS,
+    pins,
   };
 }
 
@@ -64,7 +55,6 @@ export function connectToBoard() {
     const idNumber = parseInt(id, 10);
     return Object.assign({}, obj, {
       id,
-      type: UPDATE_PIN,
       supportedModes: [16, ...obj.supportedModes],
       mode: 16,
       isAnalogPin: contains(idNumber, analogPins),
@@ -73,21 +63,14 @@ export function connectToBoard() {
     });
   };
 
-  const actionsFromPins = (pins) => {
-    const arrLength = length(keys(pins));
-    const actions = mapObjIndexed(updatePinFromObj, pins);
-    actions.length = arrLength;
-    return Array.from(actions);
-  };
-
   return (dispatch) => {
     dispatch(connectingToBoard());
     board = new five.Board({ repl: false });
     board.on('ready', () => {
       dispatch(connectedToBoard());
 
-      const actions = actionsFromPins([...board.io.pins]);
-      forEach(dispatch, actions);
+      const actions = values(mapObjIndexed(updatePinFromObj, board.io.pins));
+      dispatch(updatePins(actions));
 
       const mapping = identify(board);
       if (mapping) {
