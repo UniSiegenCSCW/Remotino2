@@ -3,9 +3,26 @@ import { values, mapObjIndexed, invertObj, has, contains } from 'ramda';
 import { MODES, MODE_NAMES } from '../reducers/microcontrollerEnums';
 import { identify } from '../utils/boards';
 import { timestamp } from '../utils/utils';
+import Serial from 'serialport';
 
 let board;
 const sensors = {};
+
+export const DETECTED_PORTS = 'DETECTED_PORTS';
+export function detectPorts() {
+  return (dispatch) => {
+    Serial.list((err, result) => {
+			// This will never return an error, only an empty list
+      const ports = result.filter((port) => /usb|acm|^com/i.test(port.comName));
+      if (ports.length > 0) {
+        dispatch({
+          type: DETECTED_PORTS,
+          ports: ports.map((port) => port.comName)
+        });
+      }
+    });
+  };
+}
 
 export const ADD_REPLAY_EVENT = 'ADD_REPLAY_EVENT';
 export function addReplayEvent(replay, description, time = new Date()) {
@@ -48,7 +65,7 @@ export function identifiedBoard(mapping) {
   };
 }
 
-export function connectToBoard() {
+export function connectToBoard(port) {
   const updatePinFromObj = (obj, id) => {
     const serialPorts = invertObj(board.io.SERIAL_PORT_IDs);
     const analogPins = board.io.analogPins;
@@ -65,7 +82,7 @@ export function connectToBoard() {
 
   return (dispatch) => {
     dispatch(connectingToBoard());
-    board = new five.Board({ repl: false });
+    board = new five.Board({ port, repl: false });
     board.on('ready', () => {
       dispatch(connectedToBoard());
 
