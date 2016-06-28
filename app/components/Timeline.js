@@ -89,7 +89,7 @@ export default class Timeline extends Component {
         <div className="controls">
           <ReplayControls />
           <div className="timeline-controls">
-            <Link active={false} onClick={() => { this.TimelineElement.fit(); }}>
+            <Link onClick={() => { this.TimelineElement.fit(); }}>
               <FontAwesome name="arrows-h" /> Focus recorded events
             </Link>
           </div>

@@ -91,10 +91,10 @@ export default class Microcontroller extends Component {
 
     return (
       <div className="header-right">
-        <Link active={false} onClick={handleImport}>
+        <Link onClick={handleImport}>
           <FontAwesome name="upload" /> Import
         </Link>
-        <Link active={false} onClick={handleExport}>
+        <Link onClick={handleExport}>
           <FontAwesome name="download" /> Export
         </Link>
       </div>
