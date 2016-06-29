@@ -16,11 +16,14 @@ function mapStateToProps(state) {
   const options = {
     width: '100%',
     height: '200px',
-    start: replay.start,
-    end: replay.end,
   };
 
-  return { items, options };
+  return {
+    items,
+    options,
+    start: state.microcontroller.replay.start,
+    end: state.microcontroller.replay.end,
+  };
 }
 
 function mapDispatchToProps(dispatch) {

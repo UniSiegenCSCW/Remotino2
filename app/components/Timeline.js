@@ -10,7 +10,6 @@ const eventPropTypes = {};
 
 export default class Timeline extends Component {
   static propTypes = {
-    changeRange: PropTypes.func.isRequired,
     removeItem: PropTypes.func.isRequired,
     moveItem: PropTypes.func.isRequired,
   };
@@ -27,12 +26,15 @@ export default class Timeline extends Component {
     const {
       items,
       options,
+      start,
+      end,
     } = this.props;
 
+    const timeChange = (start !== nextProps.start || end !== nextProps.end);
     const itemsChange = items !== nextProps.items;
     const optionsChange = options !== nextProps.options;
 
-    return itemsChange || optionsChange;
+    return itemsChange || optionsChange || timeChange;
   }
 
   componentDidUpdate() {
@@ -50,11 +52,26 @@ export default class Timeline extends Component {
     const {
       items,
       options,
-      changeRange,
+      start,
+      end,
       removeItem,
       moveItem,
     } = this.props;
-    const timelineItems = new vis.DataSet(items);
+
+    let timelineItems;
+
+    if (start && end) {
+      const replayItem = {
+        id: -1,
+        type: 'range',
+        content: 'Replay',
+        start,
+        end,
+      };
+      timelineItems = new vis.DataSet([replayItem, ...items]);
+    } else {
+      timelineItems = new vis.DataSet(items);
+    }
 
     const fullOptions = Object.assign({
       editable: {
@@ -68,7 +85,7 @@ export default class Timeline extends Component {
         callback(null);
       },
       onMove: (item, callback) => {
-        moveItem(item.id, item.start);
+        moveItem(item.id, item.start, item.end);
         callback(null);
       }
     }, options);
@@ -78,8 +95,6 @@ export default class Timeline extends Component {
       $el.setItems(timelineItems);
     } else {
       $el = this.TimelineElement = new vis.Timeline(container, timelineItems, options);
-
-      $el.on('rangechanged', changeRange);
     }
   }
 
@@ -101,6 +116,8 @@ export default class Timeline extends Component {
 }
 
 Timeline.propTypes = Object.assign({
-  items: PropTypes.array,
-  options: PropTypes.object,
+  items: PropTypes.array.isRequired,
+  options: PropTypes.object.isRequired,
+  start: PropTypes.object,
+  end: PropTypes.object,
 }, eventPropTypes);

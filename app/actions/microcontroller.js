@@ -128,7 +128,7 @@ export function changeMode(pin, mode) {
     });
 
     dispatch(addReplayEvent({ type: CHANGE_MODE, pin, mode },
-                            `${pin.name}: Mode = ${MODE_NAMES[mode]}`));
+                            `${pin.name} = ${MODE_NAMES[mode]}`));
 
     // Disable the old listener
     if (sensors[pin.id]) {
@@ -193,13 +193,16 @@ export const START_RECORDING = 'START_RECORDING';
 export function startRecording() {
   return {
     type: START_RECORDING,
-    timestamp: timestamp(),
+    time: new Date(),
   };
 }
 
 export const STOP_RECORDING = 'STOP_RECORDING';
 export function stopRecording() {
-  return { type: STOP_RECORDING };
+  return {
+    type: STOP_RECORDING,
+    time: new Date(),
+  };
 }
 
 export const START_REPLAY = 'START_REPLAY';
@@ -230,10 +233,11 @@ export function removeItem(id) {
 }
 
 export const MOVE_ITEM = 'MOVE_ITEM';
-export function moveItem(id, time) {
+export function moveItem(id, start, end) {
   return {
     type: MOVE_ITEM,
     id,
-    time,
+    start,
+    end,
   };
 }

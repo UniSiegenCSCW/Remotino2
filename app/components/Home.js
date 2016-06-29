@@ -36,7 +36,7 @@ export default class Home extends Component {
             <ul>
             {
               ports.map((port) => (
-                <li>
+                <li key={port} >
                   <Link onClick={() => connectToBoard(port)}>
                     {port}
                   </Link>
