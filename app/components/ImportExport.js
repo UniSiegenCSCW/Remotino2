@@ -10,6 +10,7 @@ import jsonfile from 'jsonfile';
 export default class Microcontroller extends Component {
   static propTypes = {
     changeMode: PropTypes.func.isRequired,
+    changeRange: PropTypes.func.isRequired,
     pins: PropTypes.object.isRequired,
     replay: PropTypes.object.isRequired,
     visibilityFilter: PropTypes.object.isRequired,
@@ -23,6 +24,7 @@ export default class Microcontroller extends Component {
   render() {
     const {
       changeMode,
+      changeRange,
       pins,
       visibilityFilter,
       setVisibilityFilter,
@@ -48,8 +50,12 @@ export default class Microcontroller extends Component {
             console.error(err);
           } else {
             config.pins.forEach((configPin) => {
-              setEnabled(configPin.id, configPin.enabled);
-              changeMode(pins[configPin.id], configPin.mode);
+              if (pins[configPin.id].enabled !== configPin.enabled) {
+                setEnabled(configPin.id, configPin.enabled);
+              }
+              if (pins[configPin.id].mode !== configPin.mode) {
+                changeMode(pins[configPin.id], configPin.mode);
+              }
             });
             startRecording();
             config.replay.events.forEach((replayEvent) => {
@@ -58,7 +64,7 @@ export default class Microcontroller extends Component {
                              new Date(replayEvent.time));
             });
             stopRecording();
-            // changeRange(config.replay.start, config.replay.end);
+            changeRange(new Date(config.replay.start), new Date(config.replay.end));
             Object.keys(config.visibilityFilter).forEach(
               (key) => setVisibilityFilter(key, config.visibilityFilter[key])
             );

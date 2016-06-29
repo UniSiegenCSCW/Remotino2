@@ -216,11 +216,11 @@ export function stopReplay() {
 }
 
 export const CHANGE_RANGE = 'CHANGE_RANGE';
-export function changeRange(range) {
+export function changeRange(start, end) {
   return {
     type: CHANGE_RANGE,
-    start: range.start,
-    end: range.end,
+    start,
+    end,
   };
 }
 
