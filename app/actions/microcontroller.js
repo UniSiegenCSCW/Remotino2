@@ -37,6 +37,7 @@ export function detectPorts() {
               type: DETECTED_PORT,
               path: port.comName,
               name: mapping.name || port.comName,
+              image: mapping.image,
             });
           });
         } catch (err) {

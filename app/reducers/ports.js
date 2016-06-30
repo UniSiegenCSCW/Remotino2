@@ -15,7 +15,7 @@ const pins = (state = { names: [], refreshing: false, remaining: 0 }, action) =>
       });
     case DETECTED_PORT:
       return update(state, {
-        names: { $push: [{ path: action.path, name: action.name }] },
+        names: { $push: [{ path: action.path, name: action.name, image: action.image }] },
         refreshing: { $set: (state.remaining < 1) },
         remaining: { $apply: (n) => n - 1 }
       });
