@@ -178,5 +178,6 @@
         "Analog"
       ]
     }
-  }
+  },
+  "image": "Arduino_Leonardo.svg"
 }

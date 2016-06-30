@@ -438,5 +438,6 @@
         "Analog"
       ]
     }
-  }
+  },
+  "image": "Arduino_Mega.svg"
 }

@@ -399,5 +399,6 @@
         "Analog"
       ]
     }
-  }
+  },
+  "image": "Arduino_Due.svg"
 }

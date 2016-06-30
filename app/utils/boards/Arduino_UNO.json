@@ -127,5 +127,6 @@
         "Analog"
       ]
     }
-  }
+  },
+  "image": "Arduino_UNO.svg"
 }
