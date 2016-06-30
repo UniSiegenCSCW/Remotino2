@@ -10,7 +10,7 @@ const pins = (state = { names: [], refreshing: false, remaining: 0 }, action) =>
     case REFRESHING_PORTS:
       return update(state, {
         names: { $set: [] },
-        refreshing: { $set: true },
+        refreshing: { $set: action.count > 0 },
         remaining: { $set: action.count }
       });
     case DETECTED_PORT:
