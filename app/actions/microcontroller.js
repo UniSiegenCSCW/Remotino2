@@ -143,7 +143,7 @@ export function startListeningToPinChanges(id) {
 }
 
 export const CHANGE_MODE = 'CHANGE_MODE';
-export function changeMode(pin, mode) {
+export function changeMode(pin, mode, replay = true) {
   return (dispatch) => {
     const pinMode = parseInt(mode, 10);
     board.pinMode(pin.id, mode);
@@ -154,8 +154,10 @@ export function changeMode(pin, mode) {
       mode: pinMode,
     });
 
-    dispatch(addReplayEvent({ type: CHANGE_MODE, pin, mode },
-                            `${pin.name} = ${MODE_NAMES[mode]}`));
+    if (replay) {
+      dispatch(addReplayEvent({ type: CHANGE_MODE, pin, mode, name },
+                              `${pin.name} = ${MODE_NAMES[mode]}`));
+    }
 
     // Disable the old listener
     if (sensors[pin.id]) {
@@ -199,21 +201,29 @@ export function setEnabled(id, value) {
 }
 
 export const DIGITAL_WRITE = 'DIGITAL_WRITE';
-export function digitalWrite(id, value, name) {
+export function digitalWrite(id, value, name, replay = true) {
   const pinId = parseInt(id, 10);
   board.digitalWrite(pinId, value);
 
-  return addReplayEvent({ type: DIGITAL_WRITE, id, value },
-                        `${name}: Digital write ${value}`);
+  return (dispatch) => {
+    if (replay) {
+      dispatch(addReplayEvent({ type: DIGITAL_WRITE, id, value, name },
+                              `${name}: Digital write ${value}`));
+    }
+  };
 }
 
 export const ANALOG_WRITE = 'ANALOG_WRITE';
-export function analogWrite(id, value, name) {
+export function analogWrite(id, value, name, replay = true) {
   const pinId = parseInt(id, 10);
   board.analogWrite(pinId, value);
 
-  return addReplayEvent({ type: ANALOG_WRITE, id, value },
-                        `${name}: Analog write ${value}`);
+  return (dispatch) => {
+    if (replay) {
+      dispatch(addReplayEvent({ type: ANALOG_WRITE, id, value, name },
+                              `${name}: Analog write ${value}`));
+    }
+  };
 }
 
 export const START_RECORDING = 'START_RECORDING';
