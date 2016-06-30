@@ -8,18 +8,44 @@ import Serial from 'serialport';
 let board;
 const sensors = {};
 
-export const DETECTED_PORTS = 'DETECTED_PORTS';
+export const DETECTED_PORT = 'DETECTED_PORT';
+export const REJECTED_PORT = 'REJECTED_PORT';
+export const REFRESHING_PORTS = 'REFRESHING_PORTS';
 export function detectPorts() {
   return (dispatch) => {
-    Serial.list((err, result) => {
+    Serial.list((_err, result) => {
 			// This will never return an error, only an empty list
       const ports = result.filter((port) => /usb|acm|^com/i.test(port.comName));
-      if (ports.length > 0) {
-        dispatch({
-          type: DETECTED_PORTS,
-          ports: ports.map((port) => port.comName)
-        });
-      }
+
+      dispatch({ type: REFRESHING_PORTS, count: ports.length });
+
+      ports.forEach((port) => {
+        try {
+          const board2 = new five.Board({ port: port.comName, repl: false });
+          // Ignore all errors, we are only interested in boards that work
+          board2.on('error', (err) => {
+            dispatch({
+              type: REJECTED_PORT,
+              port: port.comName,
+              err
+            });
+          });
+          board2.on('ready', () => {
+            const mapping = identify(board2);
+            dispatch({
+              type: DETECTED_PORT,
+              path: port.comName,
+              name: mapping.name || port.comName,
+            });
+          });
+        } catch (err) {
+          dispatch({
+            type: REJECTED_PORT,
+            port: port.comName,
+            err
+          });
+        }
+      });
     });
   };
 }

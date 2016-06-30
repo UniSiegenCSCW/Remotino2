@@ -10,7 +10,7 @@ export default class Home extends Component {
     connectToBoard: PropTypes.func.isRequired,
     detectPorts: PropTypes.func.isRequired,
     connectionState: PropTypes.number.isRequired,
-    ports: PropTypes.array.isRequired,
+    ports: PropTypes.object.isRequired,
   };
 
   componentDidMount() {
@@ -31,14 +31,16 @@ export default class Home extends Component {
         return (
           <div className="port-list">
             <Link onClick={detectPorts}>
-              <FontAwesome name="refresh" /> Refresh
+              {ports.refreshing ?
+                <FontAwesome spin name="spinner" /> :
+                <FontAwesome name="refresh" />} Refresh
             </Link>
             <ul>
             {
-              ports.map((port) => (
-                <li key={port} >
-                  <Link onClick={() => connectToBoard(port)}>
-                    {port}
+              ports.names.map((port) => (
+                <li key={port.path} >
+                  <Link onClick={() => connectToBoard(port.path)}>
+                    {port.name} ({port.path})
                   </Link>
                 </li>
               ))
