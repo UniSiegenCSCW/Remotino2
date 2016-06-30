@@ -5,9 +5,9 @@ import update from 'react/lib/update';
 
 
 const initialState = {
-  enabled: false,
-  analog: false,
-  digital: false,
+  showDisabled: true,
+  showAnalog: true,
+  showDigital: true,
 };
 
 const visibilityFilter = (state = initialState, action) => {
