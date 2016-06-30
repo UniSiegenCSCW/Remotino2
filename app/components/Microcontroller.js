@@ -21,7 +21,7 @@ export default class Microcontroller extends Component {
     } = this.props;
 
     const setFilter = (name) => (e) => setVisibilityFilter(name, e.target.checked);
-    const { enabled, digital, analog } = visibilityFilter;
+    const { showDisabled, showDigital, showAnalog } = visibilityFilter;
 
     return (
       <div id="main">
@@ -33,27 +33,27 @@ export default class Microcontroller extends Component {
               </div>
               <div className="header--filter">
                 <p>
-                  Filter by:
+                  Show Pins:
                   {" "}
                   <input
                     type="checkbox"
                     name="Enabled"
-                    checked={enabled}
-                    onChange={setFilter('enabled')}
+                    checked={showDisabled}
+                    onChange={setFilter('showDisabled')}
                   />
                   Enabled
                   <input
                     type="checkbox"
                     name="Digital"
-                    checked={digital}
-                    onChange={setFilter('digital')}
+                    checked={showDigital}
+                    onChange={setFilter('showDigital')}
                   />
                   Digital
                   <input
                     type="checkbox"
                     name="Analog"
-                    checked={analog}
-                    onChange={setFilter('analog')}
+                    checked={showAnalog}
+                    onChange={setFilter('showAnalog')}
                   />
                   Analog
                 </p>

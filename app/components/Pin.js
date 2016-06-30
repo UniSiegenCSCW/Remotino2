@@ -47,7 +47,7 @@ export default class Pin extends Component {
       </select>
     );
 
-    const pinClass = pin.isAnalogPin ? 'pin pin--analog' : 'pin pin--digital';
+    const pinClass = pin.isAnalogPin ? 'pin pin--analog' : 'pin pin--showDigital';
 
     const pinControls = () => {
       switch (mode) {
@@ -92,7 +92,7 @@ export default class Pin extends Component {
           <input
             type="checkbox"
             name="Enabled"
-            checked={pin.enabled}
+            checked={pin.showDisabled}
             onChange={(e) => setEnabled(pin.id, e.target.checked)}
           />
           Enabled

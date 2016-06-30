@@ -50,8 +50,8 @@ export default class Microcontroller extends Component {
             console.error(err);
           } else {
             config.pins.forEach((configPin) => {
-              if (pins[configPin.id].enabled !== configPin.enabled) {
-                setEnabled(configPin.id, configPin.enabled);
+              if (pins[configPin.id].showDisabled !== configPin.showDisabled) {
+                setEnabled(configPin.id, configPin.showDisabled);
               }
               if (pins[configPin.id].mode !== configPin.mode) {
                 changeMode(pins[configPin.id], configPin.mode);
@@ -75,7 +75,7 @@ export default class Microcontroller extends Component {
 
     const handleExport = () => {
       const config = {
-        pins: map(pick(['id', 'enabled', 'mode']), values(pins)),
+        pins: map(pick(['id', 'showDisabled', 'mode']), values(pins)),
         visibilityFilter,
         replay,
       };
