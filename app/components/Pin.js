@@ -47,7 +47,7 @@ export default class Pin extends Component {
       </select>
     );
 
-    const pinClass = pin.isAnalogPin ? 'pin pin--analog' : 'pin pin--showDigital';
+    const pinClass = pin.isAnalogPin ? 'pin pin--analog' : 'pin pin--digital';
 
     const pinControls = () => {
       switch (mode) {
