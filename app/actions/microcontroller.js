@@ -14,24 +14,25 @@ export const REFRESHING_PORTS = 'REFRESHING_PORTS';
 export function detectPorts() {
   return (dispatch) => {
     Serial.list((_err, result) => {
-			// This will never return an error, only an empty list
+      // This will never return an error, only an empty list
       const ports = result.filter((port) => /usb|acm|^com/i.test(port.comName));
 
       dispatch({ type: REFRESHING_PORTS, count: ports.length });
 
       ports.forEach((port) => {
         try {
-          const board2 = new five.Board({ port: port.comName, repl: false });
+          const boardToIdentify = new five.Board({ port: port.comName, repl: false });
           // Ignore all errors, we are only interested in boards that work
-          board2.on('error', (err) => {
+          boardToIdentify.on('error', (err) => {
             dispatch({
               type: REJECTED_PORT,
               port: port.comName,
-              err
+              err,
             });
           });
-          board2.on('ready', () => {
-            const mapping = identify(board2);
+          boardToIdentify.on('ready', () => {
+            const mapping = identify(boardToIdentify);
+            boardToIdentify.io.transport.close();
             dispatch({
               type: DETECTED_PORT,
               path: port.comName,
@@ -42,7 +43,7 @@ export function detectPorts() {
           dispatch({
             type: REJECTED_PORT,
             port: port.comName,
-            err
+            err,
           });
         }
       });
