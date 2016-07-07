@@ -6,6 +6,7 @@ import { timestamp } from '../utils/utils';
 import Serial from 'serialport';
 
 let board;
+const boards = {};
 const sensors = {};
 
 export const DETECTED_PORT = 'DETECTED_PORT';
@@ -32,7 +33,7 @@ export function detectPorts() {
           });
           boardToIdentify.on('ready', () => {
             const mapping = identify(boardToIdentify);
-            boardToIdentify.io.transport.close();
+            boards[port.comName] = { board: boardToIdentify, mapping };
             dispatch({
               type: DETECTED_PORT,
               path: port.comName,
@@ -109,19 +110,24 @@ export function connectToBoard(port) {
   };
 
   return (dispatch) => {
-    dispatch(connectingToBoard());
-    board = new five.Board({ port, repl: false });
-    board.on('ready', () => {
-      dispatch(connectedToBoard());
+    // dispatch(connectingToBoard());
+    board = boards[port].board;
 
-      const actions = values(mapObjIndexed(updatePinFromObj, board.io.pins));
-      dispatch(updatePins(actions));
-
-      const mapping = identify(board);
-      if (mapping) {
-        dispatch(identifiedBoard(mapping));
+    // Disconnect all other boards
+    values(boards).forEach((b) => {
+      if (b.board.port !== port) {
+        b.board.io.transport.close();
       }
     });
+
+    dispatch(connectedToBoard());
+
+    const actions = values(mapObjIndexed(updatePinFromObj, board.io.pins));
+    dispatch(updatePins(actions));
+
+    if (boards[port].mapping) {
+      dispatch(identifiedBoard(boards[port].mapping));
+    }
   };
 }
 
