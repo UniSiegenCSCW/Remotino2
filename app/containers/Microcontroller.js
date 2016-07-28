@@ -7,16 +7,16 @@ import { values } from 'ramda';
 const getVisiblePins = (inPins, filter) => {
   let pins = inPins;
 
-  if (!filter.showDisabled) {
-    pins = pins.filter(pin => pin.enabled);
-  }
+  pins = pins.filter(
+    pin => (pin.enabled || filter.showDisabled)
+  );
 
   if (!filter.showDigital) {
     pins = pins.filter(pin => pin.isAnalogPin);
   }
 
   if (!filter.showAnalog) {
-    pins = pins.filter(pin => pin.isAnalogPin);
+    pins = pins.filter(pin => !pin.isAnalogPin);
   }
 
   return pins;

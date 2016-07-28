@@ -92,7 +92,7 @@ export default class Pin extends Component {
           <input
             type="checkbox"
             name="Enabled"
-            checked={pin.showDisabled}
+            checked={pin.enabled}
             onChange={(e) => setEnabled(pin.id, e.target.checked)}
           />
           Enabled

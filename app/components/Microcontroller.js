@@ -37,11 +37,12 @@ export default class Microcontroller extends Component {
                   {" "}
                   <input
                     type="checkbox"
-                    name="Enabled"
+                    name="Disabled"
                     checked={showDisabled}
                     onChange={setFilter('showDisabled')}
                   />
-                  Enabled
+                  Disabled
+                  <p style={{ marginRight: '1em', display: 'inline' }} />
                   <input
                     type="checkbox"
                     name="Digital"

@@ -15,7 +15,7 @@ const createPin = (action) => (
       categories: [],
       values: [],
       report: action.report,
-      showDisabled: true,
+      enabled: true,
     }, action)
 );
 
@@ -32,7 +32,7 @@ const pins = (state = {}, action) => {
     case CHANGE_MODE:
       return update(state, { [action.id]: { mode: { $set: action.mode } } });
     case SET_ENABLED:
-      return update(state, { [action.id]: { showDisabled: { $set: action.value } } });
+      return update(state, { [action.id]: { enabled: { $set: action.value } } });
     case PIN_VALUE_CHANGED:
       return update(
         state,
