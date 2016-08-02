@@ -5,9 +5,9 @@ import { bindActionCreators } from 'redux';
 
 function mapStateToProps(state) {
   return {
-    pins: state.microcontroller.pins,
-    visibilityFilter: state.microcontroller.visibilityFilter,
-    replay: state.microcontroller.replay,
+    pins: state.pins,
+    visibilityFilter: state.visibilityFilter,
+    replay: state.replay,
   };
 }
 

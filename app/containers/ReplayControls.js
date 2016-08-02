@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 
 function mapStateToProps(state) {
   return {
-    replay: state.microcontroller.replay,
+    replay: state.replay,
   };
 }
 

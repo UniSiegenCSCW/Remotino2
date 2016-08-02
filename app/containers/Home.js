@@ -5,8 +5,8 @@ import { bindActionCreators } from 'redux';
 
 function mapStateToProps(state) {
   return {
-    connectionState: state.microcontroller.connectionState,
-    ports: state.microcontroller.ports,
+    connectionState: state.connectionState,
+    ports: state.ports,
   };
 }
 

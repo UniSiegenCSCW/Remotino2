@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 function mapStateToProps(state) {
-  const replay = state.microcontroller.replay;
+  const replay = state.replay;
 
   const items = replay.events.map((event, index) => ({
     id: index,
@@ -21,8 +21,8 @@ function mapStateToProps(state) {
   return {
     items,
     options,
-    start: state.microcontroller.replay.start,
-    end: state.microcontroller.replay.end,
+    start: state.replay.start,
+    end: state.replay.end,
   };
 }
 
