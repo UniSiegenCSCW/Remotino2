@@ -41,7 +41,7 @@ export default class Microcontroller extends Component {
                     checked={showDisabled}
                     onChange={setFilter('showDisabled')}
                   />
-                  Disabled
+                  Hidden
                   <span style={{ marginRight: '1em', display: 'inline' }} />
                   <input
                     type="checkbox"

@@ -5,7 +5,7 @@ import update from 'react/lib/update';
 
 
 const initialState = {
-  showDisabled: true,
+  showDisabled: false,
   showAnalog: true,
   showDigital: true,
 };

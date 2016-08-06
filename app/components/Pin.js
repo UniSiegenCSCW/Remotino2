@@ -5,6 +5,8 @@ import DigitalInput from './Pin/DigitalInput';
 import AnalogInput from './Pin/AnalogInput';
 import DigitalOutput from './Pin/DigitalOutput';
 import AnalogOutput from './Pin/AnalogOutput';
+import FontAwesome from 'react-fontawesome';
+import Link from './Link';
 import './Pin.sass';
 
 export default class Pin extends Component {
@@ -24,7 +26,7 @@ export default class Pin extends Component {
       analogWrite,
       pin
     } = this.props;
-    const { id, mode, name, categories, values } = pin;
+    const { id, mode, name, categories, values, enabled } = pin;
 
     const supportedModes = intersection(
       pin.supportedModes,
@@ -80,22 +82,35 @@ export default class Pin extends Component {
       }
     };
 
+    const visibilityControls = (e) => {
+      if (e) {
+        return (
+          <Link className="" onClick={() => setEnabled(pin.id, false)}>
+            <FontAwesome name="minus-square" /> Hide
+          </Link>
+        );
+      }
+      return (
+        <Link className="" onClick={() => setEnabled(pin.id, true)}>
+          <FontAwesome name="plus-square" /> Show
+        </Link>
+      );
+    };
+
     return (
       <div className={pinClass}>
         <div className="pin__header">
-          <h2 className="pin__name">{name}</h2>
-          {categories.map((category) =>
-            <div key={category} className="pin__tag">{category}</div>
-          )}
+          <div className="pin__header__left">
+            <h2 className="pin__name">{name}</h2>
+            {categories.map((category) =>
+              <div key={category} className="pin__tag">{category}</div>
+            )}
+          </div>
+          <div className="pin__header__right">
+            {visibilityControls(enabled)}
+          </div>
         </div>
         <div className="pin__settings">
-          <input
-            type="checkbox"
-            name="Enabled"
-            checked={pin.enabled}
-            onChange={(e) => setEnabled(pin.id, e.target.checked)}
-          />
-          Enabled
           {modeSelector}
         </div>
         {pinControls(mode)}
