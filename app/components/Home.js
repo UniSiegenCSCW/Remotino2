@@ -38,16 +38,16 @@ export default class Home extends Component {
             <ul>
             {
               ports.names.map((port) => (
-                <li key={port.path} className="port">
-                  <Link className="port__header" onClick={() => connectToBoard(port.path)}>
-                    {port.name} ({port.path})
+                <li key={port.path}>
+                  <Link className="port" onClick={() => connectToBoard(port.path)}>
+                    <p>{port.name} ({port.path})</p>
+                    {port.image ?
+                      <img
+                        className="port__image"
+                        src={`./utils/boards/${port.image}`}
+                        alt={`${port.name} icon`}
+                      /> : ''}
                   </Link>
-                  {port.image ?
-                    <img
-                      className="port__image"
-                      src={`./utils/boards/${port.image}`}
-                      alt={`${port.name} icon`}
-                    /> : ''}
                 </li>
               ))
             }

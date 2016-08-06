@@ -42,7 +42,7 @@ export default class Microcontroller extends Component {
                     onChange={setFilter('showDisabled')}
                   />
                   Disabled
-                  <p style={{ marginRight: '1em', display: 'inline' }} />
+                  <span style={{ marginRight: '1em', display: 'inline' }} />
                   <input
                     type="checkbox"
                     name="Digital"
