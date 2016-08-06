@@ -7,6 +7,7 @@ import {
   REMOVE_ITEM,
   MOVE_ITEM,
   ADD_REPLAY_EVENT,
+  REMOVE_ALL_ITEMS,
 } from '../actions/microcontroller';
 
 import update from 'react/lib/update';
@@ -66,6 +67,8 @@ const replay = (state = initalState, action) => {
               update(state.events[action.id], { time: { $set: action.start } })
           ) },
       });
+    case REMOVE_ALL_ITEMS:
+      return update(state, { events: { $set: [] } });
     default:
       return state;
   }

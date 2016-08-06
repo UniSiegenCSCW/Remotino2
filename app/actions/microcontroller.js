@@ -259,6 +259,11 @@ export function stopReplay() {
   return { type: STOP_REPLAY };
 }
 
+export const REMOVE_ALL_ITEMS = 'REMOVE_ALL_ITEMS';
+export function removeAllItems() {
+  return { type: REMOVE_ALL_ITEMS };
+}
+
 export const CHANGE_RANGE = 'CHANGE_RANGE';
 export function changeRange(start, end) {
   return {

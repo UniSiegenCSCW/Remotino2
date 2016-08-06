@@ -15,6 +15,7 @@ export default class ReplayControls extends Component {
     stopRecording: PropTypes.func.isRequired,
     startReplay: PropTypes.func.isRequired,
     stopReplay: PropTypes.func.isRequired,
+    removeAllItems: PropTypes.func.isRequired,
     analogWrite: PropTypes.func.isRequired,
     digitalWrite: PropTypes.func.isRequired,
     changeMode: PropTypes.func.isRequired,
@@ -30,6 +31,7 @@ export default class ReplayControls extends Component {
       digitalWrite,
       analogWrite,
       changeMode,
+      removeAllItems,
     } = this.props;
 
     const replayEvent = (event) => {
@@ -99,11 +101,13 @@ export default class ReplayControls extends Component {
         </Link>
     );
 
-
     return (
       <div className="replay-controls">
         {recordButton()}
         {replayButton()}
+        <Link onClick={removeAllItems} >
+          <FontAwesome name="trash" /> Clear events
+        </Link>
       </div>
     );
   }
