@@ -87,7 +87,8 @@ export default class Timeline extends Component {
       onMove: (item, callback) => {
         moveItem(item.id, item.start, item.end);
         callback(null);
-      }
+      },
+      showCurrentTime: false
     }, options);
 
     if (!!$el) {
