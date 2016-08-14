@@ -4,16 +4,13 @@ let menu;
 let template;
 let mainWindow = null;
 
-
 if (process.env.NODE_ENV === 'development') {
   require('electron-debug')(); // eslint-disable-line global-require
 }
 
-
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
-
 
 const installExtensions = async () => {
   if (process.env.NODE_ENV === 'development') {
@@ -197,7 +194,8 @@ app.on('ready', async () => {
     }];
 
     menu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(menu);
+    // Menu.setApplicationMenu(menu);
+    mainWindow.setMenu(null);
   } else {
     template = [{
       label: '&File',
@@ -263,6 +261,7 @@ app.on('ready', async () => {
       }]
     }];
     menu = Menu.buildFromTemplate(template);
-    mainWindow.setMenu(menu);
+    // mainWindow.setMenu(menu);
+    mainWindow.setMenu(null);
   }
 });
