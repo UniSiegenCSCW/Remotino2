@@ -16,6 +16,11 @@ function mapStateToProps(state) {
   const options = {
     width: '100%',
     height: '200px',
+    // start: new Date() / 1.0,
+    // end: (new Date() / 1.0) + 600000,
+    showCurrentTime: false,
+    zoomMin: 100,
+    zoomMax: 1000 * 60 * 30, // 30 minutes
   };
 
   return {

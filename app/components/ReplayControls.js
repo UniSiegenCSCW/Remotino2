@@ -19,6 +19,7 @@ export default class ReplayControls extends Component {
     analogWrite: PropTypes.func.isRequired,
     digitalWrite: PropTypes.func.isRequired,
     changeMode: PropTypes.func.isRequired,
+    fitTimeline: PropTypes.func.isRequired,
   };
 
   render() {
@@ -32,6 +33,7 @@ export default class ReplayControls extends Component {
       analogWrite,
       changeMode,
       removeAllItems,
+      fitTimeline,
     } = this.props;
 
     const replayEvent = (event) => {
@@ -67,12 +69,17 @@ export default class ReplayControls extends Component {
       }
     };
 
+    const stopRecordingWrapper = () => {
+      stopRecording();
+      fitTimeline();
+    };
+
     const recordButton = () => (
       !replay.recording ?
         <Link onClick={startRecording}>
           <FontAwesome name="circle" /> Record
         </Link> :
-        <Link onClick={stopRecording}>
+        <Link onClick={stopRecordingWrapper}>
           <FontAwesome name="stop" /> Stop
         </Link>
     );
@@ -107,6 +114,9 @@ export default class ReplayControls extends Component {
         {replayButton()}
         <Link onClick={removeAllItems} >
           <FontAwesome name="trash" /> Clear events
+        </Link>
+        <Link onClick={fitTimeline}>
+          <FontAwesome name="arrows-h" /> Focus recorded events
         </Link>
       </div>
     );

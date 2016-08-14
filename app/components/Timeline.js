@@ -3,8 +3,6 @@
 import vis from 'vis';
 import React, { Component, PropTypes } from 'react';
 import ReplayControls from '../containers/ReplayControls';
-import Link from './Link';
-import FontAwesome from 'react-fontawesome';
 
 const eventPropTypes = {};
 
@@ -88,7 +86,6 @@ export default class Timeline extends Component {
         moveItem(item.id, item.start, item.end);
         callback(null);
       },
-      showCurrentTime: false
     }, options);
 
     if (!!$el) {
@@ -103,12 +100,7 @@ export default class Timeline extends Component {
     return (
       <div>
         <div className="controls">
-          <ReplayControls />
-          <div className="timeline-controls">
-            <Link onClick={() => { this.TimelineElement.fit(); }}>
-              <FontAwesome name="arrows-h" /> Focus recorded events
-            </Link>
-          </div>
+          <ReplayControls fitTimeline={() => { this.TimelineElement.fit(); }} />
         </div>
         <div ref="container" />
       </div>

@@ -24,12 +24,22 @@ const initalState = {
 const replay = (state = initalState, action) => {
   switch (action.type) {
     case ADD_REPLAY_EVENT:
-      return update(state, { events: { $push: [action] } });
+      if (state.recording) {
+        return update(state, { events: { $push: [action] } });
+      } else {
+        return state;
+      }
+      // return update(state, { events: { $push: [action] } });
     case START_RECORDING:
       return update(state, {
+        events: { $set: [] },
         recording: { $set: true },
         start: { $set: action.time },
       });
+      // return update(state, {
+        // recording: { $set: true },
+        // start: { $set: action.time },
+      // });
     case STOP_RECORDING:
       return update(state, {
         recording: { $set: false },
