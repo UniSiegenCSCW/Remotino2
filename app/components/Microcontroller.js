@@ -3,11 +3,11 @@ import Pin from '../containers/Pin';
 import './Microcontroller.sass';
 import Timeline from '../containers/Timeline';
 import ImportExport from '../containers/ImportExport';
+// import FontAwesome from 'react-fontawesome';
 
 export default class Microcontroller extends Component {
   static propTypes = {
     pins: PropTypes.array.isRequired,
-    mapping: PropTypes.object.isRequired,
     visibilityFilter: PropTypes.object.isRequired,
     setVisibilityFilter: PropTypes.func.isRequired,
   };
@@ -15,7 +15,6 @@ export default class Microcontroller extends Component {
   render() {
     const {
       pins,
-      mapping,
       visibilityFilter,
       setVisibilityFilter,
     } = this.props;
@@ -34,13 +33,11 @@ export default class Microcontroller extends Component {
         <header>
           <div className="header-left">
             <div>
-              <div className="header--connection">
-                <p>{`Connected to ${mapping.name}`}</p>
-              </div>
               <div className="header--filter">
-                <p>
-                  Filter Pins:
-                  {" "}
+                <div className="filter-description">
+                  <p>Filter Pins:</p>
+                </div>
+                <div className="filter-section">
                   <input
                     type="checkbox"
                     name="Disabled"
@@ -48,28 +45,39 @@ export default class Microcontroller extends Component {
                     onChange={setFilter('showDisabled')}
                   />
                   Hidden
-                  <span style={{ marginRight: '1em', display: 'inline' }} />
-                  <input
-                    type="checkbox" name="DigitalIn"
-                    checked={showDigitalIn} onChange={setFilter('showDigitalIn')}
-                  />
-                  Digital In
-                  <input
-                    type="checkbox" name="AnalogIn"
-                    checked={showAnalogIn} onChange={setFilter('showAnalogIn')}
-                  />
-                  Analog In
-                  <input
-                    type="checkbox" name="DigitalOut"
-                    checked={showDigitalOut} onChange={setFilter('showDigitalOut')}
-                  />
-                  Digital Out
-                  <input
-                    type="checkbox" name="AnalogOut"
-                    checked={showAnalogOut} onChange={setFilter('showAnalogOut')}
-                  />
-                  Analog Out
-                </p>
+                </div>
+                <div className="filter-section">
+                  <div>
+                    <input
+                      type="checkbox" name="DigitalIn"
+                      checked={showDigitalIn} onChange={setFilter('showDigitalIn')}
+                    />
+                    Digital In
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox" name="DigitalOut"
+                      checked={showDigitalOut} onChange={setFilter('showDigitalOut')}
+                    />
+                    Digital Out
+                  </div>
+                </div>
+                <div className="filter-section">
+                  <div>
+                    <input
+                      type="checkbox" name="AnalogIn"
+                      checked={showAnalogIn} onChange={setFilter('showAnalogIn')}
+                    />
+                    Analog In
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox" name="AnalogOut"
+                      checked={showAnalogOut} onChange={setFilter('showAnalogOut')}
+                    />
+                    Analog Out
+                  </div>
+                </div>
               </div>
             </div>
           </div>
