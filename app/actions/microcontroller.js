@@ -153,6 +153,17 @@ export const CHANGE_MODE = 'CHANGE_MODE';
 export function changeMode(pin, mode, replay = true) {
   return (dispatch) => {
     const pinMode = parseInt(mode, 10);
+
+    // Disable old outputs if switching back to "not set"
+    if (pinMode === MODES.NOT_SET) {
+      const oldMode = pin.mode;
+      if (oldMode === MODES.OUTPUT) {
+        board.digitalWrite(pin.id, 0);
+      } else if (oldMode === MODES.PWM) {
+        board.analogWrite(pin.id, 0);
+      }
+    }
+
     board.pinMode(pin.id, mode);
 
     dispatch({
