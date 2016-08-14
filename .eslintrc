@@ -23,20 +23,21 @@
     "import/no-unresolved": [2, { ignore: ['electron'] }],
     "react/jsx-no-bind": 0,
     "react/prefer-stateless-function": 0,
-    "no-use-before-define": 0,
+    // TODO: implement some of these rules
+    "react/jsx-filename-extension": 0,
+    "import/imports-first": 0,
+    "jsx-a11y/label-has-for": 0,
+    "jsx-a11y/href-no-hash": 0,
     "import/no-extraneous-dependencies": 0,
-    "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx"] }],
+    "react/self-closing-comp": 0,
+    "import/newline-after-import": 0,
+    "react/no-string-refs": 0,
+    "no-extra-boolean-cast": 0,
+    "import/prefer-default-export": 0,
   },
 
   "plugins": [
     "import",
     "react"
-  ],
-  "settings": {
-    "import/resolver": {
-      "webpack": {
-        "config": "webpack.config.eslint.js"
-      }
-    }
-  }
+  ]
 }
