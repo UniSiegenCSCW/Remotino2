@@ -72,12 +72,6 @@ export default class Timeline extends Component {
     }
 
     const fullOptions = Object.assign({
-      editable: {
-        add: false,
-        updateTime: true,
-        updateGroup: false,
-        remove: true
-      },
       onRemove: (item, callback) => {
         removeItem(item.id);
         callback(null);
