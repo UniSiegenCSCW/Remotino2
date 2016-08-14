@@ -21,7 +21,13 @@ export default class Microcontroller extends Component {
     } = this.props;
 
     const setFilter = (name) => (e) => setVisibilityFilter(name, e.target.checked);
-    const { showDisabled, showDigital, showAnalog } = visibilityFilter;
+    const {
+      showDisabled,
+      showDigitalIn,
+      showAnalogIn,
+      showDigitalOut,
+      showAnalogOut,
+    } = visibilityFilter;
 
     return (
       <div id="main">
@@ -33,7 +39,7 @@ export default class Microcontroller extends Component {
               </div>
               <div className="header--filter">
                 <p>
-                  Show Pins:
+                  Filter Pins:
                   {" "}
                   <input
                     type="checkbox"
@@ -44,19 +50,25 @@ export default class Microcontroller extends Component {
                   Hidden
                   <span style={{ marginRight: '1em', display: 'inline' }} />
                   <input
-                    type="checkbox"
-                    name="Digital"
-                    checked={showDigital}
-                    onChange={setFilter('showDigital')}
+                    type="checkbox" name="DigitalIn"
+                    checked={showDigitalIn} onChange={setFilter('showDigitalIn')}
                   />
-                  Digital
+                  Digital In
                   <input
-                    type="checkbox"
-                    name="Analog"
-                    checked={showAnalog}
-                    onChange={setFilter('showAnalog')}
+                    type="checkbox" name="AnalogIn"
+                    checked={showAnalogIn} onChange={setFilter('showAnalogIn')}
                   />
-                  Analog
+                  Analog In
+                  <input
+                    type="checkbox" name="DigitalOut"
+                    checked={showDigitalOut} onChange={setFilter('showDigitalOut')}
+                  />
+                  Digital Out
+                  <input
+                    type="checkbox" name="AnalogOut"
+                    checked={showAnalogOut} onChange={setFilter('showAnalogOut')}
+                  />
+                  Analog Out
                 </p>
               </div>
             </div>

@@ -3,7 +3,7 @@ import * as MicrocontrollerActions from '../actions/microcontroller';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { contains, intersection, values } from 'ramda';
-import { MODE_NAMES } from '../reducers/microcontrollerEnums';
+import { MODE_NAMES, MODES } from '../reducers/microcontrollerEnums';
 
 const getVisiblePins = (inPins, filter) => {
   let pins = inPins;
@@ -25,13 +25,10 @@ const getVisiblePins = (inPins, filter) => {
     pin => (pin.enabled || filter.showDisabled)
   );
 
-  if (!filter.showDigital) {
-    pins = pins.filter(pin => pin.isAnalogPin);
-  }
-
-  if (!filter.showAnalog) {
-    pins = pins.filter(pin => !pin.isAnalogPin);
-  }
+  pins = pins.filter(pin => ((filter.showDigitalIn && contains(MODES.INPUT, pin.supportedModes)) ||
+                           (filter.showDigitalOut && contains(MODES.OUTPUT, pin.supportedModes)) ||
+                           (filter.showAnalogIn && contains(MODES.ANALOG, pin.supportedModes)) ||
+                           (filter.showAnalogOut && contains(MODES.PWM, pin.supportedModes))));
 
   return pins;
 };

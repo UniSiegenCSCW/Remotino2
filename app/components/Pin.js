@@ -35,18 +35,21 @@ export default class Pin extends Component {
     const getModeDescriptionForModeNumber = (num) => propOr('Not Set', num, MODE_NAMES);
 
     const modeSelector = (
-      <select
-        value={pin.mode}
-        onChange={event => changeMode(pin, event.target.value)}
-        disabled={supportedModes.length === 0}
-      >
-        {supportedModes.map((supportedMode) => (
-          <option key={supportedMode} value={supportedMode}>
-            {getModeDescriptionForModeNumber(supportedMode)}
-          </option>
-          )
-        )}
-      </select>
+      <div>
+        Mode:
+        <select
+          value={pin.mode}
+          onChange={event => changeMode(pin, event.target.value)}
+          disabled={supportedModes.length === 0}
+        >
+          {supportedModes.map((supportedMode) => (
+            <option key={supportedMode} value={supportedMode}>
+              {getModeDescriptionForModeNumber(supportedMode)}
+            </option>
+            )
+          )}
+        </select>
+      </div>
     );
 
     const pinClass = pin.isAnalogPin ? 'pin pin--analog' : 'pin pin--digital';
