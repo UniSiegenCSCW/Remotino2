@@ -16,11 +16,29 @@ function mapStateToProps(state) {
   const options = {
     width: '100%',
     height: '200px',
-    // start: new Date() / 1.0,
-    // end: (new Date() / 1.0) + 600000,
     showCurrentTime: false,
     zoomMin: 100,
     zoomMax: 1000 * 60 * 30, // 30 minutes
+    editable: {
+      add: false,
+      updateTime: true,
+      updateGroup: false,
+      remove: true
+    },
+    snap: (date, scale) => {
+      const factors = {
+        millisecond: 20,
+        second: 200,
+        minute: 10 * 1000,
+        hour: 10 * 60 * 1000,
+        weekday: 60 * 60 * 1000,
+        day: 60 * 60 * 1000,
+        month: 60 * 60 * 1000,
+        year: 60 * 60 * 1000
+      };
+
+      return Math.round(date / factors[scale]) * factors[scale];
+    }
   };
 
   return {
