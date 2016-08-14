@@ -29,7 +29,6 @@ export default class DigitalInput extends Component {
           type="range"
           name="pwm"
           min="0" max="100"
-          defaultValue="0"
           step="5"
           value={value}
           onChange={(e) => {
