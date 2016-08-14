@@ -18,26 +18,28 @@ export default class DigitalInput extends Component {
 
     const AreaChart = rd3.AreaChart;
     const chart = values.length === 0 ? <p>No data</p> : (
-      <AreaChart
-        data={data}
-        width="100%"
-        height={200}
-        viewBoxObject={{
-          x: 0,
-          y: 0,
-          width: 500,
-          height: 200
-        }}
-        xAxisTickValues={[]}
-        domain={{ y: [0, 100] }}
-        gridHorizontal
-      />
-    );
-
-    return (
       <div>
-        {chart}
+        <p className="nomargin">
+          Value: {Math.round(values[0].y)}%
+          ({Math.round(values[0].y * 10.23)})
+        </p>
+        <AreaChart
+          data={data}
+          width="100%"
+          height={200}
+          viewBoxObject={{
+            x: 0,
+            y: 0,
+            width: 500,
+            height: 200
+          }}
+          xAxisTickValues={[]}
+          domain={{ y: [0, 100] }}
+          gridHorizontal
+        />
       </div>
     );
+
+    return chart;
   }
 }
