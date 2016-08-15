@@ -71,7 +71,7 @@ export default class ReplayControls extends Component {
 
     const stopRecordingWrapper = () => {
       stopRecording();
-      fitTimeline();
+      setTimeout(fitTimeline, 100);
     };
 
     const recordButton = () => (
