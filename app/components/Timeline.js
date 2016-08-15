@@ -63,6 +63,7 @@ export default class Timeline extends Component {
         id: -1,
         type: 'range',
         content: 'Replay',
+        className: 'timeline-replay-element',
         start,
         end,
       };
@@ -80,6 +81,16 @@ export default class Timeline extends Component {
         moveItem(item.id, item.start, item.end);
         callback(null);
       },
+      order: (a, b) => {
+        // Allways show the replay bar on the bottom
+        if (a.id === -1) {
+          return -1;
+        } else if (b.id === -1) {
+          return 1;
+        } else {
+          return a.id - b.id;
+        }
+      }
     }, options);
 
     if (!!$el) {

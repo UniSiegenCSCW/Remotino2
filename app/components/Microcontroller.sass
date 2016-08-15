@@ -74,3 +74,25 @@ $red: #e74c3c
 
 .nomargin
   margin: 0
+
+// Show overflow in timeline range elements
+.vis-item .vis-item-overflow
+  overflow: visible !important
+
+.timeline-replay-element
+  &:before
+    position: absolute
+    width: 1em
+    height: 1em
+    left: -1.2em
+    top: 0.4em
+    content: ""
+    border: 0.5em transparent solid
+    border-right: 0.5em black solid
+  &:after
+    position: absolute
+    right: -1.2em
+    top: 0.4em
+    content: ""
+    border: 0.5em transparent solid
+    border-left: 0.5em black solid
