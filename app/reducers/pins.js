@@ -1,3 +1,5 @@
+import update from 'react/lib/update';
+import { mapObjIndexed, merge } from 'ramda';
 import {
   CHANGE_MODE,
   IDENTIFIED_BOARD,
@@ -5,8 +7,6 @@ import {
   SET_ENABLED,
   UPDATE_PINS,
 } from '../actions/microcontroller';
-import update from 'react/lib/update';
-import { mapObjIndexed, merge } from 'ramda';
 
 const createPin = (action) => (
     Object.assign({

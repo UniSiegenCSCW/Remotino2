@@ -1,9 +1,9 @@
+import update from 'react/lib/update';
 import {
   DETECTED_PORT,
   REJECTED_PORT,
   REFRESHING_PORTS,
 } from '../actions/microcontroller';
-import update from 'react/lib/update';
 
 const pins = (state = { names: [], refreshing: false, remaining: 0 }, action) => {
   switch (action.type) {

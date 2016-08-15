@@ -1,3 +1,5 @@
+import update from 'react/lib/update';
+import R from 'ramda';
 import {
   START_RECORDING,
   STOP_RECORDING,
@@ -9,9 +11,6 @@ import {
   ADD_REPLAY_EVENT,
   REMOVE_ALL_ITEMS,
 } from '../actions/microcontroller';
-
-import update from 'react/lib/update';
-import R from 'ramda';
 
 const initalState = {
   recording: false,

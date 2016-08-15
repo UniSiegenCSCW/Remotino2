@@ -1,12 +1,11 @@
+import React, { Component, PropTypes } from 'react';
+import FontAwesome from 'react-fontawesome';
+import Link from './Link';
 import {
   CHANGE_MODE,
   ANALOG_WRITE,
   DIGITAL_WRITE,
 } from '../actions/microcontroller';
-
-import React, { Component, PropTypes } from 'react';
-import Link from './Link';
-import FontAwesome from 'react-fontawesome';
 
 export default class ReplayControls extends Component {
   static propTypes = {

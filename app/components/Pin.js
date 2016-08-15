@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { MODE_NAMES, MODES } from '../reducers/microcontrollerEnums';
 import { intersection, contains, propOr } from 'ramda';
+import FontAwesome from 'react-fontawesome';
+import { MODE_NAMES, MODES } from '../reducers/microcontrollerEnums';
 import DigitalInput from './Pin/DigitalInput';
 import AnalogInput from './Pin/AnalogInput';
 import DigitalOutput from './Pin/DigitalOutput';
 import AnalogOutput from './Pin/AnalogOutput';
-import FontAwesome from 'react-fontawesome';
 import Link from './Link';
 import './Pin.sass';
 
@@ -100,7 +100,6 @@ export default class Pin extends Component {
       );
     };
 
-
     const digitalIcons = () => {
       if (contains(MODES.INPUT, supportedModes) && contains(MODES.OUTPUT, supportedModes)) {
         return (
@@ -120,6 +119,8 @@ export default class Pin extends Component {
             Digital Out
           </div>
         );
+      } else {
+        return <div></div>;
       }
     };
 
@@ -143,6 +144,8 @@ export default class Pin extends Component {
             Analog Out
           </div>
         );
+      } else {
+        return <div></div>;
       }
     };
 

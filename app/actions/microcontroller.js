@@ -1,9 +1,9 @@
 import * as five from 'johnny-five';
 import { values, mapObjIndexed, invertObj, has, contains } from 'ramda';
+import Serial from 'serialport';
 import { MODES, MODE_NAMES } from '../reducers/microcontrollerEnums';
 import { identify } from '../utils/boards';
 import { timestamp } from '../utils/utils';
-import Serial from 'serialport';
 
 let board;
 const boards = {};

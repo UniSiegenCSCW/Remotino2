@@ -1,7 +1,7 @@
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import Timeline from '../components/Timeline';
 import * as MicrocontrollerActions from '../actions/microcontroller';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 function mapStateToProps(state) {
   const replay = state.replay;

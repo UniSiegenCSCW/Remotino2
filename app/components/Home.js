@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
-import './Home.sass';
 import FontAwesome from 'react-fontawesome';
+import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import Microcontroller from '../containers/Microcontroller';
 import Link from '../components/Link';
+import './Home.sass';
 
 export default class Home extends Component {
   static propTypes = {

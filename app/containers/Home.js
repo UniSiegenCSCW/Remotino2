@@ -1,7 +1,7 @@
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import Home from '../components/Home';
 import * as MicrocontrollerActions from '../actions/microcontroller';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 function mapStateToProps(state) {
   return {

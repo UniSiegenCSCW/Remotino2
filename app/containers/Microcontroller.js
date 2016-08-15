@@ -1,9 +1,9 @@
-import Microcontroller from '../components/Microcontroller';
-import * as MicrocontrollerActions from '../actions/microcontroller';
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { contains, intersection, values } from 'ramda';
 import { MODE_NAMES, MODES } from '../reducers/microcontrollerEnums';
+import Microcontroller from '../components/Microcontroller';
+import * as MicrocontrollerActions from '../actions/microcontroller';
 
 const getVisiblePins = (inPins, filter) => {
   let pins = inPins;

@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import Link from '../components/Link';
 import { map, pick, values } from 'ramda';
 import FontAwesome from 'react-fontawesome';
-
 import { remote } from 'electron';
-const { dialog } = remote;
 import jsonfile from 'jsonfile';
+import Link from '../components/Link';
+
+const { dialog } = remote;
 
 export default class Microcontroller extends Component {
   static propTypes = {

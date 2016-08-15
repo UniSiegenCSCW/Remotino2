@@ -1,7 +1,7 @@
-import ReplayControls from '../components/ReplayControls';
-import * as MicrocontrollerActions from '../actions/microcontroller';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import ReplayControls from '../components/ReplayControls';
+import * as MicrocontrollerActions from '../actions/microcontroller';
 
 function mapStateToProps(state) {
   return {

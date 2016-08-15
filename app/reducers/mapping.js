@@ -1,8 +1,5 @@
-import {
-  IDENTIFIED_BOARD,
-} from '../actions/microcontroller';
-
 import update from 'react/lib/update';
+import { IDENTIFIED_BOARD } from '../actions/microcontroller';
 
 const mapping = (state = { name: 'UNKNOWN DEVICE' }, action) => {
   switch (action.type) {

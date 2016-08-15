@@ -1,3 +1,4 @@
+import { difference, equals } from 'ramda';
 import ArduinoProMicro from './boards/Arduino_Pro_Micro.json';
 import ArduinoZero from './boards/Arduino_Zero.json';
 import ArduinoMicro from './boards/Arduino_Micro.json';
@@ -11,7 +12,6 @@ import ArduinoProMini from './boards/Arduino_Pro_Mini.json';
 import ArduinoNano from './boards/Arduino_Nano.json';
 import ArduinoMega from './boards/Arduino_Mega.json';
 import ArduinoYun from './boards/Arduino_Yun.json';
-import { difference, equals } from 'ramda';
 
 export function identify(board) {
   const boards = [
