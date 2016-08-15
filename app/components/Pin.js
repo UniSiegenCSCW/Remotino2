@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { MODE_NAMES, MODES } from '../reducers/microcontrollerEnums';
-import { intersection, propOr } from 'ramda';
+import { intersection, contains, propOr } from 'ramda';
 import DigitalInput from './Pin/DigitalInput';
 import AnalogInput from './Pin/AnalogInput';
 import DigitalOutput from './Pin/DigitalOutput';
@@ -26,7 +26,7 @@ export default class Pin extends Component {
       analogWrite,
       pin
     } = this.props;
-    const { id, mode, name, categories, values, enabled } = pin;
+    const { id, mode, name, values, enabled } = pin;
 
     const supportedModes = intersection(
       pin.supportedModes,
@@ -100,14 +100,62 @@ export default class Pin extends Component {
       );
     };
 
+
+    const digitalIcons = () => {
+      if (contains(MODES.INPUT, supportedModes) && contains(MODES.OUTPUT, supportedModes)) {
+        return (
+          <div key="digital" className="pin__tag">
+            Digital In / Out
+          </div>
+        );
+      } else if (contains(MODES.INPUT, supportedModes)) {
+        return (
+          <div key="digital" className="pin__tag">
+            Digital In
+          </div>
+        );
+      } else if (contains(MODES.OUTPUT, supportedModes)) {
+        return (
+          <div key="digital" className="pin__tag">
+            Digital Out
+          </div>
+        );
+      }
+    };
+
+    const analogIcons = () => {
+      console.log(supportedModes);
+      if (contains(MODES.ANALOG, supportedModes) && contains(MODES.PWM, supportedModes)) {
+        return (
+          <div key="analog" className="pin__tag">
+            Analog In / Out
+          </div>
+        );
+      } else if (contains(MODES.ANALOG, supportedModes)) {
+        return (
+          <div key="analog" className="pin__tag">
+            Analog In
+          </div>
+        );
+      } else if (contains(MODES.PWM, supportedModes)) {
+        return (
+          <div key="analog" className="pin__tag">
+            Analog Out
+          </div>
+        );
+      }
+    };
+
+    // {filteredCategories.map((category) =>
+    //   <div key={category} className="pin__tag">{category}</div>
+    // )}
     return (
       <div className={pinClass}>
         <div className="pin__header">
           <div className="pin__header__left">
             <h2 className="pin__name">{name}</h2>
-            {categories.map((category) =>
-              <div key={category} className="pin__tag">{category}</div>
-            )}
+            {digitalIcons()}
+            {analogIcons()}
           </div>
           <div className="pin__header__right">
             {visibilityControls(enabled)}
