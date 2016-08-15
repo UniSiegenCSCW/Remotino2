@@ -120,7 +120,7 @@ export default class Pin extends Component {
           </div>
         );
       } else {
-        return <div></div>;
+        return null;
       }
     };
 
@@ -145,7 +145,7 @@ export default class Pin extends Component {
           </div>
         );
       } else {
-        return <div></div>;
+        return null;
       }
     };
 
