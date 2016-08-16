@@ -120,10 +120,11 @@ export default class Pin extends Component {
           </div>
         );
       }
+
+      return null;
     };
 
     const analogIcons = () => {
-      console.log(supportedModes);
       if (contains(MODES.ANALOG, supportedModes) && contains(MODES.PWM, supportedModes)) {
         return (
           <div key="analog" className="pin__tag">
@@ -143,6 +144,8 @@ export default class Pin extends Component {
           </div>
         );
       }
+
+      return null;
     };
 
     // {filteredCategories.map((category) =>
