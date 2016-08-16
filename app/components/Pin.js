@@ -119,8 +119,6 @@ export default class Pin extends Component {
             Digital Out
           </div>
         );
-      } else {
-        return <div></div>;
       }
     };
 
@@ -144,8 +142,6 @@ export default class Pin extends Component {
             Analog Out
           </div>
         );
-      } else {
-        return <div></div>;
       }
     };
 
