@@ -52,7 +52,15 @@ export default class Pin extends Component {
       </div>
     );
 
-    const pinClass = pin.isAnalogPin ? 'pin pin--analog' : 'pin pin--digital';
+    let pinClass = 'pin';
+    if (pin.isAnalogPin) {
+      pinClass += ' pin--analog';
+    } else {
+      pinClass += ' pin--digital';
+    }
+    if (!enabled) {
+      pinClass += ' pin--disabled';
+    }
 
     const pinControls = () => {
       switch (mode) {
