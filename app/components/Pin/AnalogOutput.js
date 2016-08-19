@@ -36,7 +36,7 @@ export default class DigitalInput extends Component {
               this.handleChange(e.target.value);
               write(e.target.value * 2.55); // map from 0..100 to 0..255
             }}
-          /> % ({Math.round(value * 2.55)})
+          />% (raw: {Math.round(value * 2.55)})
         </p>
         <input
           type="range"

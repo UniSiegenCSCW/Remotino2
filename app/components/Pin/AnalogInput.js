@@ -21,7 +21,7 @@ export default class DigitalInput extends Component {
       <div>
         <p className="nomargin">
           Value: {Math.round(values[0].y)}%
-          ({Math.round(values[0].y * 10.23)})
+          (raw: {Math.round(values[0].y * 10.23)})
         </p>
         <AreaChart
           data={data}
