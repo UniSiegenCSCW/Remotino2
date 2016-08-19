@@ -114,11 +114,11 @@ export function connectToBoard(port) {
     board = boards[port].board;
 
     // Disconnect all other boards
-    values(boards).forEach((b) => {
-      if (b.board.port !== port) {
-        b.board.io.transport.close();
-      }
-    });
+    // values(boards).forEach((b) => {
+    //   if (b.board.port !== port) {
+    //     b.board.io.transport.close();
+    //   }
+    // });
 
     dispatch(connectedToBoard());
 
