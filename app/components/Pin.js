@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import { intersection, contains, propOr } from 'ramda';
 import FontAwesome from 'react-fontawesome';
 import { MODE_NAMES, MODES } from '../reducers/microcontrollerEnums';
@@ -16,6 +17,7 @@ export default class Pin extends Component {
     setEnabled: PropTypes.func.isRequired,
     digitalWrite: PropTypes.func.isRequired,
     analogWrite: PropTypes.func.isRequired,
+    scrollIntoView: PropTypes.func.isRequired,
   };
 
   render() {
@@ -24,7 +26,8 @@ export default class Pin extends Component {
       setEnabled,
       digitalWrite,
       analogWrite,
-      pin
+      pin,
+      scrollIntoView,
     } = this.props;
     const { id, mode, name, values, enabled } = pin;
 
@@ -39,7 +42,11 @@ export default class Pin extends Component {
         Mode:
         <select
           value={pin.mode}
-          onChange={event => changeMode(pin, event.target.value)}
+          onChange={event => {
+            // TODO: find a way to do this without using timeouts
+            setTimeout(() => scrollIntoView(ReactDOM.findDOMNode(this)), 100);
+            changeMode(pin, event.target.value);
+          }}
           disabled={supportedModes.length === 0}
         >
           {supportedModes.map((supportedMode) => (

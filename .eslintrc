@@ -33,6 +33,7 @@
     "react/no-string-refs": 0,
     "no-extra-boolean-cast": 0,
     "import/prefer-default-export": 0,
+    "react/no-find-dom-node": 0,
   },
 
   "plugins": [

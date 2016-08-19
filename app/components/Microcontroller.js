@@ -1,20 +1,17 @@
 import React, { Component, PropTypes } from 'react';
-import Pin from '../containers/Pin';
+import PinList from '../containers/PinList';
 import './Microcontroller.sass';
 import Timeline from '../containers/Timeline';
 import ImportExport from '../containers/ImportExport';
-// import FontAwesome from 'react-fontawesome';
 
 export default class Microcontroller extends Component {
   static propTypes = {
-    pins: PropTypes.array.isRequired,
     visibilityFilter: PropTypes.object.isRequired,
     setVisibilityFilter: PropTypes.func.isRequired,
   };
 
   render() {
     const {
-      pins,
       visibilityFilter,
       setVisibilityFilter,
     } = this.props;
@@ -85,9 +82,7 @@ export default class Microcontroller extends Component {
             <ImportExport />
           </div>
         </header>
-        <div className="pin-list">
-          {pins.map((pin) => <Pin key={pin.id} pin={pin} />)}
-        </div>
+        <PinList />
         <div className="replay">
           <Timeline />
         </div>
