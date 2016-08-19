@@ -10,7 +10,7 @@ function mapStateToProps(state) {
     id: index,
     start: event.time,
     content: event.description,
-    type: 'point',
+    // type: 'point',
   }));
 
   const options = {
@@ -28,8 +28,8 @@ function mapStateToProps(state) {
     snap: (date, scale) => {
       const factors = {
         millisecond: 20,
-        second: 200,
-        minute: 10 * 1000,
+        second: 100,
+        minute: 5 * 1000,
         hour: 10 * 60 * 1000,
         weekday: 60 * 60 * 1000,
         day: 60 * 60 * 1000,
