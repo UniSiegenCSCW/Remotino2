@@ -44,7 +44,7 @@ export default class Pin extends Component {
           value={pin.mode}
           onChange={event => {
             // TODO: find a way to do this without using timeouts
-            setTimeout(() => scrollIntoView(ReactDOM.findDOMNode(this)), 100);
+            setTimeout(() => scrollIntoView(ReactDOM.findDOMNode(this)), 300);
             changeMode(pin, event.target.value);
           }}
           disabled={supportedModes.length === 0}

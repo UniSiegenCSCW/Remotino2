@@ -98,10 +98,10 @@ export default class Microcontroller extends Component {
     return (
       <div className="header-right">
         <Link onClick={handleImport}>
-          <FontAwesome name="upload" /> Import
+          <FontAwesome name="upload" /> Load
         </Link>
         <Link onClick={handleExport}>
-          <FontAwesome name="download" /> Export
+          <FontAwesome name="download" /> Save
         </Link>
       </div>
     );
