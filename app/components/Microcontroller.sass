@@ -66,6 +66,26 @@ $red: #e74c3c
 .link--disabled
   opacity: .4
 
+.link--red
+  color: red
+  animation: blink-animation 1s ease-in infinite
+  transition-duration: 0
+
+@keyframes blink-animation 
+  // 10%
+    color: red
+  49%
+    color: black
+  // 60%
+    // color: black
+  // 99%
+    // color: black
+// @-webkit-keyframes blink-animation {
+//   to {
+//     visibility: hidden;
+//   }
+// }
+
 .filter-section
   display: inline-block
   margin-left: 1em

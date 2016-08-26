@@ -95,28 +95,28 @@ export default class ReplayControls extends Component {
     const recordButton = () => (
       !replay.recording ?
         <Link onClick={startRecordingWrapper}>
-          <FontAwesome name="circle" /> Record
+          <FontAwesome name="circle" /> Start Recording
         </Link> :
-        <Link onClick={stopRecordingWrapper}>
-          <FontAwesome name="stop" /> Stop
+        <Link onClick={stopRecordingWrapper} className="link--red">
+          <FontAwesome name="stop" /> Stop Recording
         </Link>
     );
 
     const replayButton = () => {
       if (replay.recording) {
         return (
-          <p className="link link--disabled"><FontAwesome name="play" /> Replay</p>
+          <p className="link link--disabled"><FontAwesome name="play" /> Play</p>
         );
       } else if (replay.playing) {
         return (
           <Link onClick={stopReplayWrapper} >
-            <FontAwesome name="pause" /> Pause
+            <FontAwesome name="stop" /> Stop
           </Link>
         );
       } else {
         return (
           <Link onClick={startReplayWrapper} >
-            <FontAwesome name="play" /> Replay
+            <FontAwesome name="play" /> Play
           </Link>
         );
       }
