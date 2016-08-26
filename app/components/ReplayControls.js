@@ -92,15 +92,25 @@ export default class ReplayControls extends Component {
       setTimeout(fitTimeline, 100);
     };
 
-    const recordButton = () => (
-      !replay.recording ?
-        <Link onClick={startRecordingWrapper}>
-          <FontAwesome name="circle" /> Start Recording
-        </Link> :
-        <Link onClick={stopRecordingWrapper} className="link--red">
-          <FontAwesome name="stop" /> Stop Recording
-        </Link>
-    );
+    const recordButton = () => {
+      if (replay.playing) {
+        return (
+          <p className="link link--disabled"><FontAwesome name="circle" /> Start Recording</p>
+        );
+      } else if (replay.recording) {
+        return (
+          <Link onClick={stopRecordingWrapper} className="link--red">
+            <FontAwesome name="stop" /> Stop Recording
+          </Link>
+        );
+      } else {
+        return (
+          <Link onClick={startRecordingWrapper}>
+            <FontAwesome name="circle" /> Start Recording
+          </Link>
+        );
+      }
+    };
 
     const replayButton = () => {
       if (replay.recording) {
@@ -122,13 +132,25 @@ export default class ReplayControls extends Component {
       }
     };
 
+    const removeAllItemsButton = () => {
+      if (replay.recording || replay.playing) {
+        return (
+          <p className="link link--disabled"><FontAwesome name="trash" /> Clear events</p>
+        );
+      } else {
+        return (
+          <Link onClick={removeAllItems} >
+            <FontAwesome name="trash" /> Clear events
+          </Link>
+        );
+      }
+    };
+
     return (
       <div className="replay-controls">
         {recordButton()}
         {replayButton()}
-        <Link onClick={removeAllItems} >
-          <FontAwesome name="trash" /> Clear events
-        </Link>
+        {removeAllItemsButton()}
         <Link onClick={fitTimeline}>
           <FontAwesome name="arrows-h" /> Focus recorded events
         </Link>
