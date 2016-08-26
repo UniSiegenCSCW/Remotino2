@@ -68,21 +68,6 @@ export default class ReplayControls extends Component {
       }
     };
 
-    const stopRecordingWrapper = () => {
-      stopRecording();
-      setTimeout(fitTimeline, 100);
-    };
-
-    const recordButton = () => (
-      !replay.recording ?
-        <Link onClick={startRecording}>
-          <FontAwesome name="circle" /> Record
-        </Link> :
-        <Link onClick={stopRecordingWrapper}>
-          <FontAwesome name="stop" /> Stop
-        </Link>
-    );
-
     const startReplayWrapper = () => {
       const time = replay.end - replay.start;
       const fn = () => replayEvents(replay.events, replay.start, replay.end);
@@ -97,15 +82,45 @@ export default class ReplayControls extends Component {
       stopReplay();
     };
 
-    const replayButton = () => (
-      !replay.playing ?
-        <Link onClick={startReplayWrapper} >
-          <FontAwesome name="play" /> Replay
+    const startRecordingWrapper = () => {
+      stopReplayWrapper();
+      startRecording();
+    };
+
+    const stopRecordingWrapper = () => {
+      stopRecording();
+      setTimeout(fitTimeline, 100);
+    };
+
+    const recordButton = () => (
+      !replay.recording ?
+        <Link onClick={startRecordingWrapper}>
+          <FontAwesome name="circle" /> Record
         </Link> :
-        <Link onClick={stopReplayWrapper} >
-          <FontAwesome name="pause" /> Pause
+        <Link onClick={stopRecordingWrapper}>
+          <FontAwesome name="stop" /> Stop
         </Link>
     );
+
+    const replayButton = () => {
+      if (replay.recording) {
+        return (
+          <p className="link link--disabled"><FontAwesome name="play" /> Replay</p>
+        );
+      } else if (replay.playing) {
+        return (
+          <Link onClick={stopReplayWrapper} >
+            <FontAwesome name="pause" /> Pause
+          </Link>
+        );
+      } else {
+        return (
+          <Link onClick={startReplayWrapper} >
+            <FontAwesome name="play" /> Replay
+          </Link>
+        );
+      }
+    };
 
     return (
       <div className="replay-controls">
