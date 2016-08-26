@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import FontAwesome from 'react-fontawesome';
+import { sort } from 'ramda';
 import Link from './Link';
 import {
   CHANGE_MODE,
@@ -52,7 +53,7 @@ export default class ReplayControls extends Component {
     };
 
     const replayEvents = (events, start, end) => {
-      const [head, ...tail] = events;
+      const [head, ...tail] = sort((a, b) => (a.time - b.time), events);
 
       // Exit condition, no events
       if (head === undefined) return;
@@ -70,9 +71,8 @@ export default class ReplayControls extends Component {
 
     const startReplayWrapper = () => {
       const time = replay.end - replay.start;
-      const fn = () => replayEvents(replay.events, replay.start, replay.end);
-      fn();
-      this.loop = setInterval(fn, time);
+      this.loop = setTimeout(startReplayWrapper, time);
+      replayEvents(replay.events, replay.start, replay.end);
       startReplay();
     };
 
