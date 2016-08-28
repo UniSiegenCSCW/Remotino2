@@ -21,14 +21,9 @@ export default class Timeline extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    const {
-      items,
-      options,
-      start,
-      end,
-    } = this.props;
+    const { items, options, start, end } = this.props;
 
-    const timeChange = (start !== nextProps.start || end !== nextProps.end);
+    const timeChange = (start !== nextProps.start) || (end !== nextProps.end);
     const itemsChange = items !== nextProps.items;
     const optionsChange = options !== nextProps.options;
 
@@ -96,6 +91,12 @@ export default class Timeline extends Component {
     if (!!$el) {
       $el.setOptions(fullOptions);
       $el.setItems(timelineItems);
+      try {
+        $el.getCustomTime('replay_current');
+        $el.setCustomTime(new Date(), 'replay_current');
+      } catch (err) {
+        $el.addCustomTime(new Date(), 'replay_current');
+      }
     } else {
       $el = this.TimelineElement = new vis.Timeline(container, timelineItems, options);
     }

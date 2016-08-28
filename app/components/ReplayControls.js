@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import FontAwesome from 'react-fontawesome';
 import { sort } from 'ramda';
+import Translate from 'react-translate-component';
+import '../utils/l10n.js';
 import Link from './Link';
 import {
   CHANGE_MODE,
@@ -15,7 +17,7 @@ export default class ReplayControls extends Component {
     stopRecording: PropTypes.func.isRequired,
     startReplay: PropTypes.func.isRequired,
     stopReplay: PropTypes.func.isRequired,
-    removeAllItems: PropTypes.func.isRequired,
+    // removeAllItems: PropTypes.func.isRequired,
     analogWrite: PropTypes.func.isRequired,
     digitalWrite: PropTypes.func.isRequired,
     changeMode: PropTypes.func.isRequired,
@@ -32,7 +34,7 @@ export default class ReplayControls extends Component {
       digitalWrite,
       analogWrite,
       changeMode,
-      removeAllItems,
+      // removeAllItems,
       fitTimeline,
     } = this.props;
 
@@ -95,18 +97,20 @@ export default class ReplayControls extends Component {
     const recordButton = () => {
       if (replay.playing) {
         return (
-          <p className="link link--disabled"><FontAwesome name="circle" /> Start Recording</p>
+          <p className="link link--disabled">
+            <FontAwesome name="circle" /> <Translate content="replay_controls.start_recording" />
+          </p>
         );
       } else if (replay.recording) {
         return (
           <Link onClick={stopRecordingWrapper} className="link--red">
-            <FontAwesome name="stop" /> Stop Recording
+            <FontAwesome name="stop" /> <Translate content="replay_controls.stop_recording" />
           </Link>
         );
       } else {
         return (
           <Link onClick={startRecordingWrapper}>
-            <FontAwesome name="circle" /> Start Recording
+            <FontAwesome name="circle" /> <Translate content="replay_controls.start_recording" />
           </Link>
         );
       }
@@ -115,44 +119,47 @@ export default class ReplayControls extends Component {
     const replayButton = () => {
       if (replay.recording) {
         return (
-          <p className="link link--disabled"><FontAwesome name="play" /> Play</p>
+          <p className="link link--disabled">
+            <FontAwesome name="play" /> <Translate content="replay_controls.start_replay" />
+          </p>
         );
       } else if (replay.playing) {
         return (
           <Link onClick={stopReplayWrapper} >
-            <FontAwesome name="stop" /> Stop
+            <FontAwesome name="stop" /> <Translate content="replay_controls.stop_replay" />
           </Link>
         );
       } else {
         return (
           <Link onClick={startReplayWrapper} >
-            <FontAwesome name="play" /> Play
+            <FontAwesome name="play" /> <Translate content="replay_controls.start_replay" />
           </Link>
         );
       }
     };
 
-    const removeAllItemsButton = () => {
-      if (replay.recording || replay.playing) {
-        return (
-          <p className="link link--disabled"><FontAwesome name="trash" /> Clear events</p>
-        );
-      } else {
-        return (
-          <Link onClick={removeAllItems} >
-            <FontAwesome name="trash" /> Clear events
-          </Link>
-        );
-      }
-    };
+    // const removeAllItemsButton = () => {
+    //   if (replay.recording || replay.playing) {
+    //     return (
+    //       <p className="link link--disabled">
+    //         <FontAwesome name="trash" /> <Translate content="replay_controls.clear_events" />
+    //       </p>
+    //     );
+    //   } else {
+    //     return (
+    //       <Link onClick={removeAllItems} >
+    //         <FontAwesome name="trash" /> <Translate content="replay_controls.clear_events" />
+    //       </Link>
+    //     );
+    //   }
+    // };
 
     return (
       <div className="replay-controls">
         {recordButton()}
         {replayButton()}
-        {removeAllItemsButton()}
         <Link onClick={fitTimeline}>
-          <FontAwesome name="arrows-h" /> Focus recorded events
+          <FontAwesome name="arrows-h" /> <Translate content="replay_controls.focus_events" />
         </Link>
       </div>
     );

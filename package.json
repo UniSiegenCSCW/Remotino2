@@ -102,6 +102,7 @@
     "webpack-merge": "^0.14.0"
   },
   "dependencies": {
+    "counterpart": "^0.17.5",
     "css-modules-require-hook": "^4.0.1",
     "d3": "^3.5.17",
     "electron-debug": "^1.0.1",
@@ -114,9 +115,11 @@
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-fontawesome": "^1.1.0",
+    "react-interpolate-component": "^0.10.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.6.0",
     "react-router-redux": "^4.0.5",
+    "react-translate-component": "^0.13.0",
     "redux": "^3.5.2",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0",

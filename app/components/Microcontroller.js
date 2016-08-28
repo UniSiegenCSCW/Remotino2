@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import Translate from 'react-translate-component';
+import '../utils/l10n.js';
 import PinList from '../containers/PinList';
 import './Microcontroller.sass';
 import Timeline from '../containers/Timeline';
@@ -32,7 +34,7 @@ export default class Microcontroller extends Component {
             <div>
               <div className="header--filter">
                 <div className="filter-description">
-                  <p>Filter Pins:</p>
+                  <p><Translate content="microcontroller.filter_pins" />:</p>
                 </div>
                 <div className="filter-section">
                   <input
@@ -41,7 +43,7 @@ export default class Microcontroller extends Component {
                     checked={showDisabled}
                     onChange={setFilter('showDisabled')}
                   />
-                  Hidden
+                  <Translate content="microcontroller.hidden" />
                 </div>
                 <div className="filter-section">
                   <div>
@@ -49,14 +51,14 @@ export default class Microcontroller extends Component {
                       type="checkbox" name="DigitalIn"
                       checked={showDigitalIn} onChange={setFilter('showDigitalIn')}
                     />
-                    Digital In
+                    <Translate content="microcontroller.digital_in" />
                   </div>
                   <div>
                     <input
                       type="checkbox" name="DigitalOut"
                       checked={showDigitalOut} onChange={setFilter('showDigitalOut')}
                     />
-                    Digital Out
+                    <Translate content="microcontroller.digital_out" />
                   </div>
                 </div>
                 <div className="filter-section">
@@ -65,14 +67,14 @@ export default class Microcontroller extends Component {
                       type="checkbox" name="AnalogIn"
                       checked={showAnalogIn} onChange={setFilter('showAnalogIn')}
                     />
-                    Analog In
+                    <Translate content="microcontroller.analog_in" />
                   </div>
                   <div>
                     <input
                       type="checkbox" name="AnalogOut"
                       checked={showAnalogOut} onChange={setFilter('showAnalogOut')}
                     />
-                    Analog Out
+                    <Translate content="microcontroller.analog_out" />
                   </div>
                 </div>
               </div>

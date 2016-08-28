@@ -3,6 +3,8 @@ import { map, pick, values } from 'ramda';
 import FontAwesome from 'react-fontawesome';
 import { remote } from 'electron';
 import jsonfile from 'jsonfile';
+import Translate from 'react-translate-component';
+import '../utils/l10n.js';
 import Link from '../components/Link';
 
 const { dialog } = remote;
@@ -98,10 +100,10 @@ export default class Microcontroller extends Component {
     return (
       <div className="header-right">
         <Link onClick={handleImport}>
-          <FontAwesome name="upload" /> Load
+          <FontAwesome name="upload" /> <Translate content="import_export.load" />
         </Link>
         <Link onClick={handleExport}>
-          <FontAwesome name="download" /> Save
+          <FontAwesome name="download" /> <Translate content="import_export.save" />
         </Link>
       </div>
     );

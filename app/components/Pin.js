@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { intersection, contains, propOr } from 'ramda';
 import FontAwesome from 'react-fontawesome';
+import Translate from 'react-translate-component';
+import '../utils/l10n.js';
 import { MODE_NAMES, MODES } from '../reducers/microcontrollerEnums';
 import DigitalInput from './Pin/DigitalInput';
 import AnalogInput from './Pin/AnalogInput';
@@ -35,11 +37,20 @@ export default class Pin extends Component {
       pin.supportedModes,
       Object.keys(MODE_NAMES).map(k => parseInt(k, 10))
     );
-    const getModeDescriptionForModeNumber = (num) => propOr('Not Set', num, MODE_NAMES);
+
+    const MODE_NAMES_TRANSLATED = {
+      0: <Translate content="microcontroller.digital_in" />,
+      1: <Translate content="microcontroller.digital_out" />,
+      2: <Translate content="microcontroller.analog_in" />,
+      3: <Translate content="microcontroller.analog_out" />,
+      16: <Translate content="microcontroller.not_set" />,
+    };
+
+    const getModeDescriptionForModeNumber = (num) => propOr('Not Set', num, MODE_NAMES_TRANSLATED);
 
     const modeSelector = (
       <div>
-        Mode:
+        <Translate content="pin.mode" />:
         <select
           value={pin.mode}
           onChange={event => {
@@ -104,34 +115,35 @@ export default class Pin extends Component {
       if (e) {
         return (
           <Link className="" onClick={() => setEnabled(pin.id, false)}>
-            <FontAwesome name="minus-square" /> Hide
+            <FontAwesome name="minus-square" /> <Translate content="pin.hide" />
+          </Link>
+        );
+      } else {
+        return (
+          <Link className="" onClick={() => setEnabled(pin.id, true)}>
+            <FontAwesome name="plus-square" /> <Translate content="pin.show" />
           </Link>
         );
       }
-      return (
-        <Link className="" onClick={() => setEnabled(pin.id, true)}>
-          <FontAwesome name="plus-square" /> Show
-        </Link>
-      );
     };
 
     const digitalIcons = () => {
       if (contains(MODES.INPUT, supportedModes) && contains(MODES.OUTPUT, supportedModes)) {
         return (
           <div key="digital" className="pin__tag">
-            Digital In / Out
+            <Translate content="microcontroller.digital_in_out" />
           </div>
         );
       } else if (contains(MODES.INPUT, supportedModes)) {
         return (
           <div key="digital" className="pin__tag">
-            Digital In
+            <Translate content="microcontroller.digital_in" />
           </div>
         );
       } else if (contains(MODES.OUTPUT, supportedModes)) {
         return (
           <div key="digital" className="pin__tag">
-            Digital Out
+            <Translate content="microcontroller.digital_out" />
           </div>
         );
       }

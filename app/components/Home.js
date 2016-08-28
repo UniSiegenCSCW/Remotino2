@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import FontAwesome from 'react-fontawesome';
+import Translate from 'react-translate-component';
+import '../utils/l10n.js';
 import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import Microcontroller from '../containers/Microcontroller';
 import Link from '../components/Link';
+import LocaleSwitcher from '../components/LocaleSwitcher';
 import './Home.sass';
 
 export default class Home extends Component {
@@ -30,10 +33,11 @@ export default class Home extends Component {
       case CONNECTION_STATE.NOT_CONNECTED:
         return (
           <div className="port-list">
+            <LocaleSwitcher />
             <Link onClick={detectPorts}>
               {ports.refreshing ?
                 <FontAwesome spin name="spinner" /> :
-                <FontAwesome name="refresh" />} Refresh
+                <FontAwesome name="refresh" />} <Translate content="home.refresh" />
             </Link>
             <ul>
             {
