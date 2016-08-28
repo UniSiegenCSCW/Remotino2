@@ -9,7 +9,7 @@ export default class LocaleSwitcher extends Component {
   render() {
     return (
       <p>
-        <span>Switch Locale:</span>
+        <span>Language / Sprache:</span>
 
         <select defaultValue={counterpart.getLocale()} onChange={this.handleChange}>
           <option>en</option>
