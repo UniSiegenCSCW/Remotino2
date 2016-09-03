@@ -9,6 +9,15 @@ let board;
 const boards = {};
 const sensors = {};
 
+export const CHANGE_VALUE = 'CHANGE_VALUE';
+export function changeValue(id, value) {
+  return {
+    type: CHANGE_VALUE,
+    id,
+    value,
+  };
+}
+
 export const DETECTED_PORT = 'DETECTED_PORT';
 export const REJECTED_PORT = 'REJECTED_PORT';
 export const REFRESHING_PORTS = 'REFRESHING_PORTS';
@@ -218,12 +227,22 @@ export function setEnabled(id, value) {
   };
 }
 
+export const SET_SHOWING_CODE = 'SET_SHOWING_CODE';
+export function setShowingCode(id, value) {
+  return {
+    type: SET_SHOWING_CODE,
+    id,
+    value,
+  };
+}
+
 export const DIGITAL_WRITE = 'DIGITAL_WRITE';
 export function digitalWrite(id, value, name, replay = true) {
   const pinId = parseInt(id, 10);
   board.digitalWrite(pinId, value);
 
   return (dispatch) => {
+    dispatch(changeValue(pinId, value));
     if (replay) {
       dispatch(addReplayEvent({ type: DIGITAL_WRITE, id, value, name },
                               `${name}: Digital write ${value}`));
@@ -237,12 +256,14 @@ export function analogWrite(id, value, name, replay = true) {
   board.analogWrite(pinId, value);
 
   return (dispatch) => {
+    dispatch(changeValue(pinId, value));
     if (replay) {
       dispatch(addReplayEvent({ type: ANALOG_WRITE, id, value, name },
                               `${name}: Analog write ${value}`));
     }
   };
 }
+
 
 export const START_RECORDING = 'START_RECORDING';
 export function startRecording() {
@@ -301,3 +322,4 @@ export function moveItem(id, start, end) {
     end,
   };
 }
+

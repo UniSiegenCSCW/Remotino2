@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 import { intersection, contains, propOr } from 'ramda';
 import FontAwesome from 'react-fontawesome';
 import Translate from 'react-translate-component';
+import SyntaxHighlighter from 'react-syntax-highlighter';
 import '../utils/l10n.js';
 import { MODE_NAMES, MODES } from '../reducers/microcontrollerEnums';
+import { getCode } from '../utils/ino';
 import DigitalInput from './Pin/DigitalInput';
 import AnalogInput from './Pin/AnalogInput';
 import DigitalOutput from './Pin/DigitalOutput';
@@ -17,6 +19,7 @@ export default class Pin extends Component {
     pin: PropTypes.object.isRequired,
     changeMode: PropTypes.func.isRequired,
     setEnabled: PropTypes.func.isRequired,
+    setShowingCode: PropTypes.func.isRequired,
     digitalWrite: PropTypes.func.isRequired,
     analogWrite: PropTypes.func.isRequired,
     scrollIntoView: PropTypes.func.isRequired,
@@ -26,12 +29,13 @@ export default class Pin extends Component {
     const {
       changeMode,
       setEnabled,
+      setShowingCode,
       digitalWrite,
       analogWrite,
       pin,
       scrollIntoView,
     } = this.props;
-    const { id, mode, name, values, enabled } = pin;
+    const { id, mode, name, values, enabled, showingCode } = pin;
 
     const supportedModes = intersection(
       pin.supportedModes,
@@ -97,13 +101,13 @@ export default class Pin extends Component {
         case MODES.OUTPUT:
           return (
             <div className="pin__controls">
-              <DigitalOutput write={(value) => digitalWrite(id, value, name)} />
+              <DigitalOutput write={(value) => digitalWrite(id, value, name)} value={pin.value} />
             </div>
           );
         case MODES.PWM:
           return (
             <div className="pin__controls">
-              <AnalogOutput write={(value) => analogWrite(id, value, name)} />
+              <AnalogOutput write={(value) => analogWrite(id, value, name)} value={pin.value} />
             </div>
           );
         default:
@@ -155,19 +159,19 @@ export default class Pin extends Component {
       if (contains(MODES.ANALOG, supportedModes) && contains(MODES.PWM, supportedModes)) {
         return (
           <div key="analog" className="pin__tag">
-            Analog In / Out
+            <Translate content="microcontroller.analog_in_out" />
           </div>
         );
       } else if (contains(MODES.ANALOG, supportedModes)) {
         return (
           <div key="analog" className="pin__tag">
-            Analog In
+            <Translate content="microcontroller.analog_in" />
           </div>
         );
       } else if (contains(MODES.PWM, supportedModes)) {
         return (
           <div key="analog" className="pin__tag">
-            Analog Out
+            <Translate content="microcontroller.analog_out" />
           </div>
         );
       }
@@ -175,6 +179,19 @@ export default class Pin extends Component {
       return null;
     };
 
+    const body = (showingCode_) => {
+      if (showingCode_) {
+        return (
+          <div className="pin__controls">
+            <SyntaxHighlighter language="cpp">
+              {getCode(pin)}
+            </SyntaxHighlighter>
+          </div>
+        );
+      } else {
+        return pinControls(mode);
+      }
+    };
     // {filteredCategories.map((category) =>
     //   <div key={category} className="pin__tag">{category}</div>
     // )}
@@ -187,13 +204,16 @@ export default class Pin extends Component {
             {analogIcons()}
           </div>
           <div className="pin__header__right">
+            <Link onClick={() => setShowingCode(pin.id, !showingCode)}>
+              <FontAwesome name="code" />
+            </Link>
             {visibilityControls(enabled)}
           </div>
         </div>
         <div className="pin__settings">
           {modeSelector}
         </div>
-        {pinControls(mode)}
+        {body(showingCode)}
       </div>
     );
   }

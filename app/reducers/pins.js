@@ -5,7 +5,9 @@ import {
   IDENTIFIED_BOARD,
   PIN_VALUE_CHANGED,
   SET_ENABLED,
+  SET_SHOWING_CODE,
   UPDATE_PINS,
+  CHANGE_VALUE,
 } from '../actions/microcontroller';
 
 const createPin = (action) => (
@@ -14,8 +16,10 @@ const createPin = (action) => (
       mode: action.mode,
       categories: [],
       values: [],
+      value: 0,
       report: action.report,
       enabled: true,
+      showingCode: false,
     }, action)
 );
 
@@ -33,6 +37,10 @@ const pins = (state = {}, action) => {
       return update(state, { [action.id]: { mode: { $set: action.mode } } });
     case SET_ENABLED:
       return update(state, { [action.id]: { enabled: { $set: action.value } } });
+    case SET_SHOWING_CODE:
+      return update(state, { [action.id]: { showingCode: { $set: action.value } } });
+    case CHANGE_VALUE:
+      return update(state, { [action.id]: { value: { $set: action.value } } });
     case PIN_VALUE_CHANGED:
       return update(
         state,
