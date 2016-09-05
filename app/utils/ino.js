@@ -5,16 +5,16 @@ import { MODES } from '../reducers/microcontrollerEnums';
 const pinName = (pin) => (pin.name.replace(' ', ''));
 const pinInit = (pin) => {
   if (pin.mode === MODES.ANALOG) {
-    return `const int ${pinName(pin)} = ${pin.id};`;
-  } else {
     // For analog pins pinName(pin) would be A0, A1, ...
     // and this constants are defined by default
     return '';
+  } else {
+    return `const int ${pinName(pin)} = ${pin.id};`;
   }
 };
 
 function pinValue(pin) {
-  if (pin.mode === MODES.INPUT) {
+  if (pin.mode === MODES.INPUT || pin.mode === MODES.ANALOG) {
     return `sensor_${pinName(pin)}_state`;
   }
 }
@@ -39,7 +39,7 @@ function digitalOut(pin) {
 function digitalIn(pin) {
   return (
     `${pinInit(pin)}\n\n` +
-    `int ${pinValue(pin)} = 0\n\n` +
+    `int ${pinValue(pin)} = 0;\n\n` +
     '// this runs once when you power the board\n' +
     'void setup() {\n' +
     '  // initialize pin as an input\n' +
@@ -76,7 +76,7 @@ function analogOut(pin) {
 
 function analogIn(pin) {
   return (
-    `int ${pinValue(pin)} = 0\n\n` +
+    `int ${pinValue(pin)} = 0;\n\n` +
     '// this runs once when you power the board\n' +
     'void setup() {\n' +
     '  // initialize pin as an input\n' +
