@@ -323,3 +323,10 @@ export function moveItem(id, start, end) {
   };
 }
 
+export const SET_SHOWING_TIMELINE = 'SET_SHOWING_TIMELINE';
+export function setShowingTimeline(value) {
+  return {
+    type: SET_SHOWING_TIMELINE,
+    value,
+  };
+}

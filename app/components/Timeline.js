@@ -103,12 +103,26 @@ export default class Timeline extends Component {
   }
 
   render() {
+    const { showingTimeline } = this.props;
+
+    const body = () => {
+      if (showingTimeline) {
+        return (
+          <div ref="container" />
+        );
+      } else {
+        return (
+          <div ref="container" style={{ display: 'none' }} />
+        );
+      }
+    };
+
     return (
       <div>
         <div className="controls">
           <ReplayControls fitTimeline={() => { this.TimelineElement.fit(); }} />
         </div>
-        <div ref="container" />
+        {body()}
       </div>
     );
   }

@@ -46,6 +46,7 @@ function mapStateToProps(state) {
     options,
     start: state.replay.start,
     end: state.replay.end,
+    showingTimeline: state.replay.showingTimeline,
   };
 }
 

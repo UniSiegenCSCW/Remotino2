@@ -22,6 +22,7 @@ export default class ReplayControls extends Component {
     digitalWrite: PropTypes.func.isRequired,
     changeMode: PropTypes.func.isRequired,
     fitTimeline: PropTypes.func.isRequired,
+    setShowingTimeline: PropTypes.func.isRequired,
   };
 
   render() {
@@ -36,6 +37,7 @@ export default class ReplayControls extends Component {
       changeMode,
       // removeAllItems,
       fitTimeline,
+      setShowingTimeline,
     } = this.props;
 
     const replayEvent = (event) => {
@@ -153,14 +155,41 @@ export default class ReplayControls extends Component {
     //     );
     //   }
     // };
+    //
+    const visibilityControls = (e) => {
+      if (e) {
+        return (
+          <Link className="" onClick={() => setShowingTimeline(false)}>
+            <FontAwesome name="minus-square" /> <Translate content="timeline.hide" />
+          </Link>
+        );
+      } else {
+        return (
+          <Link className="" onClick={() => setShowingTimeline(true)}>
+            <FontAwesome name="plus-square" /> <Translate content="timeline.show" />
+          </Link>
+        );
+      }
+    };
+
+    const fitTimelineWrapper = () => {
+      if (replay.showingTimeline) {
+        return (
+          <Link onClick={fitTimeline}>
+            <FontAwesome name="arrows-h" /> <Translate content="replay_controls.focus_events" />
+          </Link>
+        );
+      } else {
+        return null;
+      }
+    };
 
     return (
       <div className="replay-controls">
         {recordButton()}
         {replayButton()}
-        <Link onClick={fitTimeline}>
-          <FontAwesome name="arrows-h" /> <Translate content="replay_controls.focus_events" />
-        </Link>
+        {fitTimelineWrapper()}
+        {visibilityControls(replay.showingTimeline)}
       </div>
     );
   }

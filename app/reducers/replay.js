@@ -10,6 +10,7 @@ import {
   MOVE_ITEM,
   ADD_REPLAY_EVENT,
   REMOVE_ALL_ITEMS,
+  SET_SHOWING_TIMELINE,
 } from '../actions/microcontroller';
 
 const initalState = {
@@ -17,7 +18,8 @@ const initalState = {
   playing: false,
   events: [],
   start: undefined,
-  end: undefined
+  end: undefined,
+  showingTimeline: false,
 };
 
 const replay = (state = initalState, action) => {
@@ -78,6 +80,8 @@ const replay = (state = initalState, action) => {
       });
     case REMOVE_ALL_ITEMS:
       return update(state, { events: { $set: [] } });
+    case SET_SHOWING_TIMELINE:
+      return update(state, { showingTimeline: { $set: action.value } });
     default:
       return state;
   }

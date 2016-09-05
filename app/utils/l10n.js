@@ -31,6 +31,10 @@ counterpart.registerTranslations('en', {
     mode: 'Mode',
     hide: 'Hide',
     show: 'Show',
+  },
+  timeline: {
+    hide: 'Hide Timeline',
+    show: 'Show Timeline',
   }
 });
 
@@ -63,7 +67,11 @@ counterpart.registerTranslations('de', {
   },
   pin: {
     mode: 'Modus',
-    hide: 'Verstecken',
+    hide: 'Ausblenden',
     show: 'Anzeigen',
+  },
+  timeline: {
+    hide: 'Timeline ausblenden',
+    show: 'Show anzeigen',
   }
 });
