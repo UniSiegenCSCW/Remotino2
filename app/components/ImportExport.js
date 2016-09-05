@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import fs from 'fs';
 import { map, pick, values } from 'ramda';
 import FontAwesome from 'react-fontawesome';
 import { remote } from 'electron';
@@ -6,6 +7,7 @@ import jsonfile from 'jsonfile';
 import Translate from 'react-translate-component';
 import '../utils/l10n.js';
 import Link from '../components/Link';
+import { getFullCode } from '../utils/ino';
 
 const { dialog } = remote;
 
@@ -97,8 +99,28 @@ export default class Microcontroller extends Component {
       }
     };
 
+    const handleInoExport = () => {
+      const file = dialog.showSaveDialog({
+        filters: [
+          { name: 'Configuration Files', extensions: ['ino'] },
+        ]
+      });
+
+      if (file) {
+        fs.writeFile(file, getFullCode(pins), (err) => {
+          // TODO: use error dialogs
+          if (err) {
+            console.error(err);
+          }
+        });
+      }
+    };
+
     return (
       <div className="header-right">
+        <Link onClick={handleInoExport}>
+          <FontAwesome name="download" /> .ino export
+        </Link>
         <Link onClick={handleImport}>
           <FontAwesome name="upload" /> <Translate content="import_export.load" />
         </Link>
