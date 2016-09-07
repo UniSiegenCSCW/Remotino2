@@ -4,6 +4,7 @@ import Serial from 'serialport';
 import { MODES, MODE_NAMES } from '../reducers/microcontrollerEnums';
 import { identify } from '../utils/boards';
 import { timestamp } from '../utils/utils';
+import { addReplayEvent } from './replay';
 
 let board;
 const boards = {};
@@ -62,28 +63,11 @@ export function detectPorts() {
   };
 }
 
-export const ADD_REPLAY_EVENT = 'ADD_REPLAY_EVENT';
-export function addReplayEvent(replay, description, time = new Date()) {
-  return {
-    type: ADD_REPLAY_EVENT,
-    replay,
-    description,
-    time,
-  };
-}
-
 export const UPDATE_PINS = 'UPDATE_PINS';
 export function updatePins(pins) {
   return {
     type: UPDATE_PINS,
     pins,
-  };
-}
-
-export const CONNECTING_TO_BOARD = 'CONNECTING_TO_BOARD';
-export function connectingToBoard() {
-  return {
-    type: CONNECTING_TO_BOARD,
   };
 }
 
@@ -119,7 +103,6 @@ export function connectToBoard(port) {
   };
 
   return (dispatch) => {
-    // dispatch(connectingToBoard());
     board = boards[port].board;
 
     // Disconnect all other boards
@@ -261,72 +244,5 @@ export function analogWrite(id, value, name, replay = true) {
       dispatch(addReplayEvent({ type: ANALOG_WRITE, id, value, name },
                               `${name}: Analog write ${value}`));
     }
-  };
-}
-
-
-export const START_RECORDING = 'START_RECORDING';
-export function startRecording() {
-  return {
-    type: START_RECORDING,
-    time: new Date(),
-  };
-}
-
-export const STOP_RECORDING = 'STOP_RECORDING';
-export function stopRecording() {
-  return {
-    type: STOP_RECORDING,
-    time: new Date(),
-  };
-}
-
-export const START_REPLAY = 'START_REPLAY';
-export function startReplay() {
-  return { type: START_REPLAY };
-}
-
-export const STOP_REPLAY = 'STOP_REPLAY';
-export function stopReplay() {
-  return { type: STOP_REPLAY };
-}
-
-export const REMOVE_ALL_ITEMS = 'REMOVE_ALL_ITEMS';
-export function removeAllItems() {
-  return { type: REMOVE_ALL_ITEMS };
-}
-
-export const CHANGE_RANGE = 'CHANGE_RANGE';
-export function changeRange(start, end) {
-  return {
-    type: CHANGE_RANGE,
-    start,
-    end,
-  };
-}
-
-export const REMOVE_ITEM = 'REMOVE_ITEM';
-export function removeItem(id) {
-  return {
-    type: REMOVE_ITEM,
-    id,
-  };
-}
-
-export const MOVE_ITEM = 'MOVE_ITEM';
-export function moveItem(id, start, end) {
-  return {
-    type: MOVE_ITEM,
-    id,
-    start,
-    end,
-  };
-}
-
-export const SET_SHOWING_TIMELINE = 'SET_SHOWING_TIMELINE';
-export function setShowingTimeline(value) {
-  return {
-    type: SET_SHOWING_TIMELINE,
-    value,
   };
 }

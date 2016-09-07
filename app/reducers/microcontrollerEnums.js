@@ -1,7 +1,6 @@
 export const CONNECTION_STATE = Object.freeze({
   NOT_CONNECTED: 0,
-  CONNECTING: 1,
-  CONNECTED: 2
+  CONNECTED: 1
 });
 
 export const MODE_NAMES = Object.freeze({

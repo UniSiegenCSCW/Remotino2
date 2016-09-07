@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { intersection, contains, propOr } from 'ramda';
+import { intersection, contains } from 'ramda';
 import FontAwesome from 'react-fontawesome';
 import Translate from 'react-translate-component';
 import SyntaxHighlighter from 'react-syntax-highlighter';
@@ -43,14 +43,12 @@ export default class Pin extends Component {
     );
 
     const MODE_NAMES_TRANSLATED = {
-      0: <Translate content="microcontroller.digital_in" />,
-      1: <Translate content="microcontroller.digital_out" />,
-      2: <Translate content="microcontroller.analog_in" />,
-      3: <Translate content="microcontroller.analog_out" />,
-      16: <Translate content="microcontroller.not_set" />,
+      0: <Translate content="microcontroller.digital_in" component="option" key="0" value="0" />,
+      1: <Translate content="microcontroller.digital_out" component="option" key="1" value="1" />,
+      2: <Translate content="microcontroller.analog_in" component="option" key="2" value="2" />,
+      3: <Translate content="microcontroller.analog_out" component="option" key="3" value="3" />,
+      16: <Translate content="microcontroller.not_set" component="option" key="16" value="16" />,
     };
-
-    const getModeDescriptionForModeNumber = (num) => propOr('Not Set', num, MODE_NAMES_TRANSLATED);
 
     const modeSelector = (
       <div>
@@ -64,12 +62,7 @@ export default class Pin extends Component {
           }}
           disabled={supportedModes.length === 0}
         >
-          {supportedModes.map((supportedMode) => (
-            <option key={supportedMode} value={supportedMode}>
-              {getModeDescriptionForModeNumber(supportedMode)}
-            </option>
-            )
-          )}
+          {supportedModes.map((supportedMode) => MODE_NAMES_TRANSLATED[supportedMode])}
         </select>
       </div>
     );
@@ -123,53 +116,34 @@ export default class Pin extends Component {
         <FontAwesome name="plus-square" /> <Translate content="pin.show" />
       </Link>;
 
-    const digitalIcons = () => {
-      if (contains(MODES.INPUT, supportedModes) && contains(MODES.OUTPUT, supportedModes)) {
-        return (
-          <div key="digital" className="pin__tag">
-            <Translate content="microcontroller.digital_in_out" />
-          </div>
-        );
-      } else if (contains(MODES.INPUT, supportedModes)) {
-        return (
-          <div key="digital" className="pin__tag">
-            <Translate content="microcontroller.digital_in" />
-          </div>
-        );
-      } else if (contains(MODES.OUTPUT, supportedModes)) {
-        return (
-          <div key="digital" className="pin__tag">
-            <Translate content="microcontroller.digital_out" />
-          </div>
-        );
-      }
 
-      return null;
-    };
+    let digitalTag = 'microcontroller.digital';
+    if (contains(MODES.INPUT, supportedModes)) {
+      digitalTag += '_in';
+    }
+    if (contains(MODES.OUTPUT, supportedModes)) {
+      digitalTag += '_out';
+    }
+    const digitalIcons =
+    (contains(MODES.INPUT, supportedModes) || contains(MODES.OUTPUT, supportedModes)) ?
+      <div key="digital" className="pin__tag">
+        <Translate content={digitalTag} />
+      </div> :
+      null;
 
-    const analogIcons = () => {
-      if (contains(MODES.ANALOG, supportedModes) && contains(MODES.PWM, supportedModes)) {
-        return (
-          <div key="analog" className="pin__tag">
-            <Translate content="microcontroller.analog_in_out" />
-          </div>
-        );
-      } else if (contains(MODES.ANALOG, supportedModes)) {
-        return (
-          <div key="analog" className="pin__tag">
-            <Translate content="microcontroller.analog_in" />
-          </div>
-        );
-      } else if (contains(MODES.PWM, supportedModes)) {
-        return (
-          <div key="analog" className="pin__tag">
-            <Translate content="microcontroller.analog_out" />
-          </div>
-        );
-      }
-
-      return null;
-    };
+    let analogTag = 'microcontroller.analog';
+    if (contains(MODES.ANALOG, supportedModes)) {
+      analogTag += '_in';
+    }
+    if (contains(MODES.PWM, supportedModes)) {
+      analogTag += '_out';
+    }
+    const analogIcons =
+    (contains(MODES.ANALOG, supportedModes) || contains(MODES.PWM, supportedModes)) ?
+      <div key="analog" className="pin__tag">
+        <Translate content={analogTag} />
+      </div> :
+      null;
 
     const body = (showingCode_) => {
       if (showingCode_) {
@@ -192,8 +166,8 @@ export default class Pin extends Component {
         <div className="pin__header">
           <div className="pin__header__left">
             <h2 className="pin__name">{name}</h2>
-            {digitalIcons()}
-            {analogIcons()}
+            {digitalIcons}
+            {analogIcons}
           </div>
           <div className="pin__header__right">
             <Link onClick={() => setShowingCode(pin.id, !showingCode)}>

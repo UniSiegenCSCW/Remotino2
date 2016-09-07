@@ -27,7 +27,7 @@ Link.propTypes = {
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func.isRequired,
   className: PropTypes.string,
-  enabled: PropTypes.boolean,
+  enabled: PropTypes.bool,
 };
 
 export default Link;

@@ -4,17 +4,16 @@ import vis from 'vis';
 import React, { Component, PropTypes } from 'react';
 import ReplayControls from '../containers/ReplayControls';
 
-const eventPropTypes = {};
-
 export default class Timeline extends Component {
   static propTypes = {
     removeItem: PropTypes.func.isRequired,
     moveItem: PropTypes.func.isRequired,
+    showingTimeline: PropTypes.bool.isRequired,
+    items: PropTypes.array.isRequired,
+    options: PropTypes.object.isRequired,
+    start: PropTypes.object,
+    end: PropTypes.object,
   };
-
-  componentWillMount() {
-    this.state = {};
-  }
 
   componentDidMount() {
     this.init();
@@ -115,10 +114,3 @@ export default class Timeline extends Component {
     );
   }
 }
-
-Timeline.propTypes = Object.assign({
-  items: PropTypes.array.isRequired,
-  options: PropTypes.object.isRequired,
-  start: PropTypes.object,
-  end: PropTypes.object,
-}, eventPropTypes);
