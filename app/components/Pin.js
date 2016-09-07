@@ -115,21 +115,13 @@ export default class Pin extends Component {
       }
     };
 
-    const visibilityControls = (e) => {
-      if (e) {
-        return (
-          <Link className="" onClick={() => setEnabled(pin.id, false)}>
-            <FontAwesome name="minus-square" /> <Translate content="pin.hide" />
-          </Link>
-        );
-      } else {
-        return (
-          <Link className="" onClick={() => setEnabled(pin.id, true)}>
-            <FontAwesome name="plus-square" /> <Translate content="pin.show" />
-          </Link>
-        );
-      }
-    };
+    const visibilityControls = enabled ?
+      <Link className="" onClick={() => setEnabled(pin.id, false)}>
+        <FontAwesome name="minus-square" /> <Translate content="pin.hide" />
+      </Link> :
+      <Link className="" onClick={() => setEnabled(pin.id, true)}>
+        <FontAwesome name="plus-square" /> <Translate content="pin.show" />
+      </Link>;
 
     const digitalIcons = () => {
       if (contains(MODES.INPUT, supportedModes) && contains(MODES.OUTPUT, supportedModes)) {
@@ -207,7 +199,7 @@ export default class Pin extends Component {
             <Link onClick={() => setShowingCode(pin.id, !showingCode)}>
               <FontAwesome name="code" />
             </Link>
-            {visibilityControls(enabled)}
+            {visibilityControls}
           </div>
         </div>
         <div className="pin__settings">

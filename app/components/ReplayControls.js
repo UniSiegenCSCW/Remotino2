@@ -96,100 +96,47 @@ export default class ReplayControls extends Component {
       setTimeout(fitTimeline, 100);
     };
 
-    const recordButton = () => {
-      if (replay.playing) {
-        return (
-          <p className="link link--disabled">
-            <FontAwesome name="circle" /> <Translate content="replay_controls.start_recording" />
-          </p>
-        );
-      } else if (replay.recording) {
-        return (
-          <Link onClick={stopRecordingWrapper} className="link--red">
-            <FontAwesome name="stop" /> <Translate content="replay_controls.stop_recording" />
-          </Link>
-        );
-      } else {
-        return (
-          <Link onClick={startRecordingWrapper}>
-            <FontAwesome name="circle" /> <Translate content="replay_controls.start_recording" />
-          </Link>
-        );
-      }
-    };
+    const recordButton = replay.recording ?
+      <Link onClick={stopRecordingWrapper} className="link--red">
+        <FontAwesome name="stop" /> <Translate content="replay_controls.stop_recording" />
+      </Link> :
+      <Link onClick={startRecordingWrapper} enabled={!replay.playing}>
+        <FontAwesome name="circle" /> <Translate content="replay_controls.start_recording" />
+      </Link>;
 
-    const replayButton = () => {
-      if (replay.recording) {
-        return (
-          <p className="link link--disabled">
-            <FontAwesome name="play" /> <Translate content="replay_controls.start_replay" />
-          </p>
-        );
-      } else if (replay.playing) {
-        return (
-          <Link onClick={stopReplayWrapper} >
-            <FontAwesome name="stop" /> <Translate content="replay_controls.stop_replay" />
-          </Link>
-        );
-      } else {
-        return (
-          <Link onClick={startReplayWrapper} >
-            <FontAwesome name="play" /> <Translate content="replay_controls.start_replay" />
-          </Link>
-        );
-      }
-    };
+    const replayButton = replay.playing ?
+      <Link onClick={stopReplayWrapper} >
+        <FontAwesome name="stop" /> <Translate content="replay_controls.stop_replay" />
+      </Link> :
+      <Link onClick={startReplayWrapper} enabled={!replay.recording}>
+        <FontAwesome name="play" /> <Translate content="replay_controls.start_replay" />
+      </Link>;
 
-    // const removeAllItemsButton = () => {
-    //   if (replay.recording || replay.playing) {
-    //     return (
-    //       <p className="link link--disabled">
-    //         <FontAwesome name="trash" /> <Translate content="replay_controls.clear_events" />
-    //       </p>
-    //     );
-    //   } else {
-    //     return (
-    //       <Link onClick={removeAllItems} >
-    //         <FontAwesome name="trash" /> <Translate content="replay_controls.clear_events" />
-    //       </Link>
-    //     );
-    //   }
-    // };
-    //
-    const visibilityControls = (e) => {
-      if (e) {
-        return (
-          <Link className="" onClick={() => setShowingTimeline(false)}>
-            <FontAwesome name="minus-square" /> <Translate content="timeline.hide" />
-          </Link>
-        );
-      } else {
-        return (
-          <Link className="" onClick={() => setShowingTimeline(true)}>
-            <FontAwesome name="plus-square" /> <Translate content="timeline.show" />
-          </Link>
-        );
-      }
-    };
+    // const removeAllItemsButton =
+    //   <Link onClick={removeAllItems} enabled={!(replay.recording || replay.playing)} >
+    //     <FontAwesome name="trash" /> <Translate content="replay_controls.clear_events" />
+    //   </Link>;
 
-    const fitTimelineWrapper = () => {
-      if (replay.showingTimeline) {
-        return (
-          <Link onClick={fitTimeline}>
-            <FontAwesome name="arrows-h" /> <Translate content="replay_controls.focus_events" />
-          </Link>
-        );
-      } else {
-        return null;
-      }
-    };
+    const visibilityControls = replay.showingTimeline ?
+      <Link className="" onClick={() => setShowingTimeline(false)}>
+        <FontAwesome name="minus-square" /> <Translate content="timeline.hide" />
+      </Link> :
+      <Link className="" onClick={() => setShowingTimeline(true)}>
+        <FontAwesome name="plus-square" /> <Translate content="timeline.show" />
+      </Link>;
+
+    const fitTimelineWrapper = replay.showingTimeline ?
+      <Link onClick={fitTimeline}>
+        <FontAwesome name="arrows-h" /> <Translate content="replay_controls.focus_events" />
+      </Link> :
+      null;
 
     return (
       <div className="replay-controls">
-        {recordButton()}
-        {replayButton()}
-        {fitTimelineWrapper()}
-        {visibilityControls(replay.showingTimeline)}
+        {recordButton}
+        {replayButton}
+        {fitTimelineWrapper}
+        {visibilityControls}
       </div>
     );
   }
