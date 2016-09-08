@@ -90,8 +90,6 @@ export default class Timeline extends Component {
       }
     }, options);
 
-    console.dir(items);
-
     if (!!$el) {
       $el.setOptions(fullOptions);
       $el.setItems(timelineItems);

@@ -166,7 +166,7 @@ export function changeMode(pin, mode, replay = true) {
 
     if (replay) {
       dispatch(addReplayEvent({ type: CHANGE_MODE, pin, id: pin.id, mode, name },
-                              `${pin.name} = ${MODE_NAMES[mode]}`));
+                              `Mode = ${MODE_NAMES[mode]}`));
     }
 
     // Disable the old listener
@@ -228,7 +228,7 @@ export function digitalWrite(id, value, name, replay = true) {
     dispatch(changeValue(pinId, value));
     if (replay) {
       dispatch(addReplayEvent({ type: DIGITAL_WRITE, id, value, name },
-                              `${name}: Digital write ${value}`));
+                              `Digital write ${value}`));
     }
   };
 }
@@ -242,7 +242,7 @@ export function analogWrite(id, value, name, replay = true) {
     dispatch(changeValue(pinId, value));
     if (replay) {
       dispatch(addReplayEvent({ type: ANALOG_WRITE, id, value, name },
-                              `${name}: Analog write ${value}`));
+                              `Analog write ${value}`));
     }
   };
 }

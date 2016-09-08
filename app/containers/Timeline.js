@@ -46,7 +46,7 @@ function mapStateToProps(state) {
   const usedPinIds = uniq(replay.events.map((event) => (event.replay.id)));
 
   const groups = [];
-  usedPinIds.forEach((id) => groups.push({ id, content: `Group ${id}` }));
+  usedPinIds.forEach((id) => groups.push({ id, content: state.pins[id].name }));
   groups.push({ id: -1, content: 'Replay' });
 
   return {
