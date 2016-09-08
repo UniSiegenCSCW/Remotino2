@@ -1,5 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { uniq } from 'ramda';
 import Timeline from '../components/Timeline';
 import * as MicrocontrollerActions from '../actions/microcontroller';
 
@@ -10,6 +11,7 @@ function mapStateToProps(state) {
     id: index,
     start: event.time,
     content: event.description,
+    group: event.replay.id,
     // type: 'point',
   }));
 
@@ -41,9 +43,16 @@ function mapStateToProps(state) {
     }
   };
 
+  const usedPinIds = uniq(replay.events.map((event) => (event.replay.id)));
+
+  const groups = [];
+  usedPinIds.forEach((id) => groups.push({ id, content: `Group ${id}` }));
+  groups.push({ id: -1, content: 'Replay' });
+
   return {
     items,
     options,
+    groups,
     start: state.replay.start,
     end: state.replay.end,
     showingTimeline: state.replay.showingTimeline,

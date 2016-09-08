@@ -165,7 +165,7 @@ export function changeMode(pin, mode, replay = true) {
     });
 
     if (replay) {
-      dispatch(addReplayEvent({ type: CHANGE_MODE, pin, mode, name },
+      dispatch(addReplayEvent({ type: CHANGE_MODE, pin, id: pin.id, mode, name },
                               `${pin.name} = ${MODE_NAMES[mode]}`));
     }
 

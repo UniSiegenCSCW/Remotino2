@@ -10,6 +10,7 @@ export default class Timeline extends Component {
     moveItem: PropTypes.func.isRequired,
     showingTimeline: PropTypes.bool.isRequired,
     items: PropTypes.array.isRequired,
+    groups: PropTypes.array.isRequired,
     options: PropTypes.object.isRequired,
     start: PropTypes.object,
     end: PropTypes.object,
@@ -46,6 +47,7 @@ export default class Timeline extends Component {
       options,
       start,
       end,
+      groups,
       removeItem,
       moveItem,
     } = this.props;
@@ -58,6 +60,7 @@ export default class Timeline extends Component {
         type: 'range',
         content: 'Replay',
         className: 'timeline-replay-element',
+        group: -1,
         start,
         end,
       };
@@ -87,17 +90,20 @@ export default class Timeline extends Component {
       }
     }, options);
 
+    console.dir(items);
+
     if (!!$el) {
       $el.setOptions(fullOptions);
       $el.setItems(timelineItems);
-      try {
-        $el.getCustomTime('replay_current');
-        $el.setCustomTime(new Date(), 'replay_current');
-      } catch (err) {
-        $el.addCustomTime(new Date(), 'replay_current');
-      }
+      $el.setGroups(groups);
+      // try {
+      //   $el.getCustomTime('replay_current');
+      //   $el.setCustomTime(new Date(), 'replay_current');
+      // } catch (err) {
+      //   $el.addCustomTime(new Date(), 'replay_current');
+      // }
     } else {
-      $el = this.TimelineElement = new vis.Timeline(container, timelineItems, options);
+      $el = this.TimelineElement = new vis.Timeline(container, items, groups, options);
     }
   }
 
