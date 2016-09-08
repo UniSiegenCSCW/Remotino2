@@ -20,6 +20,8 @@ const createPin = (action) => (
       report: action.report,
       enabled: true,
       showingCode: false,
+      min: 100, // FIXME: currently this values are in %
+      max: 0,
     }, action)
 );
 
@@ -44,9 +46,17 @@ const pins = (state = {}, action) => {
     case PIN_VALUE_CHANGED:
       return update(
         state,
-        { [action.id]: { values:
-          { $apply: values => addValue(values, { x: action.timestamp, y: action.value }, 100) }
-        } }
+        { [action.id]:
+          { values:
+              { $apply: values => addValue(values, { x: action.timestamp, y: action.value }, 100) },
+            min:
+              { $apply: old => (((action.value < old) && (state[action.id].values.length > 1)) ?
+                  action.value : old) },
+            max:
+              { $apply: old => (((action.value > old) && (state[action.id].values.length > 1)) ?
+                  action.value : old) },
+          },
+        },
       );
     case IDENTIFIED_BOARD:
       // Update name and categories for each pin

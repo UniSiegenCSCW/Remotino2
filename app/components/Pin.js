@@ -35,7 +35,7 @@ export default class Pin extends Component {
       pin,
       scrollIntoView,
     } = this.props;
-    const { id, mode, name, values, enabled, showingCode } = pin;
+    const { id, mode, name, values, enabled, showingCode, min, max } = pin;
 
     const supportedModes = intersection(
       pin.supportedModes,
@@ -88,7 +88,7 @@ export default class Pin extends Component {
         case MODES.ANALOG:
           return (
             <div className="pin__controls">
-              <AnalogInput values={values} />
+              <AnalogInput values={values} min={min} max={max} />
             </div>
           );
         case MODES.OUTPUT:
