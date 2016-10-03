@@ -5,7 +5,7 @@ import '../utils/l10n.js';
 import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import Microcontroller from '../containers/Microcontroller';
 import Link from '../components/Link';
-import LocaleSwitcher from '../components/LocaleSwitcher';
+import LocaleSwitcher from '../containers/LocaleSwitcher';
 import './Home.sass';
 
 export default class Home extends Component {
@@ -33,7 +33,14 @@ export default class Home extends Component {
       case CONNECTION_STATE.NOT_CONNECTED:
         return (
           <div className="port-list">
-            <LocaleSwitcher />
+            <div>
+              <LocaleSwitcher locale="de">
+                Deutsch
+              </LocaleSwitcher>
+              <LocaleSwitcher locale="en">
+                English
+              </LocaleSwitcher>
+            </div>
             <Link onClick={detectPorts}>
               {ports.refreshing ?
                 <FontAwesome spin name="spinner" /> :
