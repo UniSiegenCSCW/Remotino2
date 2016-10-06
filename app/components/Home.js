@@ -47,7 +47,7 @@ export default class Home extends Component {
                 <FontAwesome name="refresh" />} <Translate content="home.refresh" />
             </Link>
             <ul>
-            {
+              {
               ports.names.map((port) => (
                 <li key={port.path}>
                   <Link className="port" onClick={() => connectToBoard(port.path)}>
