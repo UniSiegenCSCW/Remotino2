@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { intersection, contains } from 'ramda';
-import FontAwesome from 'react-fontawesome';
 import Translate from 'react-translate-component';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import '../utils/l10n.js';
@@ -89,13 +88,6 @@ export default class Pin extends Component {
         controls = null;
     }
 
-    const visibilityControls = (
-      <Link className="visibility-controls" onClick={() => setEnabled(pin.id, !enabled)}>
-        {enabled ? <FontAwesome name="minus-square" /> : <FontAwesome name="plus-square" />}
-        {enabled ? <Translate content="pin.hide" /> : <Translate content="pin.show" />}
-      </Link>
-    );
-
     const iconsForTag = (type, tags) => (
       (tags !== '') ?
         <div key={type} className="pin__tag">
@@ -125,18 +117,16 @@ export default class Pin extends Component {
             {iconsForTag('analog', analogTag)}
           </div>
           <div className="pin__header__right">
-            <Link onClick={() => setShowingCode(pin.id, !showingCode)}>
-              <FontAwesome name="code" />
-            </Link>
-            {visibilityControls}
+            <Link onClick={() => setShowingCode(pin.id, !showingCode)} icon="code" />
+            <Link
+              className="visibility-controls" onClick={() => setEnabled(pin.id, !enabled)}
+              icon={enabled ? 'minus-square' : 'plus-square'}
+              content={enabled ? 'pin.hide' : 'pin.show'}
+            />
           </div>
         </div>
-        <div className="pin__settings">
-          {modeSelector}
-        </div>
-        <div className="pin__controls">
-          {showingCode ? codeElem : controls}
-        </div>
+        <div className="pin__settings">{modeSelector}</div>
+        <div className="pin__controls">{showingCode ? codeElem : controls}</div>
       </div>
     );
   }

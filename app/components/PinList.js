@@ -14,9 +14,6 @@ export default class PinList extends Component {
 
     const containerRect = containerNode.getBoundingClientRect();
     const childRect = childNode.getBoundingClientRect();
-    console.log(childRect.bottom);
-    console.log(containerRect.bottom);
-
     const delta = containerRect.bottom - childRect.bottom;
 
     // if the bottom part of the child element is hidden
@@ -45,9 +42,7 @@ export default class PinList extends Component {
   }
 
   render() {
-    const {
-      pins,
-    } = this.props;
+    const { pins } = this.props;
 
     return (
       <div className="pin-list" ref="pinlist">
@@ -56,7 +51,8 @@ export default class PinList extends Component {
             key={pin.id}
             pin={pin}
             scrollIntoView={(child) => this.scrollElementIntoViewIfNeeded(this, child)}
-          />)}
+          />
+        )}
       </div>
     );
   }
