@@ -68,106 +68,61 @@ export default class Pin extends Component {
     );
 
     let pinClass = 'pin';
-    if (pin.isAnalogPin) {
-      pinClass += ' pin--analog';
-    } else {
-      pinClass += ' pin--digital';
-    }
-    if (!enabled) {
-      pinClass += ' pin--disabled';
+    pinClass += ` pin--${pin.isAnalogPin ? 'analog' : 'digital'}`;
+    if (!enabled) pinClass += ' pin--disabled';
+
+    let controls = null;
+    switch (mode) {
+      case MODES.INPUT:
+        controls = <DigitalInput values={values} />;
+        break;
+      case MODES.ANALOG:
+        controls = <AnalogInput values={values} min={min} max={max} />;
+        break;
+      case MODES.OUTPUT:
+        controls = <DigitalOutput write={val => digitalWrite(id, val, name)} value={pin.value} />;
+        break;
+      case MODES.PWM:
+        controls = <AnalogOutput write={val => analogWrite(id, val, name)} value={pin.value} />;
+        break;
+      default:
+        controls = null;
     }
 
-    const pinControls = () => {
-      switch (mode) {
-        case MODES.INPUT:
-          return (
-            <div className="pin__controls">
-              <DigitalInput values={values} />
-            </div>
-          );
-        case MODES.ANALOG:
-          return (
-            <div className="pin__controls">
-              <AnalogInput values={values} min={min} max={max} />
-            </div>
-          );
-        case MODES.OUTPUT:
-          return (
-            <div className="pin__controls">
-              <DigitalOutput write={(value) => digitalWrite(id, value, name)} value={pin.value} />
-            </div>
-          );
-        case MODES.PWM:
-          return (
-            <div className="pin__controls">
-              <AnalogOutput write={(value) => analogWrite(id, value, name)} value={pin.value} />
-            </div>
-          );
-        default:
-          return <div></div>;
-      }
-    };
+    const visibilityControls = (
+      <Link className="visibility-controls" onClick={() => setEnabled(pin.id, !enabled)}>
+        {enabled ? <FontAwesome name="minus-square" /> : <FontAwesome name="plus-square" />}
+        {enabled ? <Translate content="pin.hide" /> : <Translate content="pin.show" />}
+      </Link>
+    );
 
-    const visibilityControls = enabled ?
-      <Link className="" onClick={() => setEnabled(pin.id, false)}>
-        <FontAwesome name="minus-square" /> <Translate content="pin.hide" />
-      </Link> :
-      <Link className="" onClick={() => setEnabled(pin.id, true)}>
-        <FontAwesome name="plus-square" /> <Translate content="pin.show" />
-      </Link>;
+    const iconsForTag = (type, tags) => (
+      (tags !== '') ?
+        <div key={type} className="pin__tag">
+          <Translate content={`microcontroller.${type}${tags}`} />
+        </div> : null
+    );
 
+    let digitalTag = '';
+    if (contains(MODES.INPUT, supportedModes)) digitalTag += '_in';
+    if (contains(MODES.OUTPUT, supportedModes)) digitalTag += '_out';
 
-    let digitalTag = 'microcontroller.digital';
-    if (contains(MODES.INPUT, supportedModes)) {
-      digitalTag += '_in';
-    }
-    if (contains(MODES.OUTPUT, supportedModes)) {
-      digitalTag += '_out';
-    }
-    const digitalIcons =
-    (contains(MODES.INPUT, supportedModes) || contains(MODES.OUTPUT, supportedModes)) ?
-      <div key="digital" className="pin__tag">
-        <Translate content={digitalTag} />
-      </div> :
-      null;
+    let analogTag = '';
+    if (contains(MODES.ANALOG, supportedModes)) analogTag += '_in';
+    if (contains(MODES.PWM, supportedModes)) analogTag += '_out';
 
-    let analogTag = 'microcontroller.analog';
-    if (contains(MODES.ANALOG, supportedModes)) {
-      analogTag += '_in';
-    }
-    if (contains(MODES.PWM, supportedModes)) {
-      analogTag += '_out';
-    }
-    const analogIcons =
-    (contains(MODES.ANALOG, supportedModes) || contains(MODES.PWM, supportedModes)) ?
-      <div key="analog" className="pin__tag">
-        <Translate content={analogTag} />
-      </div> :
-      null;
+    const code = getCode(pin);
+    const codeElem = (
+      code !== '' ? <SyntaxHighlighter language="cpp">{code}</SyntaxHighlighter> : null
+    );
 
-    const body = (showingCode_) => {
-      if (showingCode_) {
-        return (
-          <div className="pin__controls">
-            <SyntaxHighlighter language="cpp">
-              {getCode(pin)}
-            </SyntaxHighlighter>
-          </div>
-        );
-      } else {
-        return pinControls(mode);
-      }
-    };
-    // {filteredCategories.map((category) =>
-    //   <div key={category} className="pin__tag">{category}</div>
-    // )}
     return (
       <div className={pinClass}>
         <div className="pin__header">
           <div className="pin__header__left">
             <h2 className="pin__name">{name}</h2>
-            {digitalIcons}
-            {analogIcons}
+            {iconsForTag('digital', digitalTag)}
+            {iconsForTag('analog', analogTag)}
           </div>
           <div className="pin__header__right">
             <Link onClick={() => setShowingCode(pin.id, !showingCode)}>
@@ -179,7 +134,9 @@ export default class Pin extends Component {
         <div className="pin__settings">
           {modeSelector}
         </div>
-        {body(showingCode)}
+        <div className="pin__controls">
+          {showingCode ? codeElem : controls}
+        </div>
       </div>
     );
   }
