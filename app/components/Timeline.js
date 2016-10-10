@@ -40,18 +40,9 @@ export default class Timeline extends Component {
 
   init() {
     const { container } = this.refs;
+    const { items, options, start, end, groups, removeItem, moveItem } = this.props;
+
     let $el = this.TimelineElement;
-
-    const {
-      items,
-      options,
-      start,
-      end,
-      groups,
-      removeItem,
-      moveItem,
-    } = this.props;
-
     let timelineItems;
 
     if (start && end) {
@@ -78,28 +69,12 @@ export default class Timeline extends Component {
         moveItem(item.id, item.start, item.end);
         callback(null);
       },
-      order: (a, b) => {
-        // Allways show the replay bar on the bottom
-        if (a.id === -1) {
-          return -1;
-        } else if (b.id === -1) {
-          return 1;
-        } else {
-          return a.id - b.id;
-        }
-      }
     }, options);
 
     if (!!$el) {
       $el.setOptions(fullOptions);
       $el.setItems(timelineItems);
       $el.setGroups(groups);
-      // try {
-      //   $el.getCustomTime('replay_current');
-      //   $el.setCustomTime(new Date(), 'replay_current');
-      // } catch (err) {
-      //   $el.addCustomTime(new Date(), 'replay_current');
-      // }
     } else {
       $el = this.TimelineElement = new vis.Timeline(container, items, groups, options);
     }
@@ -107,7 +82,6 @@ export default class Timeline extends Component {
 
   render() {
     const { showingTimeline } = this.props;
-
     return (
       <div>
         <div className="controls">
