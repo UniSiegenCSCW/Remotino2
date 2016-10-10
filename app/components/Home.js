@@ -22,55 +22,39 @@ export default class Home extends Component {
   }
 
   render() {
-    const {
-      connectToBoard,
-      connectionState,
-      detectPorts,
-      ports,
-    } = this.props;
+    const { connectToBoard, connectionState, detectPorts, ports } = this.props;
+
+    const portElem = (port) => (
+      <li key={port.path}>
+        <Link className="port" onClick={() => connectToBoard(port.path)}>
+          <p>{port.name} ({port.path})</p>
+          {port.image ?
+            <img className="port__image" src={`./utils/boards/${port.image}`} alt={port.name} />
+            : ''}
+        </Link>
+      </li>
+    );
 
     switch (connectionState) {
       case CONNECTION_STATE.NOT_CONNECTED:
         return (
           <div className="port-list">
             <div>
-              <LocaleSwitcher locale="de">
-                Deutsch
-              </LocaleSwitcher>
-              <LocaleSwitcher locale="en">
-                English
-              </LocaleSwitcher>
+              <LocaleSwitcher locale="de">Deutsch</LocaleSwitcher>
+              <LocaleSwitcher locale="en">English</LocaleSwitcher>
             </div>
             <Link onClick={detectPorts}>
               {ports.refreshing ?
                 <FontAwesome spin name="spinner" /> :
                 <FontAwesome name="refresh" />} <Translate content="home.refresh" />
             </Link>
-            <ul>
-              {
-              ports.names.map((port) => (
-                <li key={port.path}>
-                  <Link className="port" onClick={() => connectToBoard(port.path)}>
-                    <p>{port.name} ({port.path})</p>
-                    {port.image ?
-                      <img
-                        className="port__image"
-                        src={`./utils/boards/${port.image}`}
-                        alt={`${port.name} icon`}
-                      /> : ''}
-                  </Link>
-                </li>
-              ))
-            }
-            </ul>
+            <ul>{ports.names.map(portElem)}</ul>
           </div>
         );
       case CONNECTION_STATE.CONNECTING:
         return (
           <div className="port-list">
-            <p>
-              <FontAwesome spin name="spinner" /> Connecting...
-            </p>
+            <p><FontAwesome spin name="spinner" /> Connecting...</p>
           </div>
         );
       case CONNECTION_STATE.CONNECTED:
