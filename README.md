@@ -2,6 +2,16 @@
 
 An app to remote control your Arduino.
 
+## Setup
+
+### Clone with all submodules
+
+`git clone --recursive git@github.com:UniSiegenCSCW/remotino`
+
+### Compile `node_serialport` against the current version of Electron
+
+`node_modules/serialport/node_modules/node-pre-gyp/bin/node-pre-gyp install --fallback-to-build --runtime=electron --target=1.3.7 --target_arch=x64 --directory=node_modules/serialport/ --update-binary --dist-url=https://atom.io/download/atom-shell`
+
 ## License
 The MIT License (MIT)
 Copyright (c) 2016 Julian Dax, Leon Rische
