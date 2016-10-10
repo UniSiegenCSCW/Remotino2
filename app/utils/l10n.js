@@ -18,6 +18,7 @@ counterpart.registerTranslations('en', {
   import_export: {
     load: 'Load',
     save: 'Save',
+    export: '.ino export',
   },
   replay_controls: {
     start_recording: 'Start recording',
@@ -56,6 +57,7 @@ counterpart.registerTranslations('de', {
   import_export: {
     load: 'Laden',
     save: 'Speichern',
+    export: '.ino Export',
   },
   replay_controls: {
     start_recording: 'Aufnahme starten',
