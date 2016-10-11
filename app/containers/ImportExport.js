@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ImportExport from '../components/ImportExport';
 import * as MicrocontrollerActions from '../actions/microcontroller';
+import * as VisibilityFilterActions from '../actions/visibilityFilter';
 import * as ReplayActions from '../actions/replay';
 
 function mapStateToProps(state) {
@@ -13,7 +14,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign(MicrocontrollerActions, ReplayActions), dispatch);
+  return bindActionCreators(
+    Object.assign({}, MicrocontrollerActions, ReplayActions, VisibilityFilterActions), dispatch
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ImportExport);

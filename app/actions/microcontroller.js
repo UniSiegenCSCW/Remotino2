@@ -184,15 +184,6 @@ export function changeMode(pin, mode, replay = true) {
   };
 }
 
-export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
-export function setVisibilityFilter(property, value) {
-  return {
-    type: SET_VISIBILITY_FILTER,
-    property,
-    value,
-  };
-}
-
 export const SET_ENABLED = 'SET_ENABLED';
 export function setEnabled(id, value) {
   return {
