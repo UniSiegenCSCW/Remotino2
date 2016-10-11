@@ -13,22 +13,24 @@ const Link = ({ children, onClick, className, enabled, icon, content }) => {
           onClick();
         }}
       >
-        {icon !== '' ? <FontAwesome name={icon} /> : null}
-        {content !== '' ? <Translate content={content} /> : null}
+        {icon ? <FontAwesome name={icon || 'none'} /> : null}
+        {content ? <Translate content={content} /> : null}
         {children}
       </a>
     );
   }
   return (
     <span className={`link ${className} link--disabled`}>
-      { content !== '' ? <Translate content={content} /> : null } {children}
+      {icon ? <FontAwesome name={icon || 'none'} /> : null}
+      {content ? <Translate content={content} /> : null}
+      {children}
     </span>
   );
 };
 
 Link.propTypes = {
-  children: PropTypes.node.isRequired,
   onClick: PropTypes.func.isRequired,
+  children: PropTypes.node,
   className: PropTypes.string,
   enabled: PropTypes.bool,
   icon: PropTypes.string,

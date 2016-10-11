@@ -1,15 +1,12 @@
 import React, { PropTypes } from 'react';
 import { AreaChart } from 'rd3';
 
-const DigitalInput = props => {
+const DigitalInput = ({ values }) => {
   // TODO: add translations
-  if (props.values.length === 0) return <div><p>No data</p></div>;
+  if (values.length === 0) return <div><p>No data</p></div>;
 
   const data = [
-    {
-      name: 'series1',
-      values: props.values,
-    },
+    { name: 'series1', values },
   ];
 
   return (

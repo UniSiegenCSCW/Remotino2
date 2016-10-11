@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { uniq } from 'ramda';
 import Timeline from '../components/Timeline';
 import * as MicrocontrollerActions from '../actions/microcontroller';
+import * as ReplayActions from '../actions/replay';
 
 function mapStateToProps(state) {
   const replay = state.replay;
@@ -60,7 +61,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(MicrocontrollerActions, dispatch);
+  return bindActionCreators(
+    Object.assign({}, MicrocontrollerActions, ReplayActions), dispatch
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Timeline);

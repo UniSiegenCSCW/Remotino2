@@ -1,12 +1,9 @@
 import React, { PropTypes } from 'react';
+import Checkbox from '../Checkbox';
 
-const DigitalOutput = props => (
+const DigitalOutput = ({ write, value }) => (
   <label className="label-switch">
-    <input
-      type="checkbox"
-      onChange={(e) => props.write(e.target.checked ? 1 : 0)}
-      checked={props.value}
-    />
+    <Checkbox checked={value === 1} onChange={v => write(v ? 1 : 0)} />
     <div className="checkbox" />
   </label>
 );

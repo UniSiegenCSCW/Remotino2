@@ -1,17 +1,12 @@
 import React, { PropTypes } from 'react';
 import { AreaChart } from 'rd3';
 
-const AnalogInput = props => {
-  const { values, min, max } = props;
-
+const AnalogInput = ({ values, min, max }) => {
   // TODO: add translations
   if (values.length === 0) return <div><p>No data</p></div>;
 
   const data = [
-    {
-      name: 'series1',
-      values,
-    },
+    { name: 'series1', values },
   ];
 
   return (
