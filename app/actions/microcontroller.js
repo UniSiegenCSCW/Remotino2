@@ -3,7 +3,6 @@ import { values, mapObjIndexed, invertObj, has, contains } from 'ramda';
 import Serial from 'serialport';
 import { MODES, MODE_NAMES } from '../reducers/microcontrollerEnums';
 import identify from '../utils/boards';
-import { timestamp } from '../utils/utils';
 import { addReplayEvent } from './replay';
 
 let board;
@@ -128,7 +127,7 @@ export const PIN_VALUE_CHANGED = 'PIN_VALUE_CHANGED';
 export function pinValueChanged(id, value) {
   return {
     type: PIN_VALUE_CHANGED,
-    timestamp: timestamp(),
+    timestamp: new Date() / 1.0,
     id,
     value,
   };
