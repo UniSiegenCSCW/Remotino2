@@ -13,7 +13,7 @@ import ArduinoNano from './boards/Arduino_Nano.json';
 import ArduinoMega from './boards/Arduino_Mega.json';
 import ArduinoYun from './boards/Arduino_Yun.json';
 
-export function identify(board) {
+export default function identify(board) {
   const boards = [
     ArduinoProMicro,
     ArduinoZero,

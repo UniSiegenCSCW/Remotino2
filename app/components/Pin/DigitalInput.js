@@ -1,23 +1,19 @@
-import React, { Component, PropTypes } from 'react';
-import rd3 from 'rd3';
+import React, { PropTypes } from 'react';
+import { AreaChart } from 'rd3';
 
-export default class DigitalInput extends Component {
-  static propTypes = {
-    values: PropTypes.array.isRequired,
-  };
+const DigitalInput = props => {
+  // TODO: add translations
+  if (props.values.length === 0) return <div><p>No data</p></div>;
 
-  render() {
-    const { values } = this.props;
+  const data = [
+    {
+      name: 'series1',
+      values: props.values,
+    },
+  ];
 
-    const data = [
-      {
-        name: 'series1',
-        values,
-      },
-    ];
-
-    const AreaChart = rd3.AreaChart;
-    const chart = values.length === 0 ? <p>No data</p> : (
+  return (
+    <div>
       <AreaChart
         data={data}
         width="100%"
@@ -32,12 +28,12 @@ export default class DigitalInput extends Component {
         domain={{ y: [0, 1] }}
         gridHorizontal
       />
-    );
+    </div>
+  );
+};
 
-    return (
-      <div>
-        {chart}
-      </div>
-    );
-  }
-}
+DigitalInput.propTypes = {
+  values: PropTypes.array.isRequired,
+};
+
+export default DigitalInput;

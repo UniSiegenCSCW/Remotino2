@@ -27,9 +27,8 @@ const replay = (state = initalState, action) => {
     case ADD_REPLAY_EVENT:
       if (state.recording) {
         return update(state, { events: { $push: [action] } });
-      } else {
-        return state;
       }
+      return state;
       // return update(state, { events: { $push: [action] } });
     case START_RECORDING:
       return update(state, {

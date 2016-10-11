@@ -18,13 +18,12 @@ const Link = ({ children, onClick, className, enabled, icon, content }) => {
         {children}
       </a>
     );
-  } else {
-    return (
-      <span className={`link ${className} link--disabled`}>
-        { content !== '' ? <Translate content={content} /> : null } {children}
-      </span>
-    );
   }
+  return (
+    <span className={`link ${className} link--disabled`}>
+      { content !== '' ? <Translate content={content} /> : null } {children}
+    </span>
+  );
 };
 
 Link.propTypes = {

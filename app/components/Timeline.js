@@ -71,7 +71,7 @@ export default class Timeline extends Component {
       },
     }, options);
 
-    if (!!$el) {
+    if ($el) {
       $el.setOptions(fullOptions);
       $el.setItems(timelineItems);
       $el.setGroups(groups);
