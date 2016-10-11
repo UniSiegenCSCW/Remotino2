@@ -2,7 +2,7 @@ import * as five from 'johnny-five';
 import { values, mapObjIndexed, invertObj, has, contains } from 'ramda';
 import Serial from 'serialport';
 import { MODES, MODE_NAMES } from '../reducers/microcontrollerEnums';
-import { identify } from '../utils/boards';
+import identify from '../utils/boards';
 import { timestamp } from '../utils/utils';
 import { addReplayEvent } from './replay';
 
@@ -105,6 +105,7 @@ export function connectToBoard(port) {
   return (dispatch) => {
     board = boards[port].board;
 
+    // TODO: Running this code breaks analog inputs (for some reason)
     // Disconnect all other boards
     // values(boards).forEach((b) => {
     //   if (b.board.port !== port) {
@@ -133,14 +134,6 @@ export function pinValueChanged(id, value) {
   };
 }
 
-export const START_LISTENING_TO_PIN_CHANGES = 'START_LISTENING_TO_PIN_CHANGES';
-export function startListeningToPinChanges(id) {
-  return {
-    type: START_LISTENING_TO_PIN_CHANGES,
-    id,
-  };
-}
-
 export const CHANGE_MODE = 'CHANGE_MODE';
 export function changeMode(pin, mode, replay = true) {
   return (dispatch) => {
@@ -156,6 +149,7 @@ export function changeMode(pin, mode, replay = true) {
       }
     }
 
+    // Set new mode
     board.pinMode(pin.id, mode);
 
     dispatch({
@@ -170,16 +164,14 @@ export function changeMode(pin, mode, replay = true) {
     }
 
     // Disable the old listener
-    if (sensors[pin.id]) {
-      sensors[pin.id].disable();
-    }
+    if (sensors[pin.id]) sensors[pin.id].disable();
 
+    // Create new listeners
     if (pinMode === MODES.ANALOG) {
       const sensor = new five.Sensor({ pin: pin.analogChannel, freq: 200 });
       sensor.on('data', function onChange() {
         dispatch(pinValueChanged(pin.id, this.fscaleTo([0, 100])));
       });
-
       sensors[pin.id] = sensor;
     } else if (pinMode === MODES.INPUT) {
       const sensor = new five.Sensor.Digital({ pin: pin.id, freq: 200 });
