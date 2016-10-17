@@ -12,6 +12,14 @@ An app to remote control your Arduino.
 
 `node_modules/serialport/node_modules/node-pre-gyp/bin/node-pre-gyp install --fallback-to-build --runtime=electron --target=1.3.7 --target_arch=x64 --directory=node_modules/serialport/ --update-binary --dist-url=https://atom.io/download/atom-shell`
 
+### Build the app
+
+`npm run buld`
+
+### Start remotino with
+
+`npm start`
+
 ## License
 The MIT License (MIT)
 Copyright (c) 2016 Julian Dax, Leon Rische
