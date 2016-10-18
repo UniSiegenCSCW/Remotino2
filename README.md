@@ -22,11 +22,11 @@ An app to remote control your Arduino.
 
 `$ npm run buld`
 
-### To run the app you just built
+### To to test-run the app you just use
 
 `$ npm start`
 
-### To package the app for all plattforms
+### To package the app for all platforms
 
 `$ npm run package-all`
 
