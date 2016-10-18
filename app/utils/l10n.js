@@ -74,6 +74,6 @@ counterpart.registerTranslations('de', {
   },
   timeline: {
     hide: 'Timeline ausblenden',
-    show: 'Show anzeigen',
+    show: 'Timeline anzeigen',
   }
 });
