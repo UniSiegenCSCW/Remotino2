@@ -101,17 +101,17 @@ export default class ReplayControls extends Component {
         onClick={stopRecordingElem} className="link--red" icon="stop"
         content="replay_controls.stop_recording"
       /> :
-      <Link
-        onClick={startRecordingElem} enabled={!playing} icon="circle"
-        content="replay_controls.start_recording"
-      />;
+        <Link
+          onClick={startRecordingElem} enabled={!playing} icon="circle"
+          content="replay_controls.start_recording"
+        />;
 
     const replayButton = playing ?
       <Link onClick={stopReplayElem} icon="stop" content="replay_controls.stop_replay" /> :
-      <Link
-        onClick={startReplayElem} enabled={!recording} icon="play"
-        content="replay_controls.start_replay"
-      />;
+        <Link
+          onClick={startReplayElem} enabled={!recording} icon="play"
+          content="replay_controls.start_replay"
+        />;
 
     // const removeAllItemsButton =
     //   <Link onClick={removeAllItems} enabled={!(recording || playing)} >
@@ -122,7 +122,7 @@ export default class ReplayControls extends Component {
 
     const visibilityControls = showingTimeline ?
       <Link onClick={toggleShowingTimeline} icon="minus-square" content="timeline.hide" /> :
-      <Link onClick={toggleShowingTimeline} icon="plus-square" content="timeline.show" />;
+        <Link onClick={toggleShowingTimeline} icon="plus-square" content="timeline.show" />;
 
     const fitTimelineElem = (
       <Link onClick={fitTimeline} icon="arrows-h" content="replay_controls.focus_events" />

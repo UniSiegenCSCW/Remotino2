@@ -44,9 +44,11 @@ export default class Home extends Component {
               <LocaleSwitcher locale="en">English</LocaleSwitcher>
             </div>
             <Link onClick={detectPorts}>
-              {ports.remaining > 0 ?
+              { ports.remaining > 0 ?
                 <FontAwesome spin name="spinner" /> :
-                <FontAwesome name="refresh" />} <Translate content="home.refresh" />
+                  <FontAwesome name="refresh" />
+              }
+              <Translate content="home.refresh" />
             </Link>
             <ul>{ports.names.map(portElem)}</ul>
           </div>
