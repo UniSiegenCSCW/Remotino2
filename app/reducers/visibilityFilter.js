@@ -1,7 +1,5 @@
 import update from 'react/lib/update';
-import {
-  SET_VISIBILITY_FILTER,
-} from '../actions/microcontroller';
+import { SET_VISIBILITY_FILTER } from '../actions/visibilityFilter';
 
 const initialState = {
   showDisabled: false,

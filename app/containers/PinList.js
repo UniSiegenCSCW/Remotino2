@@ -36,10 +36,7 @@ const getVisiblePins = (inPins, filter) => {
 
 function mapStateToProps(state) {
   return {
-    pins: getVisiblePins(
-              values(state.pins),
-              state.visibilityFilter
-          ),
+    pins: getVisiblePins(values(state.pins), state.visibilityFilter)
     replay: state.replay,
     ui: state.ui,
   };

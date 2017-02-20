@@ -42,6 +42,7 @@ const replay = (state = initalState, action) => {
     }
     case ADD_REPLAY_EVENT:
       return update(state, { events: { $push: [action] } });
+      return state;
     case START_REPLAY:
       return update(state, {
         playing: { $set: true },

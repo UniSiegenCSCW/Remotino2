@@ -6,17 +6,14 @@ const pinName = (pin) => (pin.name.replace(' ', ''));
 const pinInit = (pin) => {
   if (pin.mode === MODES.ANALOG) {
     // For analog pins pinName(pin) would be A0, A1, ...
-    // and this constants are defined by default
+    // and these constants are defined by default
     return '';
-  } else {
-    return `const int ${pinName(pin)} = ${pin.id};`;
   }
+  return `const int ${pinName(pin)} = ${pin.id};`;
 };
 
 function pinValue(pin) {
-  if (pin.mode === MODES.INPUT || pin.mode === MODES.ANALOG) {
-    return `sensor_${pinName(pin)}_state`;
-  }
+  return `sensor_${pinName(pin)}_state`;
 }
 
 function digitalOut(pin) {

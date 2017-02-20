@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
+import FontAwesome from 'react-fontawesome';
+import Translate from 'react-translate-component';
 
-const Link = ({ children, onClick, className, enabled }) => {
+const Link = ({ children, onClick, className, enabled, icon, content }) => {
   if (enabled || enabled === undefined) {
     return (
       <a
@@ -11,23 +13,28 @@ const Link = ({ children, onClick, className, enabled }) => {
           onClick();
         }}
       >
+        {icon ? <FontAwesome name={icon || 'none'} /> : null}
+        {content ? <Translate content={content} /> : null}
         {children}
       </a>
     );
-  } else {
-    return (
-      <span className={`link ${className} link--disabled`}>
-        {children}
-      </span>
-    );
   }
+  return (
+    <span className={`link ${className} link--disabled`}>
+      {icon ? <FontAwesome name={icon || 'none'} /> : null}
+      {content ? <Translate content={content} /> : null}
+      {children}
+    </span>
+  );
 };
 
 Link.propTypes = {
-  children: PropTypes.node.isRequired,
   onClick: PropTypes.func.isRequired,
+  children: PropTypes.node,
   className: PropTypes.string,
   enabled: PropTypes.bool,
+  icon: PropTypes.string,
+  content: PropTypes.string,
 };
 
 export default Link;

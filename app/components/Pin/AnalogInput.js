@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import LineChart from '../Graph/LineChart';
 
 export default class AnalogInput extends Component {
+  // TODO: add translations
+  if (values.length === 0) return <div><p>No data</p></div>;
   static propTypes = {
     values: PropTypes.array.isRequired,
     min: PropTypes.number.isRequired,

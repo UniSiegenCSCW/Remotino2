@@ -151,14 +151,6 @@ export function pinValueChanged(id, value) {
   };
 }
 
-export const START_LISTENING_TO_PIN_CHANGES = 'START_LISTENING_TO_PIN_CHANGES';
-export function startListeningToPinChanges(id) {
-  return {
-    type: START_LISTENING_TO_PIN_CHANGES,
-    id,
-  };
-}
-
 export const CHANGE_MODE = 'CHANGE_MODE';
 export function changeMode(pin, mode) {
   return (dispatch) => {
@@ -186,7 +178,8 @@ export function changeMode(pin, mode) {
       clearInterval(outputTimer);
       outputTimer = null;
     }
-
+    
+    // Set new mode
     board.pinMode(pinId, mode);
 
     dispatch({
@@ -205,15 +198,16 @@ export function changeMode(pin, mode) {
       sensors[pinId].disable();
     }
 
+    // Create new listeners
     if (pinMode === MODES.ANALOG) {
-      const sensor = new five.Sensor({ pin: pin.analogChannel, freq: 200 }); // change back to 200
+      const sensor = new five.Sensor({ pin: pin.analogChannel, freq: 200 });
       sensor.on('data', function onChange() {
         dispatch(pinValueChanged(pinId, this.fscaleTo([0, 255])));
       });
 
       sensors[pinId] = sensor;
     } else if (pinMode === MODES.INPUT) {
-      const sensor = new five.Sensor.Digital({ pin: pinId, freq: 200 }); // change back to 200
+      const sensor = new five.Sensor.Digital({ pin: pinId, freq: 200 });
       sensor.on('data', function onChange() {
         dispatch(pinValueChanged(pinId, this.value));
       });
@@ -231,17 +225,8 @@ export function changeMode(pin, mode) {
         for (let i = 0; i < enabledOutputPins.length; i++) {
           dispatch(changeValue(enabledOutputPins[i].id, enabledOutputPins[i].value));
         }
-      }, 200); // change back to 200
+      }, 200);
     }
-  };
-}
-
-export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
-export function setVisibilityFilter(property, value) {
-  return {
-    type: SET_VISIBILITY_FILTER,
-    property,
-    value,
   };
 }
 

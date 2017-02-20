@@ -13,7 +13,7 @@ import ArduinoNano from './boards/Arduino_Nano.json';
 import ArduinoMega from './boards/Arduino_Mega.json';
 import ArduinoYun from './boards/Arduino_Yun.json';
 
-export function identify(board) {
+export default function identify(board) {
   const boards = [
     ArduinoProMicro,
     ArduinoZero,
@@ -30,9 +30,8 @@ export function identify(board) {
     ArduinoYun
   ];
 
-//  if (board.type === 'MEGA') {
-//    return ArduinoMega;
-//  }
+  // Return if the board type is already known
+  if (board.type === 'MEGA') return ArduinoMega;
 
   const { ANALOG, PWM, OUTPUT } = board.MODES;
   const analogPins = [];

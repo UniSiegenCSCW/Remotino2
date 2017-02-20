@@ -46,12 +46,8 @@ export default class Home extends Component {
         return (
           <div className="port-list">
             <div>
-              <LocaleSwitcher locale="de">
-                Deutsch
-              </LocaleSwitcher>
-              <LocaleSwitcher locale="en">
-                English
-              </LocaleSwitcher>
+              <LocaleSwitcher locale="de">Deutsch</LocaleSwitcher>
+              <LocaleSwitcher locale="en">English</LocaleSwitcher>
             </div>
             <div className="refresh">
               <Link onClick={detectPorts}>

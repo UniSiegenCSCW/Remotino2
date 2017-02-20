@@ -16,8 +16,6 @@ import AnalogOutputControls from './Pin/AnalogOutputControls';
 import Link from './Link';
 import './Pin.sass';
 
-// let timer = null;
-// let markerPos = null;
 
 export default class Pin extends Component {
   static propTypes = {
@@ -197,6 +195,12 @@ export default class Pin extends Component {
         <FontAwesome name="plus-square" /> <Translate content="pin.show" />
       </Link>);
 
+    const iconsForTag = (type, tags) => (
+      (tags !== '') ?
+        <div key={type} className="pin__tag">
+          <Translate content={`microcontroller.${type}${tags}`} />
+        </div> : null
+    );
 
     let digitalTag = 'microcontroller.digital';
     if (contains(MODES.INPUT, supportedModes)) {
@@ -237,9 +241,6 @@ export default class Pin extends Component {
     :
       pinChart(mode);
 
-    // {filteredCategories.map((category) =>
-    //   <div key={category} className="pin__tag">{category}</div>
-    // )}
     return (
       <div className={pinClass}>
         <div className="pin__header">
