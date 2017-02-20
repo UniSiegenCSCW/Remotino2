@@ -50,9 +50,6 @@ export default class ReplayControls extends Component {
         case ANALOG_WRITE:
           analogWrite(event.id, event.value);
           break;
-        case CHANGE_MODE:
-          changeMode(event.pin, event.mode);
-          break;
         default:
           break;
       }
