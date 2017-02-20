@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import FontAwesome from 'react-fontawesome';
 import { sort } from 'ramda';
-import Translate from 'react-translate-component';
 import '../utils/l10n.js';
 import Link from './Link';
 import {
@@ -50,6 +48,9 @@ export default class ReplayControls extends Component {
         case ANALOG_WRITE:
           analogWrite(event.pinId, event.value);
           break;
+//        case CHANGE_MODE:
+//          changeMode(event.pin, event.mode, event.name, false);
+//          break;
         default:
           break;
       }
@@ -72,65 +73,62 @@ export default class ReplayControls extends Component {
       }
     };
 
-    const startReplayWrapper = () => {
+    const startReplayElem = () => {
       this.playing = true;
       const time = ui.interval[1] - ui.interval[0];
-      this.loop = setTimeout(startReplayWrapper, time);
+      this.loop = setTimeout(startReplayElem, time);
       replayEvents(replay.events, ui.interval[0], ui.interval[1]);
       startReplay();
     };
 
-    const stopReplayWrapper = () => {
+    const stopReplayElem = () => {
       clearTimeout(this.loop);
       clearInterval(this.pending);
       this.playing = false;
       stopReplay();
     };
 
-//    const startRecordingWrapper = () => {
+//    const startRecordingElem = () => {
 //      stopReplayWrapper();
 //      startRecording();
 //    };
 
-//    const stopRecordingWrapper = () => {
+//    const stopRecordingElem = () => {
 //      stopRecording();
 //      setTimeout(fitTimeline, 100);
 //    };
 
-//    const recordButton = replay.recording ?
-//      (<Link onClick={stopRecordingWrapper} className="link--red">
-//        <FontAwesome name="stop" /> <Translate content="replay_controls.stop_recording" />
-//      </Link>) :
-//        (<Link onClick={startRecordingWrapper} enabled={!replay.playing}>
-//          <FontAwesome name="circle" /> <Translate content="replay_controls.start_recording" />
-//        </Link>);
+//    const recordButton = recording ?
+//      <Link
+//        onClick={stopRecordingElem} className="link--red" icon="stop"
+//        content="replay_controls.stop_recording"
+//      /> :
+//        <Link
+//          onClick={startRecordingElem} enabled={!playing} icon="circle"
+//          content="replay_controls.start_recording"
+//        />;
 
     const replayButton = replay.playing ?
-      (<Link onClick={stopReplayWrapper} >
-        <FontAwesome name="stop" /> <Translate content="replay_controls.stop_replay" />
-      </Link>) :
-        (<Link onClick={startReplayWrapper} enabled={!replay.recording}>
-          <FontAwesome name="play" /> <Translate content="replay_controls.start_replay" />
-        </Link>);
+      <Link onClick={stopReplayElem} icon="stop" content="replay_controls.stop-replay" /> :
+        <Link
+          onClick={startReplayElem} enabled={!replay.recording} 
+          icon="play" content="replay_controls.start_replay"
+        />;
 
     // const removeAllItemsButton =
     //   <Link onClick={removeAllItems} enabled={!(replay.recording || replay.playing)} >
     //     <FontAwesome name="trash" /> <Translate content="replay_controls.clear_events" />
     //   </Link>;
 
-//    const visibilityControls = replay.showingTimeline ?
-//      (<Link className="" onClick={() => setShowingTimeline(false)}>
-//        <FontAwesome name="minus-square" /> <Translate content="timeline.hide" />
-//      </Link>) :
-//      (<Link className="" onClick={() => setShowingTimeline(true)}>
-//        <FontAwesome name="plus-square" /> <Translate content="timeline.show" />
-//      </Link>);
+//    const toggleShowingTimeline = () => setShowingTimeline(!showingTimeline);
 
-//    const fitTimelineWrapper = replay.showingTimeline ?
-//      (<Link onClick={fitTimeline}>
-//        <FontAwesome name="arrows-h" /> <Translate content="replay_controls.focus_events" />
-//      </Link>) :
-//      null;
+//    const visibilityControls = showingTimeline ?
+//      <Link onClick={toggleShowingTimeline} icon="minus-square" content="timeline.hide" /> :
+//        <Link onClick={toggleShowingTimeline} icon="plus-square" content="timeline.show" />;
+
+//    const fitTimelineElem = (
+//      <Link onClick={fitTimeline} icon="arrows-h" content="replay_controls.focus_events" />
+//    );
 
     return (
       <div className="replay-controls">

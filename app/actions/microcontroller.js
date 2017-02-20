@@ -134,9 +134,7 @@ export function connectToBoard(port) {
       const actions = values(mapObjIndexed(updatePinFromObj, board.io.pins));
       dispatch(updatePins(actions));
 
-      if (boards[port].mapping) {
-        dispatch(identifiedBoard(boards[port].mapping));
-      }
+      if (boards[port].mapping) dispatch(identifiedBoard(boards[port].mapping));
     });
   };
 }
@@ -160,11 +158,8 @@ export function changeMode(pin, mode) {
     // Disable old outputs if switching back to "not set"
     if (pinMode === MODES.NOT_SET) {
       const oldMode = pin.mode;
-      if (oldMode === MODES.OUTPUT) {
-        board.digitalWrite(pinId, 0);
-      } else if (oldMode === MODES.PWM) {
-        board.analogWrite(pinId, 0);
-      }
+      if (oldMode === MODES.OUTPUT) board.digitalWrite(pinId, 0);
+        else if (oldMode === MODES.PWM) board.analogWrite(pinId, 0);
     }
 
     for (let i = 0; i < enabledOutputPins.length; i++) {
@@ -194,9 +189,7 @@ export function changeMode(pin, mode) {
 //    }
 
     // Disable the old listener
-    if (sensors[pinId]) {
-      sensors[pinId].disable();
-    }
+    if (sensors[pinId]) sensors[pinId].disable();
 
     // Create new listeners
     if (pinMode === MODES.ANALOG) {
