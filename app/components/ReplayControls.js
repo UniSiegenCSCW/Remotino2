@@ -49,8 +49,6 @@ export default class ReplayControls extends Component {
           break;
         case ANALOG_WRITE:
           analogWrite(event.id, event.value);
-        case ANALOG_WRITE:
-          analogWrite(event.id, event.value);
           break;
         default:
           break;
