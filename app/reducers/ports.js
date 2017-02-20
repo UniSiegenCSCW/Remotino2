@@ -1,11 +1,12 @@
 import update from 'react/lib/update';
+import { dec } from 'ramda';
 import {
   DETECTED_PORT,
   REJECTED_PORT,
   REFRESHING_PORTS,
 } from '../actions/microcontroller';
 
-const ports = (state = { names: [], refreshing: false, remaining: 0 }, action) => {
+const ports = (state = { names: [], remaining: 0 }, action) => {
   switch (action.type) {
     case REFRESHING_PORTS:
       return update(state, {
@@ -16,14 +17,10 @@ const ports = (state = { names: [], refreshing: false, remaining: 0 }, action) =
     case DETECTED_PORT:
       return update(state, {
         names: { $push: [{ path: action.path, name: action.name, image: action.image }] },
-        refreshing: { $set: (state.remaining < 1) },
-        remaining: { $apply: (n) => n - 1 }
+        remaining: { $apply: dec }
       });
     case REJECTED_PORT:
-      return update(state, {
-        refreshing: { $set: (state.remaining < 1) },
-        remaining: { $apply: (n) => n - 1 }
-      });
+      return update(state, { remaining: { $apply: dec } });
     default:
       return state;
   }

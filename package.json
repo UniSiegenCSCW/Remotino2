@@ -108,10 +108,8 @@
   "dependencies": {
     "avrgirl-arduino": "^1.11.9",
     "counterpart": "^0.17.5",
-    "vis": "^4.16.1",
     "johnny-five": "0.10.0",
     "ramda": "^0.21.0",
-    "rd3": "^0.6.3",
     "d3": "^3.5.17",
     "react-syntax-highlighter": "^2.3.0",
     "react-translate-component": "^0.13.0",

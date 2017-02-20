@@ -62,7 +62,7 @@ export default class Home extends Component {
             </div>
             <div className="refresh">
               <Link onClick={detectPorts}>
-                { ports.refreshing ?
+                { ports.remaining > 0 ?
                   <FontAwesome spin name="spinner" /> :
                   <FontAwesome name="refresh" /> }
                 <Translate content="home.refresh" />
