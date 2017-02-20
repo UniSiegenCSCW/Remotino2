@@ -16,7 +16,8 @@ import AnalogOutputControls from './Pin/AnalogOutputControls';
 import Link from './Link';
 import './Pin.sass';
 
-
+// FIXME: Replacing this with a pure component (like Link)
+// breaks srollIntoViewIfNeeded
 export default class Pin extends Component {
   static propTypes = {
     pin: PropTypes.object.isRequired,
@@ -83,117 +84,83 @@ export default class Pin extends Component {
     );
 
     let pinClass = 'pin';
-    if (pin.isAnalogPin) {
-      pinClass += ' pin--analog';
-    } else {
-      pinClass += ' pin--digital';
-    }
-    if (!enabled) {
-      pinClass += ' pin--disabled';
-    }
-    if (mode === MODES.INPUT || mode === MODES.ANALOG) {
-      pinClass += ' pin--input';
-    } else if (mode === MODES.OUTPUT || mode === MODES.PWM) {
-      pinClass += ' pin--output';
-    }
+    pinClass += ` pin--${pin.isAnalogPin ? 'analog' : 'digital'}`;
+    if (!enabled) pinClass += ' pin--disabled';
+    if (mode === MODES.INPUT || mode === MODES.ANALOG) pinClass += ' pin--input';
+      else if (mode === MODES.OUTPUT || mode === MODES.PWM) pinClass += ' pin--output';
 
 //    if (replay.playing) {
 //
 //    }
-
-    const pinChart = () => {
-      switch (mode) {
-        case MODES.INPUT:
-          return (
-            <div className="pin__body">
-              <DigitalInput
-                values={values}
-                interval={interval}
-                autoscroll={autoscroll}
-                onIntervalUpdate={onIntervalUpdate}
-                onAutoScrollUpdate={onAutoScrollUpdate}
-              />
-            </div>
-          );
-        case MODES.ANALOG:
-          return (
-            <div className="pin__body">
-              <AnalogInput
-                values={values} min={min} max={max}
-                interval={interval}
-                autoscroll={autoscroll}
-                onIntervalUpdate={onIntervalUpdate}
-                onAutoScrollUpdate={onAutoScrollUpdate}
-              />
-            </div>
-          );
-        case MODES.OUTPUT:
-          return (
-            <div className="pin__body">
-              <DigitalOutput
-                write={(value) => digitalWrite(id, value)}
-                value={pin.value}
-                values={values}
-                interval={interval}
-                autoscroll={autoscroll}
-                onIntervalUpdate={onIntervalUpdate}
-                onAutoScrollUpdate={onAutoScrollUpdate}
-                showMarker={showMarker}
-                markerTime={markerTime}
-              />
-            </div>
-          );
-        case MODES.PWM:
-          return (
-            <div className="pin__body">
-              <AnalogOutput
-                write={(value) => analogWrite(id, value)}
-                value={pin.value}
-                values={values}
-                interval={interval}
-                autoscroll={autoscroll}
-                onIntervalUpdate={onIntervalUpdate}
-                onAutoScrollUpdate={onAutoScrollUpdate}
-                showMarker={showMarker}
-                markerTime={markerTime}
-              />
-            </div>
-          );
-        default:
-          return <div></div>;
-      }
-    };
-
-    const pinControls = () => {
-      switch (mode) {
-        case MODES.OUTPUT:
-          return (
-            <div className="pin__controls">
-              <DigitalOutputControls
-                write={(value) => digitalWrite(id, value, name)} value={pin.value}
-              />
-            </div>
-          );
-        case MODES.PWM:
-          return (
-            <div className="pin__controls">
-              <AnalogOutputControls
-                write={(value) => analogWrite(id, value, name)} value={pin.value}
-              />
-            </div>
-          );
-        default:
-          return <div></div>;
-      }
-    };
-
-    const visibilityControls = enabled ?
-      (<Link className="" onClick={() => setEnabled(pin.id, false)}>
-        <FontAwesome name="minus-square" /> <Translate content="pin.hide" />
-      </Link>) :
-      (<Link className="" onClick={() => setEnabled(pin.id, true)}>
-        <FontAwesome name="plus-square" /> <Translate content="pin.show" />
-      </Link>);
+    let chart = null;
+    let controls = null;
+    switch (mode) {
+      case MODES.INPUT:
+        chart = <div className="pin__body">
+          <DigitalInput
+            values={values}
+            interval={interval}
+            autoscroll={autoscroll}
+            onIntervalUpdate={onIntervalUpdate}
+            onAutoScrollUpdate={onAutoScrollUpdate}
+          />
+        </div>;
+      break;
+      case MODES.ANALOG:
+        chart = <div className="pin__body">
+          <AnalogInput
+            values={values} min={min} max={max}
+            interval={interval}
+            autoscroll={autoscroll}
+            onIntervalUpdate={onIntervalUpdate}
+            onAutoScrollUpdate={onAutoScrollUpdate}
+          />
+        </div>;
+      break;
+      case MODES.OUTPUT:
+        controls = <div className="pin__controls">
+            <DigitalOutputControls
+              write={(value) => digitalWrite(id, value, name)} value={pin.value}
+            />
+          </div>;
+        chart = <div className="pin__body">
+          <DigitalOutput
+            write={(value) => digitalWrite(id, value)}
+            value={pin.value}
+            values={values}
+            interval={interval}
+            autoscroll={autoscroll}
+            onIntervalUpdate={onIntervalUpdate}
+            onAutoScrollUpdate={onAutoScrollUpdate}
+            showMarker={showMarker}
+            markerTime={markerTime}
+          />
+        </div>;
+      break;
+      case MODES.PWM:
+        controls = <div className="pin__controls">
+          <AnalogOutputControls
+            write={(value) => analogWrite(id, value, name)} value={pin.value}
+          />
+        </div>;
+        chart = <div className="pin__body">
+          <AnalogOutput
+            write={(value) => analogWrite(id, value)}
+            value={pin.value}
+            values={values}
+            interval={interval}
+            autoscroll={autoscroll}
+            onIntervalUpdate={onIntervalUpdate}
+            onAutoScrollUpdate={onAutoScrollUpdate}
+            showMarker={showMarker}
+            markerTime={markerTime}
+          />
+        </div>;
+      break;
+      default:
+        controls = null;
+        chart = null;
+    }
 
     const iconsForTag = (type, tags) => (
       (tags !== '') ?
@@ -202,44 +169,18 @@ export default class Pin extends Component {
         </div> : null
     );
 
-    let digitalTag = 'microcontroller.digital';
-    if (contains(MODES.INPUT, supportedModes)) {
-      digitalTag += '_in';
-    }
-    if (contains(MODES.OUTPUT, supportedModes)) {
-      digitalTag += '_out';
-    }
-    const digitalIcons =
-    (contains(MODES.INPUT, supportedModes) || contains(MODES.OUTPUT, supportedModes)) ?
-      (<div>
-        <Translate content={digitalTag} className="pin__tag" />
-      </div>)
-      :
-      null;
+        let digitalTag = '';
+    if (contains(MODES.INPUT, supportedModes)) digitalTag += '_in';
+    if (contains(MODES.OUTPUT, supportedModes)) digitalTag += '_out';
 
-    let analogTag = 'microcontroller.analog';
-    if (contains(MODES.ANALOG, supportedModes)) {
-      analogTag += '_in';
-    }
-    if (contains(MODES.PWM, supportedModes)) {
-      analogTag += '_out';
-    }
-    const analogIcons =
-    (contains(MODES.ANALOG, supportedModes) || contains(MODES.PWM, supportedModes)) ?
-      (<div>
-        <Translate content={analogTag} className="pin__tag" />
-      </div>)
-      :
-      null;
+    let analogTag = '';
+    if (contains(MODES.ANALOG, supportedModes)) analogTag += '_in';
+    if (contains(MODES.PWM, supportedModes)) analogTag += '_out';
 
-    const body = showingCode ?
-      (<div className="pin__code">
-        <SyntaxHighlighter language="cpp" customStyle="">
-          {getCode(pin)}
-        </SyntaxHighlighter>
-      </div>)
-    :
-      pinChart(mode);
+    const code = getCode(pin);
+    const codeElem = (
+      code !== '' ? <SyntaxHighlighter language="cpp">{code}</SyntaxHighlighter> : null
+    );
 
     return (
       <div className={pinClass}>
@@ -247,18 +188,20 @@ export default class Pin extends Component {
           <div className="pin__header__left">
             <h2 className="pin__name">{name}</h2>
           </div>
-          {digitalIcons}
-          {analogIcons}
+          {iconsForTag('digital', digitalTag)}
+          {iconsForTag('analog', analogTag)}
           <div className="pin__header__right">
-            <Link onClick={() => setShowingCode(pin.id, !showingCode)}>
-              <FontAwesome name="code" />
-            </Link>
-            {visibilityControls}
+            <Link onClick={() => setShowingCode(pin.id, !showingCode)} icon="code"/>
+            <Link
+              className="visibility-controls" onClick={() => setEnabled(pin.id, !enabled)}
+              icon={enabled ? 'minus-square' : 'plus-square'}
+              content={enabled ? 'pin.hide' : 'pin.show'}
+            />
           </div>
           {modeSelector}
-          {pinControls(mode)}
+          {controls}
         </div>
-        {body}
+        {showingCode ? codeElem : chart}
       </div>
     );
   }

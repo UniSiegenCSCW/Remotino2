@@ -3,7 +3,7 @@ import { values, mapObjIndexed, invertObj, has, contains } from 'ramda';
 import Serial from 'serialport';
 import Firmata from 'firmata';
 import { MODES } from '../reducers/microcontrollerEnums';
-import { identify } from '../utils/boards';
+import identify from '../utils/boards';
 import { timestamp } from '../utils/utils';
 import { addReplayEvent } from './replay';
 

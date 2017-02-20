@@ -9,7 +9,7 @@ function startInterval() {
   return [startDate, endDate];
 }
 
-const ui = (state = { locale: 'de', interval: startInterval() }, action) => {
+const ui = (state = { locale: 'en', interval: startInterval() }, action) => {
   switch (action.type) {
     case CHANGE_LOCALE:
       return update(state, { locale: { $set: action.locale } });

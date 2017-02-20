@@ -45,10 +45,10 @@ export default class ReplayControls extends Component {
     const replayEvent = (event) => {
       switch (event.type) {
         case DIGITAL_WRITE:
-          digitalWrite(event.id, event.value);
+          digitalWrite(event.pinId, event.value);
           break;
         case ANALOG_WRITE:
-          analogWrite(event.id, event.value);
+          analogWrite(event.pinId, event.value);
           break;
         default:
           break;

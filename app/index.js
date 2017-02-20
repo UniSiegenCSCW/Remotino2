@@ -12,9 +12,6 @@ const store = configureStore();
 document.store = store;
 const history = syncHistoryWithStore(hashHistory, store);
 
-// set the initial locale to 'de' because counterpart default is 'en'
-counterpart.setLocale('de');
-
 render(
   <Provider store={store}>
     <Router history={history} routes={routes} />
