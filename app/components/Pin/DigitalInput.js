@@ -1,43 +1,44 @@
 import React, { Component, PropTypes } from 'react';
-import rd3 from 'rd3';
+import LineChart from '../Graph/LineChart';
 
 export default class DigitalInput extends Component {
   static propTypes = {
     values: PropTypes.array.isRequired,
+    showMarker: PropTypes.bool,
+    markerTime: PropTypes.number,
+    autoscroll: PropTypes.bool,
+    interval: PropTypes.array,
+    onIntervalUpdate: React.PropTypes.func,
+    onAutoScrollUpdate: React.PropTypes.func,
   };
 
   render() {
-    const { values } = this.props;
+    const {
+      values,
+      showMarker,
+      markerTime,
+      onIntervalUpdate,
+      onAutoScrollUpdate,
+      autoscroll,
+      interval
+    } = this.props;
 
-    const data = [
-      {
-        name: 'series1',
-        values,
-      },
-    ];
-
-    const AreaChart = rd3.AreaChart;
-    const chart = values.length === 0 ? <p>No data</p> : (
-      <AreaChart
-        data={data}
+    const chart = (
+      <LineChart
+        yMin={0}
+        yMax={1}
+        data={values}
         width="100%"
-        height={200}
-        viewBoxObject={{
-          x: 0,
-          y: 0,
-          width: 500,
-          height: 200
-        }}
-        xAxisTickValues={[]}
-        domain={{ y: [0, 1] }}
-        gridHorizontal
+        height="100%"
+        onIntervalUpdate={onIntervalUpdate}
+        onAutoScrollUpdate={onAutoScrollUpdate}
+        interval={interval}
+        autoscroll={autoscroll}
+        showMarker={showMarker}
+        markerTime={markerTime}
       />
     );
 
-    return (
-      <div>
-        {chart}
-      </div>
-    );
+    return chart;
   }
 }

@@ -6,8 +6,6 @@ import * as MicrocontrollerActions from '../actions/microcontroller';
 function mapStateToProps(state) {
   return {
     connectionState: state.connectionState,
-    mapping: state.mapping,
-    name: state.name,
     visibilityFilter: state.visibilityFilter,
     replay: state.replay,
   };

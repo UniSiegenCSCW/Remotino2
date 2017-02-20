@@ -1,48 +1,44 @@
 import React, { Component, PropTypes } from 'react';
-import rd3 from 'rd3';
+import LineChart from '../Graph/LineChart';
 
-export default class DigitalInput extends Component {
+export default class AnalogInput extends Component {
   static propTypes = {
     values: PropTypes.array.isRequired,
     min: PropTypes.number.isRequired,
     max: PropTypes.number.isRequired,
+    showMarker: PropTypes.bool,
+    markerTime: PropTypes.number,
+    autoscroll: PropTypes.bool,
+    interval: PropTypes.array,
+    onIntervalUpdate: React.PropTypes.func,
+    onAutoScrollUpdate: React.PropTypes.func,
   };
 
   render() {
-    const { values, min, max } = this.props;
-    const data = [
-      {
-        name: 'series1',
-        values,
-      },
-    ];
+    const {
+      values,
+      showMarker,
+      markerTime,
+      onIntervalUpdate,
+      onAutoScrollUpdate,
+      autoscroll,
+      interval
+    } = this.props;
 
-    const AreaChart = rd3.AreaChart;
-    const chart = values.length === 0 ? <p>No data</p> : (
-      <div>
-        <p className="nomargin">
-          Value: {Math.round(values[0].y)}%
-          (
-          raw: {Math.round(values[0].y * 10.23)},
-          min: {Math.round(min * 10.23)},
-          max: {Math.round(max * 10.23)}
-          )
-        </p>
-        <AreaChart
-          data={data}
-          width="100%"
-          height={200}
-          viewBoxObject={{
-            x: 0,
-            y: 0,
-            width: 500,
-            height: 200
-          }}
-          xAxisTickValues={[]}
-          domain={{ y: [0, 100] }}
-          gridHorizontal
-        />
-      </div>
+    const chart = (
+      <LineChart
+        yMin={0}
+        yMax={255}
+        data={values}
+        width="100%"
+        height="100%"
+        onIntervalUpdate={onIntervalUpdate}
+        onAutoScrollUpdate={onAutoScrollUpdate}
+        interval={interval}
+        autoscroll={autoscroll}
+        showMarker={showMarker}
+        markerTime={markerTime}
+      />
     );
 
     return chart;

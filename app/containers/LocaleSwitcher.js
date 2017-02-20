@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import counterpart from 'counterpart';
-import { changeLocale } from '../actions/microcontroller';
+import { changeLocale } from '../actions/uiActions';
 import Link from '../components/Link';
 
 const mapStateToProps = (state, ownProps) => (
   {
-    enabled: state.mapping.locale !== ownProps.locale
+    enabled: state.ui.locale !== ownProps.locale
   }
 );
 

@@ -11,7 +11,7 @@ import { getFullCode } from '../utils/ino';
 
 const { dialog } = remote;
 
-export default class Microcontroller extends Component {
+export default class ImportExport extends Component {
   static propTypes = {
     changeMode: PropTypes.func.isRequired,
     changeRange: PropTypes.func.isRequired,

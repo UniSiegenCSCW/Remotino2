@@ -2,7 +2,9 @@ import counterpart from 'counterpart';
 
 counterpart.registerTranslations('en', {
   home: {
-    refresh: 'Refresh'
+    refresh: 'Refresh',
+    flash: 'Flash the required firmware to a connected and supported Arduino, that is found first.',
+    flashing: 'Searching for %(boardType)s.'
   },
   microcontroller: {
     hidden: 'Hidden',
@@ -40,7 +42,10 @@ counterpart.registerTranslations('en', {
 
 counterpart.registerTranslations('de', {
   home: {
-    refresh: 'Aktualisieren'
+    refresh: 'Aktualisieren',
+    flash: 'Flashe die benötigte Firmware auf einen angeschlossenen ' +
+      'und unterstützten Arduino, der zuerst gefunden wird.',
+    flashing: 'Suche nach %(boardType)s.'
   },
   microcontroller: {
     hidden: 'Versteckt',

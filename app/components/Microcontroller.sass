@@ -2,7 +2,6 @@ header
   background: #ecf0f1
   p
     margin: 0
-  flex: auto
   padding: 1.5em
   display: flex
   .header-left
@@ -40,22 +39,19 @@ $red: #e74c3c
   height: 100vh
 
 .pin-list
-  flex: 100%
+  flex: 1
   width: 100%
   overflow-y: scroll
-  display: flex
-  flex-direction: row
-  flex-wrap: wrap
+  // display: flex
+  flex-direction: column
+  // flex-wrap: wrap
 
-.replay
-  flex: auto
+.replay-controls
   width: 100%
   border-top: 1px solid gray
-  .controls
-    padding: 1em
-    display: flex
-    .replay-controls
-      flex: 1
+  padding: 1em
+  text-align: center
+  vertical-align: middle
 
 .link
   display: inline

@@ -4,6 +4,7 @@ import { contains, intersection, values } from 'ramda';
 import { MODE_NAMES, MODES } from '../reducers/microcontrollerEnums';
 import PinList from '../components/PinList';
 import * as MicrocontrollerActions from '../actions/microcontroller';
+import * as UiActions from '../actions/uiActions';
 
 const getVisiblePins = (inPins, filter) => {
   let pins = inPins;
@@ -39,11 +40,13 @@ function mapStateToProps(state) {
               values(state.pins),
               state.visibilityFilter
           ),
+    replay: state.replay,
+    ui: state.ui,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(MicrocontrollerActions, dispatch);
+  return bindActionCreators({ ...MicrocontrollerActions, ...UiActions }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PinList);

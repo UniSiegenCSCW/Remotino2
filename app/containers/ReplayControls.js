@@ -7,6 +7,7 @@ import * as ReplayActions from '../actions/replay';
 function mapStateToProps(state) {
   return {
     replay: state.replay,
+    ui: state.ui,
   };
 }
 

@@ -1,40 +1,49 @@
 import React, { Component, PropTypes } from 'react';
+import LineChart from '../Graph/LineChart';
 
-export default class DigitalInput extends Component {
+export default class AnalogOutput extends Component {
   static propTypes = {
     write: PropTypes.func.isRequired,
-    value: PropTypes.number.isRequired,
+    values: PropTypes.array.isRequired,
+    value:	React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.number,
+    ]),
+    showMarker: PropTypes.bool,
+    markerTime: PropTypes.number,
+    autoscroll: PropTypes.bool,
+    interval: PropTypes.array,
+    onIntervalUpdate: React.PropTypes.func,
+    onAutoScrollUpdate: React.PropTypes.func,
   };
 
   render() {
-    const { write, value } = this.props;
+    const {
+      values,
+      showMarker,
+      markerTime,
+      onIntervalUpdate,
+      onAutoScrollUpdate,
+      autoscroll,
+      interval
+    } = this.props;
 
-    return (
-      <div>
-        <p className="nomargin">
-           Value:&nbsp;
-          <input
-            type="number"
-            name="pwm2"
-            min="0" max="100"
-            value={Math.round(value / 2.55)}
-            size="3"
-            onChange={(e) => {
-              write(e.target.value * 2.55); // map from 0..100 to 0..255
-            }}
-          />% (raw: {Math.round(value)})
-        </p>
-        <input
-          type="range"
-          name="pwm"
-          min="0" max="100"
-          step="5"
-          value={value / 2.55}
-          onChange={(e) => {
-            write(e.target.value * 2.55); // map from 0..100 to 0..255
-          }}
-        />
-      </div>
+    const chart = (
+      <LineChart
+        yMin={0}
+        yMax={255}
+        data={values}
+        width="100%"
+        height="100%"
+        onIntervalUpdate={onIntervalUpdate}
+        onAutoScrollUpdate={onAutoScrollUpdate}
+        interval={interval}
+        autoscroll={autoscroll}
+        showMarker={showMarker}
+        markerTime={markerTime}
+      />
     );
+
+    return chart;
   }
 }

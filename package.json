@@ -102,6 +102,7 @@
     "webpack-merge": "^0.14.0"
   },
   "dependencies": {
+    "avrgirl-arduino": "^1.11.9",
     "counterpart": "^0.17.5",
     "css-modules-require-hook": "^4.0.1",
     "d3": "^3.5.17",
@@ -124,8 +125,7 @@
     "redux": "^3.5.2",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0",
-    "source-map-support": "^0.4.2",
-    "vis": "^4.16.1"
+    "source-map-support": "^0.4.2"
   },
   "devEngines": {
     "node": "4.x || 5.x || 6.x",

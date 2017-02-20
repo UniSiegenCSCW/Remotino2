@@ -1,7 +1,8 @@
 import * as five from 'johnny-five';
 import { values, mapObjIndexed, invertObj, has, contains } from 'ramda';
 import Serial from 'serialport';
-import { MODES, MODE_NAMES } from '../reducers/microcontrollerEnums';
+import Firmata from 'firmata';
+import { MODES } from '../reducers/microcontrollerEnums';
 import { identify } from '../utils/boards';
 import { timestamp } from '../utils/utils';
 import { addReplayEvent } from './replay';
@@ -9,6 +10,8 @@ import { addReplayEvent } from './replay';
 let board;
 const boards = {};
 const sensors = {};
+let outputTimer = null;
+const enabledOutputPins = [];
 
 export const CHANGE_VALUE = 'CHANGE_VALUE';
 export function changeValue(id, value) {
@@ -16,6 +19,7 @@ export function changeValue(id, value) {
     type: CHANGE_VALUE,
     id,
     value,
+    timestamp: timestamp(),
   };
 }
 
@@ -31,33 +35,49 @@ export function detectPorts() {
       dispatch({ type: REFRESHING_PORTS, count: ports.length });
 
       ports.forEach((port) => {
-        try {
-          const boardToIdentify = new five.Board({ port: port.comName, repl: false });
-          // Ignore all errors, we are only interested in boards that work
-          boardToIdentify.on('error', (err) => {
+        // flag to signal the timeout if a board was found
+        let boardDetected = false;
+        // Before connecting with johnny-five we connect with
+        // firmata. Reason for that is, that we can close the
+        // serialport on firmata without any trouble. Johnny-five
+        // has no close function and would only crash.
+        // Closed port is needed for potential flashing of non
+        // firmata boards. Johnny-five would block the port
+        // even without firmata on the arduino.
+        const firmata = new Firmata.Board(port.comName);
+        firmata.on('ready', () => {
+          // Checking the pins of connected port to determin which
+          // board is connecting.
+          const mapping = identify(firmata);
+          // store mapping for later
+          boards[port.comName] = { mapping };
+          // Found a board. Dispatching the good news.
+          dispatch({
+            type: DETECTED_PORT,
+            path: port.comName,
+            name: mapping.name || port.comName,
+            image: mapping.image,
+          });
+          // Set the found flag.
+          boardDetected = true;
+          // Close serialport so johnny can connect later.
+          firmata.transport.close();
+        });
+        // Timeout of the board detecting. Firmata doesn't emit
+        // an event in case of no firmata is found on board.
+        setTimeout(() => {
+          // Checking if a board was found during timeout.
+          if (!boardDetected) {
+            // Dispatching no board was found.
             dispatch({
               type: REJECTED_PORT,
               port: port.comName,
-              err,
             });
-          });
-          boardToIdentify.on('ready', () => {
-            const mapping = identify(boardToIdentify);
-            boards[port.comName] = { board: boardToIdentify, mapping };
-            dispatch({
-              type: DETECTED_PORT,
-              path: port.comName,
-              name: mapping.name || port.comName,
-              image: mapping.image,
-            });
-          });
-        } catch (err) {
-          dispatch({
-            type: REJECTED_PORT,
-            port: port.comName,
-            err,
-          });
-        }
+            // Close port for possible flashing.
+            firmata.transport.close();
+          }
+        // Timeout is 15 seconds.
+        }, 15000);
       });
     });
   };
@@ -103,23 +123,21 @@ export function connectToBoard(port) {
   };
 
   return (dispatch) => {
-    board = boards[port].board;
+    // Connecting with johnny-five
+    board = new five.Board({ port: port.comName, repl: false });
+    board.on('ready', () => {
+      // onReady store the board
+      boards[port.comName] = { board };
+      // Dispatch successfull connect.
+      dispatch(connectedToBoard());
 
-    // Disconnect all other boards
-    // values(boards).forEach((b) => {
-    //   if (b.board.port !== port) {
-    //     b.board.io.transport.close();
-    //   }
-    // });
+      const actions = values(mapObjIndexed(updatePinFromObj, board.io.pins));
+      dispatch(updatePins(actions));
 
-    dispatch(connectedToBoard());
-
-    const actions = values(mapObjIndexed(updatePinFromObj, board.io.pins));
-    dispatch(updatePins(actions));
-
-    if (boards[port].mapping) {
-      dispatch(identifiedBoard(boards[port].mapping));
-    }
+      if (boards[port].mapping) {
+        dispatch(identifiedBoard(boards[port].mapping));
+      }
+    });
   };
 }
 
@@ -142,52 +160,78 @@ export function startListeningToPinChanges(id) {
 }
 
 export const CHANGE_MODE = 'CHANGE_MODE';
-export function changeMode(pin, mode, replay = true) {
+export function changeMode(pin, mode) {
   return (dispatch) => {
     const pinMode = parseInt(mode, 10);
+    const pinId = parseInt(pin.id, 10);
 
     // Disable old outputs if switching back to "not set"
     if (pinMode === MODES.NOT_SET) {
       const oldMode = pin.mode;
       if (oldMode === MODES.OUTPUT) {
-        board.digitalWrite(pin.id, 0);
+        board.digitalWrite(pinId, 0);
       } else if (oldMode === MODES.PWM) {
-        board.analogWrite(pin.id, 0);
+        board.analogWrite(pinId, 0);
       }
     }
 
-    board.pinMode(pin.id, mode);
+    for (let i = 0; i < enabledOutputPins.length; i++) {
+      if (enabledOutputPins[i].id === pinId) {
+        enabledOutputPins.splice(i, 1);
+        break;
+      }
+    }
+
+    if (enabledOutputPins.length === 0) {
+      clearInterval(outputTimer);
+      outputTimer = null;
+    }
+
+    board.pinMode(pinId, mode);
 
     dispatch({
       type: CHANGE_MODE,
-      id: pin.id,
+      id: pinId,
       mode: pinMode,
     });
 
-    if (replay) {
-      dispatch(addReplayEvent({ type: CHANGE_MODE, pin, id: pin.id, mode, name },
-                              `Mode = ${MODE_NAMES[mode]}`));
-    }
+//    if (replay) {
+//      dispatch(addReplayEvent({ type: CHANGE_MODE, pin, id: pin.id, mode, name },
+//                              `Mode = ${MODE_NAMES[mode]}`));
+//    }
 
     // Disable the old listener
-    if (sensors[pin.id]) {
-      sensors[pin.id].disable();
+    if (sensors[pinId]) {
+      sensors[pinId].disable();
     }
 
     if (pinMode === MODES.ANALOG) {
-      const sensor = new five.Sensor({ pin: pin.analogChannel, freq: 200 });
+      const sensor = new five.Sensor({ pin: pin.analogChannel, freq: 200 }); // change back to 200
       sensor.on('data', function onChange() {
-        dispatch(pinValueChanged(pin.id, this.fscaleTo([0, 100])));
+        dispatch(pinValueChanged(pinId, this.fscaleTo([0, 255])));
       });
 
-      sensors[pin.id] = sensor;
+      sensors[pinId] = sensor;
     } else if (pinMode === MODES.INPUT) {
-      const sensor = new five.Sensor.Digital({ pin: pin.id, freq: 200 });
+      const sensor = new five.Sensor.Digital({ pin: pinId, freq: 200 }); // change back to 200
       sensor.on('data', function onChange() {
-        dispatch(pinValueChanged(pin.id, this.value));
+        dispatch(pinValueChanged(pinId, this.value));
       });
 
-      sensors[pin.id] = sensor;
+      sensors[pinId] = sensor;
+    } else if (pinMode === MODES.OUTPUT || pinMode === MODES.PWM) {
+      enabledOutputPins.push({
+        id: pinId,
+        value: 0
+      });
+    }
+
+    if (enabledOutputPins.length !== 0 && outputTimer === null) {
+      outputTimer = setInterval(() => {
+        for (let i = 0; i < enabledOutputPins.length; i++) {
+          dispatch(changeValue(enabledOutputPins[i].id, enabledOutputPins[i].value));
+        }
+      }, 200); // change back to 200
     }
   };
 }
@@ -220,37 +264,37 @@ export function setShowingCode(id, value) {
 }
 
 export const DIGITAL_WRITE = 'DIGITAL_WRITE';
-export function digitalWrite(id, value, name, replay = true) {
+export function digitalWrite(id, value) {
   const pinId = parseInt(id, 10);
   board.digitalWrite(pinId, value);
 
+  for (let i = 0; i < enabledOutputPins.length; i++) {
+    if (enabledOutputPins[i].id === pinId) {
+      enabledOutputPins[i].value = value;
+      break;
+    }
+  }
+
   return (dispatch) => {
     dispatch(changeValue(pinId, value));
-    if (replay) {
-      dispatch(addReplayEvent({ type: DIGITAL_WRITE, id, value, name },
-                              `Digital write ${value}`));
-    }
+    dispatch(addReplayEvent({ type: DIGITAL_WRITE, pinId, value }));
   };
 }
 
 export const ANALOG_WRITE = 'ANALOG_WRITE';
-export function analogWrite(id, value, name, replay = true) {
+export function analogWrite(id, value) {
   const pinId = parseInt(id, 10);
   board.analogWrite(pinId, value);
 
+  for (let i = 0; i < enabledOutputPins.length; i++) {
+    if (enabledOutputPins[i].id === pinId) {
+      enabledOutputPins[i].value = value;
+      break;
+    }
+  }
+
   return (dispatch) => {
     dispatch(changeValue(pinId, value));
-    if (replay) {
-      dispatch(addReplayEvent({ type: ANALOG_WRITE, id, value, name },
-                              `Analog write ${value}`));
-    }
-  };
-}
-
-export const CHANGE_LOCALE = 'CHANGE_LOCALE';
-export function changeLocale(locale) {
-  return {
-    type: CHANGE_LOCALE,
-    locale
+    dispatch(addReplayEvent({ type: ANALOG_WRITE, pinId, value }));
   };
 }

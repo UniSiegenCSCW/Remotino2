@@ -30,9 +30,9 @@ export function identify(board) {
     ArduinoYun
   ];
 
-  if (board.type === 'MEGA') {
-    return ArduinoMega;
-  }
+//  if (board.type === 'MEGA') {
+//    return ArduinoMega;
+//  }
 
   const { ANALOG, PWM, OUTPUT } = board.MODES;
   const analogPins = [];

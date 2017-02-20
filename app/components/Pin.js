@@ -11,8 +11,13 @@ import DigitalInput from './Pin/DigitalInput';
 import AnalogInput from './Pin/AnalogInput';
 import DigitalOutput from './Pin/DigitalOutput';
 import AnalogOutput from './Pin/AnalogOutput';
+import DigitalOutputControls from './Pin/DigitalOutputControls';
+import AnalogOutputControls from './Pin/AnalogOutputControls';
 import Link from './Link';
 import './Pin.sass';
+
+// let timer = null;
+// let markerPos = null;
 
 export default class Pin extends Component {
   static propTypes = {
@@ -23,6 +28,12 @@ export default class Pin extends Component {
     digitalWrite: PropTypes.func.isRequired,
     analogWrite: PropTypes.func.isRequired,
     scrollIntoView: PropTypes.func.isRequired,
+    onIntervalUpdate: React.PropTypes.func,
+    onAutoScrollUpdate: React.PropTypes.func,
+    interval: React.PropTypes.array.isRequired,
+    autoscroll: React.PropTypes.bool.isRequired,
+    showMarker: PropTypes.bool,
+    markerTime: PropTypes.number,
   };
 
   render() {
@@ -34,6 +45,12 @@ export default class Pin extends Component {
       analogWrite,
       pin,
       scrollIntoView,
+      onIntervalUpdate,
+      onAutoScrollUpdate,
+      interval,
+      autoscroll,
+      showMarker,
+      markerTime
     } = this.props;
     const { id, mode, name, values, enabled, showingCode, min, max } = pin;
 
@@ -51,7 +68,7 @@ export default class Pin extends Component {
     };
 
     const modeSelector = (
-      <div>
+      <div className="pin__settings">
         <Translate content="pin.mode" />:
         <select
           value={pin.mode}
@@ -76,31 +93,95 @@ export default class Pin extends Component {
     if (!enabled) {
       pinClass += ' pin--disabled';
     }
+    if (mode === MODES.INPUT || mode === MODES.ANALOG) {
+      pinClass += ' pin--input';
+    } else if (mode === MODES.OUTPUT || mode === MODES.PWM) {
+      pinClass += ' pin--output';
+    }
 
-    const pinControls = () => {
+//    if (replay.playing) {
+//
+//    }
+
+    const pinChart = () => {
       switch (mode) {
         case MODES.INPUT:
           return (
-            <div className="pin__controls">
-              <DigitalInput values={values} />
+            <div className="pin__body">
+              <DigitalInput
+                values={values}
+                interval={interval}
+                autoscroll={autoscroll}
+                onIntervalUpdate={onIntervalUpdate}
+                onAutoScrollUpdate={onAutoScrollUpdate}
+              />
             </div>
           );
         case MODES.ANALOG:
           return (
-            <div className="pin__controls">
-              <AnalogInput values={values} min={min} max={max} />
+            <div className="pin__body">
+              <AnalogInput
+                values={values} min={min} max={max}
+                interval={interval}
+                autoscroll={autoscroll}
+                onIntervalUpdate={onIntervalUpdate}
+                onAutoScrollUpdate={onAutoScrollUpdate}
+              />
             </div>
           );
         case MODES.OUTPUT:
           return (
+            <div className="pin__body">
+              <DigitalOutput
+                write={(value) => digitalWrite(id, value)}
+                value={pin.value}
+                values={values}
+                interval={interval}
+                autoscroll={autoscroll}
+                onIntervalUpdate={onIntervalUpdate}
+                onAutoScrollUpdate={onAutoScrollUpdate}
+                showMarker={showMarker}
+                markerTime={markerTime}
+              />
+            </div>
+          );
+        case MODES.PWM:
+          return (
+            <div className="pin__body">
+              <AnalogOutput
+                write={(value) => analogWrite(id, value)}
+                value={pin.value}
+                values={values}
+                interval={interval}
+                autoscroll={autoscroll}
+                onIntervalUpdate={onIntervalUpdate}
+                onAutoScrollUpdate={onAutoScrollUpdate}
+                showMarker={showMarker}
+                markerTime={markerTime}
+              />
+            </div>
+          );
+        default:
+          return <div></div>;
+      }
+    };
+
+    const pinControls = () => {
+      switch (mode) {
+        case MODES.OUTPUT:
+          return (
             <div className="pin__controls">
-              <DigitalOutput write={(value) => digitalWrite(id, value, name)} value={pin.value} />
+              <DigitalOutputControls
+                write={(value) => digitalWrite(id, value, name)} value={pin.value}
+              />
             </div>
           );
         case MODES.PWM:
           return (
             <div className="pin__controls">
-              <AnalogOutput write={(value) => analogWrite(id, value, name)} value={pin.value} />
+              <AnalogOutputControls
+                write={(value) => analogWrite(id, value, name)} value={pin.value}
+              />
             </div>
           );
         default:
@@ -109,12 +190,12 @@ export default class Pin extends Component {
     };
 
     const visibilityControls = enabled ?
-      <Link className="" onClick={() => setEnabled(pin.id, false)}>
+      (<Link className="" onClick={() => setEnabled(pin.id, false)}>
         <FontAwesome name="minus-square" /> <Translate content="pin.hide" />
-      </Link> :
-      <Link className="" onClick={() => setEnabled(pin.id, true)}>
+      </Link>) :
+      (<Link className="" onClick={() => setEnabled(pin.id, true)}>
         <FontAwesome name="plus-square" /> <Translate content="pin.show" />
-      </Link>;
+      </Link>);
 
 
     let digitalTag = 'microcontroller.digital';
@@ -126,9 +207,10 @@ export default class Pin extends Component {
     }
     const digitalIcons =
     (contains(MODES.INPUT, supportedModes) || contains(MODES.OUTPUT, supportedModes)) ?
-      <div key="digital" className="pin__tag">
-        <Translate content={digitalTag} />
-      </div> :
+      (<div>
+        <Translate content={digitalTag} className="pin__tag" />
+      </div>)
+      :
       null;
 
     let analogTag = 'microcontroller.analog';
@@ -140,24 +222,21 @@ export default class Pin extends Component {
     }
     const analogIcons =
     (contains(MODES.ANALOG, supportedModes) || contains(MODES.PWM, supportedModes)) ?
-      <div key="analog" className="pin__tag">
-        <Translate content={analogTag} />
-      </div> :
+      (<div>
+        <Translate content={analogTag} className="pin__tag" />
+      </div>)
+      :
       null;
 
-    const body = (showingCode_) => {
-      if (showingCode_) {
-        return (
-          <div className="pin__controls">
-            <SyntaxHighlighter language="cpp">
-              {getCode(pin)}
-            </SyntaxHighlighter>
-          </div>
-        );
-      } else {
-        return pinControls(mode);
-      }
-    };
+    const body = showingCode ?
+      (<div className="pin__code">
+        <SyntaxHighlighter language="cpp" customStyle="">
+          {getCode(pin)}
+        </SyntaxHighlighter>
+      </div>)
+    :
+      pinChart(mode);
+
     // {filteredCategories.map((category) =>
     //   <div key={category} className="pin__tag">{category}</div>
     // )}
@@ -166,20 +245,19 @@ export default class Pin extends Component {
         <div className="pin__header">
           <div className="pin__header__left">
             <h2 className="pin__name">{name}</h2>
-            {digitalIcons}
-            {analogIcons}
           </div>
+          {digitalIcons}
+          {analogIcons}
           <div className="pin__header__right">
             <Link onClick={() => setShowingCode(pin.id, !showingCode)}>
               <FontAwesome name="code" />
             </Link>
             {visibilityControls}
           </div>
-        </div>
-        <div className="pin__settings">
           {modeSelector}
+          {pinControls(mode)}
         </div>
-        {body(showingCode)}
+        {body}
       </div>
     );
   }

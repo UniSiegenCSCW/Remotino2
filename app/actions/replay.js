@@ -1,3 +1,5 @@
+import { timestamp } from '../utils/utils';
+
 export const REMOVE_ALL_ITEMS = 'REMOVE_ALL_ITEMS';
 export function removeAllItems() {
   return { type: REMOVE_ALL_ITEMS };
@@ -42,7 +44,7 @@ export const START_RECORDING = 'START_RECORDING';
 export function startRecording() {
   return {
     type: START_RECORDING,
-    time: new Date(),
+    timestamp: timestamp(),
   };
 }
 
@@ -50,7 +52,7 @@ export const STOP_RECORDING = 'STOP_RECORDING';
 export function stopRecording() {
   return {
     type: STOP_RECORDING,
-    time: new Date(),
+    timestamp: timestamp(),
   };
 }
 
@@ -65,11 +67,10 @@ export function stopReplay() {
 }
 
 export const ADD_REPLAY_EVENT = 'ADD_REPLAY_EVENT';
-export function addReplayEvent(replay, description, time = new Date()) {
+export function addReplayEvent(replay, time = timestamp()) {
   return {
     type: ADD_REPLAY_EVENT,
     replay,
-    description,
-    time,
+    timestamp: time,
   };
 }

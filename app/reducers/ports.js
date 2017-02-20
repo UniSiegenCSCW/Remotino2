@@ -5,7 +5,7 @@ import {
   REFRESHING_PORTS,
 } from '../actions/microcontroller';
 
-const pins = (state = { names: [], refreshing: false, remaining: 0 }, action) => {
+const ports = (state = { names: [], refreshing: false, remaining: 0 }, action) => {
   switch (action.type) {
     case REFRESHING_PORTS:
       return update(state, {
@@ -29,4 +29,4 @@ const pins = (state = { names: [], refreshing: false, remaining: 0 }, action) =>
   }
 };
 
-export default pins;
+export default ports;

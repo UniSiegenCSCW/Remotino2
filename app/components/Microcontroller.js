@@ -3,7 +3,7 @@ import Translate from 'react-translate-component';
 import '../utils/l10n.js';
 import PinList from '../containers/PinList';
 import './Microcontroller.sass';
-import Timeline from '../containers/Timeline';
+import ReplayControls from '../containers/ReplayControls';
 import ImportExport from '../containers/ImportExport';
 
 export default class Microcontroller extends Component {
@@ -85,9 +85,7 @@ export default class Microcontroller extends Component {
           </div>
         </header>
         <PinList />
-        <div className="replay">
-          <Timeline />
-        </div>
+        <ReplayControls />
       </div>
     );
   }

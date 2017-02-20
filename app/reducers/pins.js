@@ -1,5 +1,6 @@
 import update from 'react/lib/update';
 import { mapObjIndexed, merge } from 'ramda';
+import { timestamp } from '../utils/utils';
 import {
   CHANGE_MODE,
   IDENTIFIED_BOARD,
@@ -27,8 +28,13 @@ const createPin = (action) => (
 
 const addValue = (values, newValue, limit) => {
   const oldValues = values;
-  oldValues.unshift(newValue);
-  return oldValues.slice(0, limit);
+  if (oldValues.length > 1 && oldValues[0].y === newValue.y) {
+    oldValues[0] = newValue;
+    return oldValues;
+  } else {
+    oldValues.unshift(newValue);
+    return oldValues.slice(0, limit);
+  }
 };
 
 const pins = (state = {}, action) => {
@@ -36,26 +42,48 @@ const pins = (state = {}, action) => {
     case UPDATE_PINS:
       return mapObjIndexed(createPin, action.pins);
     case CHANGE_MODE:
-      return update(state, { [action.id]: { mode: { $set: action.mode } } });
+//      return update(state, { [action.id]: { mode: { $set: action.mode } } });
+      return update(state, { [action.id]: { mode: { $set: action.mode }, values: { $set: [] } } });
+// , values: { $set: [] } } });
     case SET_ENABLED:
       return update(state, { [action.id]: { enabled: { $set: action.value } } });
     case SET_SHOWING_CODE:
       return update(state, { [action.id]: { showingCode: { $set: action.value } } });
     case CHANGE_VALUE:
-      return update(state, { [action.id]: { value: { $set: action.value } } });
+//      console.log(action.id);
+//      console.log(state);
+      return update(
+        state,
+        { [action.id]:
+        { value:
+        { $set: action.value },
+          values:
+          { $apply: values => addValue(
+          values,
+          { x: timestamp(), y: action.value }, 2000) },
+          min:
+          { $apply: old => (((action.value < old) && (state[action.id].values.length > 1)) ?
+                  action.value : old) },
+          max:
+          { $apply: old => (((action.value > old) && (state[action.id].values.length > 1)) ?
+                action.value : old) },
+        },
+        },
+      );
     case PIN_VALUE_CHANGED:
       return update(
         state,
         { [action.id]:
-          { values:
-              { $apply: values => addValue(values, { x: action.timestamp, y: action.value }, 100) },
-            min:
-              { $apply: old => (((action.value < old) && (state[action.id].values.length > 1)) ?
+        { values:
+        { $apply: values => addValue(
+              values, { x: action.timestamp, y: action.value }, 3000) },
+          min:
+          { $apply: old => (((action.value < old) && (state[action.id].values.length > 1)) ?
                   action.value : old) },
-            max:
-              { $apply: old => (((action.value > old) && (state[action.id].values.length > 1)) ?
-                  action.value : old) },
-          },
+          max:
+          { $apply: old => (((action.value > old) && (state[action.id].values.length > 1)) ?
+                action.value : old) },
+        },
         },
       );
     case IDENTIFIED_BOARD:

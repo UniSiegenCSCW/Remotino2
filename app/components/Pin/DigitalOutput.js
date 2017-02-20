@@ -1,23 +1,48 @@
 import React, { Component, PropTypes } from 'react';
+import LineChart from '../Graph/LineChart';
 
-export default class DigitalInput extends Component {
+export default class DigitalOutput extends Component {
   static propTypes = {
     write: PropTypes.func.isRequired,
-    value: PropTypes.number.isRequired,
+    values: PropTypes.array.isRequired,
+    value:	React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.number,
+    ]),
+    showMarker: PropTypes.bool,
+    markerTime: PropTypes.number,
+    autoscroll: PropTypes.bool,
+    interval: PropTypes.array,
+    onIntervalUpdate: React.PropTypes.func,
+    onAutoScrollUpdate: React.PropTypes.func,
   };
 
   render() {
-    const { write, value } = this.props;
+    const { values,
+      showMarker,
+      markerTime,
+      onIntervalUpdate,
+      onAutoScrollUpdate,
+      autoscroll,
+      interval
+    } = this.props;
 
-    return (
-      <label className="label-switch">
-        <input
-          type="checkbox"
-          onChange={(e) => write(e.target.checked ? 1 : 0)}
-          checked={value}
-        />
-        <div className="checkbox"></div>
-      </label>
+    const chart = (
+      <LineChart
+        yMin={0}
+        yMax={1}
+        data={values}
+        width="100%"
+        height="100%"
+        onIntervalUpdate={onIntervalUpdate}
+        onAutoScrollUpdate={onAutoScrollUpdate}
+        interval={interval}
+        autoscroll={autoscroll}
+        showMarker={showMarker}
+        markerTime={markerTime}
+      />
     );
+
+    return chart;
   }
 }
