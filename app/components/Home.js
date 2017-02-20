@@ -41,6 +41,17 @@ export default class Home extends Component {
       flash,
     } = this.props;
 
+    const portElem = (port) => (
+      <li key={port.path}>
+        <Link className="port" onClick={() => connectToBoard(port.path)}>
+          <p>{port.name} ({port.path})</p>
+          {port.image ?
+            <img className="port__image" src={`./utils/boards/${port.image}`} alt={port.name} />
+            : ''}
+        </Link>
+      </li>
+    );
+
     switch (connectionState) {
       case CONNECTION_STATE.NOT_CONNECTED:
         return (
@@ -51,31 +62,14 @@ export default class Home extends Component {
             </div>
             <div className="refresh">
               <Link onClick={detectPorts}>
-                {ports.refreshing ?
+                { ports.refreshing ?
                   <FontAwesome spin name="spinner" /> :
-                  <FontAwesome name="refresh" />} <Translate content="home.refresh" />
+                  <FontAwesome name="refresh" /> }
+                <Translate content="home.refresh" />
               </Link>
             </div>
             <div>
-              <ul>
-                {
-                ports.names.map((port) => (
-                  <li key={port.path}>
-                    <Link className="port" onClick={() => connectToBoard(port.path)}>
-                      <div>
-                        {port.name} ({port.path})
-                      </div>
-                      {port.image ?
-                        <img
-                          className="port__image"
-                          src={`./utils/boards/${port.image}`}
-                          alt={`${port.name} icon`}
-                        /> : ''}
-                    </Link>
-                  </li>
-                ))
-              }
-              </ul>
+              <ul>{ports.names.map(portElem)}</ul>
             </div>
             <div>
               <Link onClick={searchFlashableBoards}>

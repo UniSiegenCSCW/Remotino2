@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { intersection, contains } from 'ramda';
-import FontAwesome from 'react-fontawesome';
 import Translate from 'react-translate-component';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import '../utils/l10n.js';
