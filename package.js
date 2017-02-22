@@ -64,9 +64,9 @@ if (version) {
   // use the same version as the currently-installed electron-prebuilt
   exec('npm list electron --dev', (err, stdout) => {
     if (err) {
-      DEFAULT_OPTS.version = '1.4.3';
+      DEFAULT_OPTS.electronVersion = '1.4.15';
     } else {
-      DEFAULT_OPTS.version = stdout.split('electron@')[1].replace(/\s/g, '');
+      DEFAULT_OPTS.electronVersion = stdout.split('electron@')[1].replace(/\s/g, '');
     }
 
     startPack();
@@ -151,7 +151,7 @@ function pack(plat, arch, cb) {
     out: `release/${plat}-${arch}`
   });
 
-  packager(opts, cb);
+  packager(opts);
 }
 
 

@@ -109,7 +109,7 @@ export default class ReplayControls extends Component {
 //        />;
 
     const replayButton = replay.playing ?
-      <Link onClick={stopReplayElem} icon="stop" content="replay_controls.stop-replay" /> :
+      <Link onClick={stopReplayElem} icon="stop" content="replay_controls.stop_replay" /> :
         <Link
           onClick={startReplayElem} enabled={!replay.recording} 
           icon="play" content="replay_controls.start_replay"
