@@ -5,26 +5,34 @@
 import webpack from 'webpack';
 import validate from 'webpack-validator';
 import merge from 'webpack-merge';
+import BabiliPlugin from 'babili-webpack-plugin';
 import baseConfig from './webpack.config.base';
 
 export default validate(merge(baseConfig, {
   devtool: 'source-map',
 
-  entry: ['babel-polyfill', './main.development'],
+  entry: ['babel-polyfill', './app/main.development'],
 
   // 'main.js' in root
   output: {
     path: __dirname,
-    filename: './main.js'
+    filename: './app/main.js'
   },
 
   plugins: [
-    // Minify the output
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false
-      }
+    /**
+    * Babli is an ES6+ aware minifier based on the Babel toolchain (beta)
+    */
+    new BabiliPlugin({
+    // Disable deadcode until https://github.com/babel/babili/issues/385 fixed
+    deadcode: false,
     }),
+    // Minify the output
+//    new webpack.optimize.UglifyJsPlugin({
+//      compressor: {
+//        warnings: false
+//      }
+//    }),
 
     // Add source map support for stack traces in node
     // https://github.com/evanw/node-source-map-support
