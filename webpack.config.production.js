@@ -61,7 +61,7 @@ const config = validate(merge(baseConfig, {
     */
     new BabiliPlugin({
     // Disable deadcode until https://github.com/babel/babili/issues/385 fixed
-    deadcode: false,
+      deadcode: false,
     }),
 
     // Minify without warning messages and IE8 support
