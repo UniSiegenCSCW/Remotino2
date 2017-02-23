@@ -46,7 +46,7 @@ export default class Home extends Component {
         <Link className="port" onClick={() => connectToBoard(port.path)}>
           <p>{port.name} ({port.path})</p>
           {port.image ?
-            <img className="port__image" src={`./utils/boards/${port.image}`} alt={port.name} />
+            <img className="port__image" src={`./svg/${port.image}`} alt={port.name} />
             : ''}
         </Link>
       </li>
