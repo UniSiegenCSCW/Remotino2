@@ -5,6 +5,8 @@
 import path from 'path';
 import validate from 'webpack-validator';
 
+import { dependencies as externals } from './app/package.json';
+
 export default validate({
   module: {
     loaders: [{
@@ -24,7 +26,7 @@ export default validate({
   },
 
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(__dirname, 'app'),
     filename: 'bundle.js',
 
     // https://github.com/webpack/webpack/issues/1114
