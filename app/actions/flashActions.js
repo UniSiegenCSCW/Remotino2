@@ -1,36 +1,37 @@
 import Avrgirl from 'avrgirl-arduino';
-import fs from 'fs';
-
-const packagePath = process.env.HOT ? // check if we are in dev mode
-  './app/': // in dev mode bianry folder is in app
-  './resources/app.asar/' // in package the folder is in resources/app.asar
+import path from 'path';
 
 // list of supported boards, that are also supported by remotino
 const supportedBoards = [
   {
     type: 'leonardo',
     name: 'Arduino Leonardo',
-    filename: packagePath + 'binary/arduino-leonardo.hex',
+    filename: path.join(__dirname, 'binary', 'arduino-leonardo.hex'),
+//    filename: packagePath + 'binary/arduino-leonardo.hex',
   },
   {
     type: 'micro',
     name: 'Arduino Micro',
-    filename: packagePath + 'binary/arduino-micro.hex',
+    filename: path.join(__dirname, 'binary', 'arduino-micro.hex'),
+//    filename: packagePath + 'binary/arduino-micro.hex',
   },
   {
     type: 'mega',
     name: 'Arduino Mega',
-    filename: packagePath + 'binary/arduino-mega-2560.hex',
+    filename: path.join(__dirname, 'binary', 'arduino-mega-2560.hex'),
+//    filename: packagePath + 'binary/arduino-mega-2560.hex',
   },
   {
     type: 'nano',
     name: 'Arduino Nano',
-    filename: packagePath + 'binary/arduino-nano.hex',
+    filename: path.join(__dirname, 'binary', 'arduino-nano.hex'),
+//    filename: packagePath + 'binary/arduino-nano.hex',
   },
   {
     type: 'uno',
     name: 'Arduino Uno',
-    filename: packagePath + 'binary/arduino-uno.hex',
+    filename: path.join(__dirname, 'binary', 'arduino-uno.hex'),
+//    filename: packagePath + 'binary/arduino-uno.hex',
   }
 ];
 
@@ -75,8 +76,6 @@ export function searchFlashableBoards() {
         dispatch(flashingDone());
         // exit the flash function after one successfull try
         return;
-      } else {
-        console.log(err);
       }
       if (i < length) {
         // get new avrgirl object with current boardtype we are trying
@@ -87,7 +86,7 @@ export function searchFlashableBoards() {
         dispatch(tryFlashingBoard(supportedBoards[i].name));
         // calling actual flash function
         avrGirl.flash(supportedBoards[i].filename, fn);
-        i++;
+        i += i;
       } else {
         dispatch(flashingError());
       }
