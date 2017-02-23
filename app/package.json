@@ -1,0 +1,40 @@
+{
+  "name": "remotino",
+  "productName": "Remotino",
+  "version": "0.10.0",
+  "description": "Remotino lets you remote control your Arduino",
+  "main": "./main.js",
+  "author": {
+    "name": "Julian Dax",
+    "email": "julian.dax@uni-siegen.de",
+    "url": "https://github.com/UniSiegenCSCW/remotino"
+  },
+  "dependencies": {
+    "avrgirl-arduino": "^1.11.9",
+    "counterpart": "^0.17.5",
+    "johnny-five": "0.10.0",
+    "ramda": "^0.21.0",
+    "d3": "^3.5.17",
+    "react-syntax-highlighter": "^2.3.0",
+    "react-translate-component": "^0.13.0",
+    "react-interpolate-component": "^0.10.0",
+    "css-modules-require-hook": "^4.0.1",
+    "electron-debug": "^1.0.1",
+    "font-awesome": "^4.6.3",
+    "react-fontawesome": "^1.1.0",
+    "jsonfile": "^2.3.1",
+    "css-modules-require-hook": "^4.0.5",
+    "redux-logger": "^2.7.0",
+    "electron-debug": "^1.1.0",
+    "postcss": "^5.2.4",
+    "react": "^15.3.2",
+    "react-dom": "^15.4.2",
+    "react-redux": "^4.4.5",
+    "react-router": "^2.8.1",
+    "react-router-redux": "^4.0.6",
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.1.0",
+    "serialport": "^4.0.3",
+    "source-map-support": "^0.4.3"
+  }
+}
