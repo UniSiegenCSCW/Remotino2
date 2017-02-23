@@ -1,31 +1,36 @@
 import Avrgirl from 'avrgirl-arduino';
+import fs from 'fs';
+
+const packagePath = process.env.HOT ? // check if we are in dev mode
+  './app/': // in dev mode bianry folder is in app
+  './resources/app.asar/' // in package the folder is in resources/app.asar
 
 // list of supported boards, that are also supported by remotino
 const supportedBoards = [
   {
     type: 'leonardo',
     name: 'Arduino Leonardo',
-    filename: './app/binary/arduino-leonardo.hex',
+    filename: packagePath + 'binary/arduino-leonardo.hex',
   },
   {
     type: 'micro',
     name: 'Arduino Micro',
-    filename: '/.app/binary/arduino-micro.hex',
+    filename: packagePath + 'binary/arduino-micro.hex',
   },
   {
     type: 'mega',
     name: 'Arduino Mega',
-    filename: './app/binary/arduino-mega-2560.hex',
+    filename: packagePath + 'binary/arduino-mega-2560.hex',
   },
   {
     type: 'nano',
     name: 'Arduino Nano',
-    filename: './app/binary/arduino-nano.hex',
+    filename: packagePath + 'binary/arduino-nano.hex',
   },
   {
     type: 'uno',
     name: 'Arduino Uno',
-    filename: './app/binary/arduino-uno.hex',
+    filename: packagePath + 'binary/arduino-uno.hex',
   }
 ];
 
@@ -70,6 +75,8 @@ export function searchFlashableBoards() {
         dispatch(flashingDone());
         // exit the flash function after one successfull try
         return;
+      } else {
+        console.log(err);
       }
       if (i < length) {
         // get new avrgirl object with current boardtype we are trying
