@@ -14,12 +14,58 @@
     "build-renderer": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.production.js --progress --profile --colors",
     "build": "npm run build-main && npm run build-renderer",
     "start": "cross-env NODE_ENV=production electron ./",
-    "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./main.development",
-    "package": "cross-env NODE_ENV=production node -r babel-register -r babel-polyfill package.js",
-    "package-all": "npm run package -- --all",
-    "postinstall": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
+    "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./app/main.development",
+    "postinstall": "concurrently \"install-app-deps\" \"node node_modules/fbjs-scripts/node/check-dev-engines.js package.json\"",
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\"",
+    "package": "npm run build && build --publish never",
+    "package-win": "npm run build && build --win --x64",
+    "package-linux": "npm run build && build --linux",
+    "package-all": "npm run build && build -mwl",
     "cleanup": "mop -v"
+  },
+  "browserslist": "electron 1.4",
+  "build": {
+    "productName": "Remotino",
+    "appId": "de.uni-siegen.Remotino",
+    "category": "public.app-category.tools",
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "files": [
+      "dist/",
+      "node_modules/",
+      "app.html",
+      "main.js",
+      "main.js.map",
+      "package.json",
+      "binary/",
+      "svg/"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "AppImage"
+      ]
+    },
+    "directories": {
+      "buildResources": "resources",
+      "output": "release"
+    }
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
@@ -30,7 +76,7 @@
   },
   "author": {
     "name": "Julian Dax",
-    "email": "julian.dax@uni-siegen.dei",
+    "email": "julian.dax@uni-siegen.de",
     "url": "https://github.com/UniSiegenCSCW/remotino"
   },
   "license": "MIT",
@@ -48,6 +94,7 @@
     "sass-loader": "^3.2.0",
     "file-loader": "^0.8.5",
     "asar": "^0.12.3",
+    "babili-webpack-plugin": "^0.0.10",
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.0.0",
     "babel-loader": "^6.2.5",
@@ -70,8 +117,8 @@
     "del": "^2.2.2",
     "devtron": "^1.3.0",
     "electron": "^1.4.15",
+    "electron-builder": "^13.3.2",
     "electron-devtools-installer": "^2.0.1",
-    "electron-packager": "^8.1.0",
     "electron-rebuild": "^1.2.1",
     "enzyme": "^2.4.1",
     "eslint": "^3.7.1",
@@ -88,13 +135,14 @@
     "express": "^4.14.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "fbjs-scripts": "^0.7.1",
+    "html-webpack-plugin": "^2.26.0",
     "jsdom": "^9.6.0",
     "json-loader": "^0.5.4",
     "minimist": "^1.2.0",
     "mocha": "^3.1.0",
     "node-libs-browser": "^1.0.0",
-    "react-addons-test-utils": "^15.3.2",
-    "redux-logger": "^2.7.0",
+    "react": "^15.3.2",
+    "react-dom": "^15.4.2",
     "sinon": "^1.17.6",
     "spectron": "^3.4.0",
     "style-loader": "^0.13.1",
@@ -105,35 +153,11 @@
     "webpack-merge": "^0.14.1",
     "webpack-validator": "^2.2.9"
   },
-  "dependencies": {
-    "avrgirl-arduino": "^1.11.9",
-    "counterpart": "^0.17.5",
-    "johnny-five": "0.10.0",
-    "ramda": "^0.21.0",
-    "d3": "^3.5.17",
-    "react-syntax-highlighter": "^2.3.0",
-    "react-translate-component": "^0.13.0",
-    "react-interpolate-component": "^0.10.0",
-    "css-modules-require-hook": "^4.0.1",
-    "electron-debug": "^1.0.1",
-    "react-fontawesome": "^1.1.0",
-    "jsonfile": "^2.3.1",
-    "css-modules-require-hook": "^4.0.5",
-    "electron-debug": "^1.0.1",
-    "font-awesome": "^4.6.3",
-    "postcss": "^5.2.4",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
-    "react-redux": "^4.4.5",
-    "react-router": "^2.8.1",
-    "react-router-redux": "^4.0.6",
-    "redux": "^3.6.0",
-    "redux-thunk": "^2.1.0",
-    "serialport": "^4.0.3",
-    "source-map-support": "^0.4.3"
-  },
   "devEngines": {
-    "node": "4.x || 5.x || 6.x || 7.x",
-    "npm": "3.x || 4.x"
+    "node": ">=6.x",
+    "npm": ">=3.x"
+  },
+  "config": {
+    "unsafe-perm": true
   }
 }
