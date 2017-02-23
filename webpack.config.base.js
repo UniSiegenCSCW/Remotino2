@@ -5,8 +5,6 @@
 import path from 'path';
 import validate from 'webpack-validator';
 
-import { dependencies as externals } from './app/package.json';
-
 export default validate({
   module: {
     loaders: [{
@@ -41,8 +39,14 @@ export default validate({
 
   plugins: [],
 
+  // needed to get absolut path in __dirname to find the flash files
+  node: {
+    __dirname: false,
+    __filename: false,
+  },
+
   externals: [
-    "serialport"
+    'serialport'
     // put your node 3rd party libraries which can't be built with webpack here
     // (mysql, mongodb, and so on..)
   ]
