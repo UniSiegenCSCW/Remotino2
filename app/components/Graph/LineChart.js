@@ -1,8 +1,8 @@
 import React from 'react';
 import d3 from 'd3';
-import Axis from './Axis.js';
-import Grid from './Grid.js';
-import EventHandler from './EventHandler.js';
+import Axis from './Axis';
+import Grid from './Grid';
+import EventHandler from './EventHandler';
 import './LineChart.sass';
 // import { timestamp } from '../../utils/utils';
 
@@ -13,23 +13,25 @@ let clipIdCounter = 0;
 export default class LineChart extends React.Component {
 
   static propTypes = {
-    width:	React.PropTypes.oneOfType([
+    width: React.PropTypes.oneOfType([
       React.PropTypes.string,
       React.PropTypes.number,
     ]),
-    height:	React.PropTypes.oneOfType([
+    height: React.PropTypes.oneOfType([
       React.PropTypes.string,
       React.PropTypes.number,
     ]),
-    data:	React.PropTypes.array.isRequired,
-    yMin:	React.PropTypes.number.isRequired,
-    yMax:	React.PropTypes.number.isRequired,
-    autoscroll:	React.PropTypes.bool,
-    interval:	React.PropTypes.array,
-    onIntervalUpdate:	React.PropTypes.func,
-    onAutoScrollUpdate:	React.PropTypes.func,
-    markerTime:	React.PropTypes.number,
-    showMarker:	React.PropTypes.bool,
+    data: React.PropTypes.arrayOf(React.PropTypes.shape({
+      x: React.PropTypes.number,
+      y: React.PropTypes.number,
+    })),
+    yMin: React.PropTypes.number.isRequired,
+    yMax: React.PropTypes.number.isRequired,
+    interval: React.PropTypes.arrayOf(React.PropTypes.number),
+    onIntervalUpdate: React.PropTypes.func,
+    onAutoScrollUpdate: React.PropTypes.func,
+    markerTime: React.PropTypes.number,
+    showMarker: React.PropTypes.bool,
   };
 
   constructor(props) {
@@ -37,7 +39,7 @@ export default class LineChart extends React.Component {
 
 //    autoscroll = autoscroll === null ? true : autoscroll;
 
-    const clipId = `clipPath_${clipIdCounter++}`;
+    const clipId = `clipPath_${clipIdCounter += 1}`;
 
 //    const duration = 30 * 1000;
 
@@ -99,13 +101,13 @@ export default class LineChart extends React.Component {
     // just find the relevant data and copy it to new array.
     // this will only render the relevant data and hopefully increases performance.
     let firstX = data.length - 1;
-    for (let i = firstX - 1; i >= 0; i--) {
+    for (let i = firstX - 1; i >= 0; i -= 1) {
       if (data[i].x >= interval[0]) {
         firstX = i;
         break;
       }
     }
-    const lastX = data.findIndex((d) => d.x <= interval[1]);
+    const lastX = data.findIndex(d => d.x <= interval[1]);
     const relevantData = data.slice(lastX !== 0 ? lastX - 1 : lastX, firstX + 2);
 
     const lineAreaWidth = svgWidth - (this.state.margin.left + this.state.margin.right);
@@ -137,8 +139,8 @@ export default class LineChart extends React.Component {
       .tickFormat('');
 
     const line = d3.svg.line()
-      .x((d) => xScale(d.x))
-      .y((d) => yScale(d.y))
+      .x(d => xScale(d.x))
+      .y(d => yScale(d.y))
       .interpolate('step-after');
 
     const endData = data.length !== 0 ? data[0].x : interval[1];
@@ -162,7 +164,7 @@ export default class LineChart extends React.Component {
 
     return (
       <svg
-        ref={(svg) => { this.svg = svg; }}
+        ref={svg => (this.svg = svg)}
         width={width}
         height={height}
         onWheel={this.handleMouseWheel}
@@ -187,9 +189,9 @@ export default class LineChart extends React.Component {
             width={lineAreaWidth}
             height={lineAreaHeight}
             endData={endData}
-            onZoom={this.handleZoom.bind(this)}
+            onZoom={this.props.onIntervalUpdate}
             xScale={xScale}
-            onAutoScroll={this.handleAutoScroll.bind(this)}
+            onAutoScroll={this.props.onAutoScrollUpdate}
           >
             <g>
               <clipPath id={this.state.clipId}>

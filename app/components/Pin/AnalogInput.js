@@ -3,13 +3,16 @@ import LineChart from '../Graph/LineChart';
 
 export default class AnalogInput extends Component {
   static propTypes = {
-    values: PropTypes.array.isRequired,
-    min: PropTypes.number.isRequired,
-    max: PropTypes.number.isRequired,
+    values: React.PropTypes.arrayOf(React.PropTypes.shape({
+      x: React.PropTypes.number,
+      y: React.PropTypes.number,
+    })),
+//    min: PropTypes.number.isRequired,
+//    max: PropTypes.number.isRequired,
     showMarker: PropTypes.bool,
     markerTime: PropTypes.number,
     autoscroll: PropTypes.bool,
-    interval: PropTypes.array,
+    interval: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
     onIntervalUpdate: React.PropTypes.func,
     onAutoScrollUpdate: React.PropTypes.func,
   };

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import FontAwesome from 'react-fontawesome';
 import Translate from 'react-translate-component';
-import '../utils/l10n.js';
+import '../utils/l10n';
 import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import Microcontroller from '../containers/Microcontroller';
 import Link from '../components/Link';

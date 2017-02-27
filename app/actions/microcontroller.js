@@ -23,6 +23,8 @@ export function changeValue(id, value) {
   };
 }
 
+export const DIGITAL_WRITE = 'DIGITAL_WRITE';
+export const ANALOG_WRITE = 'ANALOG_WRITE';
 export const DETECTED_PORT = 'DETECTED_PORT';
 export const REJECTED_PORT = 'REJECTED_PORT';
 export const REFRESHING_PORTS = 'REFRESHING_PORTS';
@@ -30,7 +32,7 @@ export function detectPorts() {
   return (dispatch) => {
     Serial.list((_err, result) => {
       // This will never return an error, only an empty list
-      const ports = result.filter((port) => /usb|acm|^com/i.test(port.comName));
+      const ports = result.filter(port => /usb|acm|^com/i.test(port.comName));
 
       dispatch({ type: REFRESHING_PORTS, count: ports.length });
 
@@ -159,10 +161,10 @@ export function changeMode(pin, mode) {
     if (pinMode === MODES.NOT_SET) {
       const oldMode = pin.mode;
       if (oldMode === MODES.OUTPUT) board.digitalWrite(pinId, 0);
-        else if (oldMode === MODES.PWM) board.analogWrite(pinId, 0);
+      else if (oldMode === MODES.PWM) board.analogWrite(pinId, 0);
     }
 
-    for (let i = 0; i < enabledOutputPins.length; i++) {
+    for (let i = 0; i < enabledOutputPins.length; i += 1) {
       if (enabledOutputPins[i].id === pinId) {
         enabledOutputPins.splice(i, 1);
         break;
@@ -173,7 +175,7 @@ export function changeMode(pin, mode) {
       clearInterval(outputTimer);
       outputTimer = null;
     }
-    
+
     // Set new mode
     board.pinMode(pinId, mode);
 
@@ -211,11 +213,17 @@ export function changeMode(pin, mode) {
         id: pinId,
         value: 0
       });
+      // set the initial replay event
+      if (pinMode === MODES.OUTPUT) {
+        dispatch(addReplayEvent({ type: DIGITAL_WRITE, pinId, value: 0 }));
+      } else if (pinMode === MODES.PWM) {
+        dispatch(addReplayEvent({ type: ANALOG_WRITE, pinId, value: 0 }));
+      }
     }
 
     if (enabledOutputPins.length !== 0 && outputTimer === null) {
       outputTimer = setInterval(() => {
-        for (let i = 0; i < enabledOutputPins.length; i++) {
+        for (let i = 0; i < enabledOutputPins.length; i += 1) {
           dispatch(changeValue(enabledOutputPins[i].id, enabledOutputPins[i].value));
         }
       }, 200);
@@ -241,12 +249,11 @@ export function setShowingCode(id, value) {
   };
 }
 
-export const DIGITAL_WRITE = 'DIGITAL_WRITE';
 export function digitalWrite(id, value) {
   const pinId = parseInt(id, 10);
   board.digitalWrite(pinId, value);
 
-  for (let i = 0; i < enabledOutputPins.length; i++) {
+  for (let i = 0; i < enabledOutputPins.length; i += 1) {
     if (enabledOutputPins[i].id === pinId) {
       enabledOutputPins[i].value = value;
       break;
@@ -259,20 +266,22 @@ export function digitalWrite(id, value) {
   };
 }
 
-export const ANALOG_WRITE = 'ANALOG_WRITE';
+
 export function analogWrite(id, value) {
   const pinId = parseInt(id, 10);
-  board.analogWrite(pinId, value);
+  const output = parseInt(value, 10);
 
-  for (let i = 0; i < enabledOutputPins.length; i++) {
+  board.analogWrite(pinId, output);
+
+  for (let i = 0; i < enabledOutputPins.length; i += 1) {
     if (enabledOutputPins[i].id === pinId) {
-      enabledOutputPins[i].value = value;
+      enabledOutputPins[i].value = output;
       break;
     }
   }
 
   return (dispatch) => {
-    dispatch(changeValue(pinId, value));
+    dispatch(changeValue(pinId, output));
     dispatch(addReplayEvent({ type: ANALOG_WRITE, pinId, value }));
   };
 }

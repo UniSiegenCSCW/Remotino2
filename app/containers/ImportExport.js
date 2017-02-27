@@ -10,6 +10,7 @@ function mapStateToProps(state) {
     pins: state.pins,
     visibilityFilter: state.visibilityFilter,
     replay: state.replay,
+    ui: state.ui,
   };
 }
 

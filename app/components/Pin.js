@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { intersection, contains } from 'ramda';
 import Translate from 'react-translate-component';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import '../utils/l10n.js';
+import '../utils/l10n';
 import { MODE_NAMES, MODES } from '../reducers/microcontrollerEnums';
 import { getCode } from '../utils/ino';
 import DigitalInput from './Pin/DigitalInput';
@@ -28,9 +28,9 @@ export default class Pin extends Component {
     scrollIntoView: PropTypes.func.isRequired,
     onIntervalUpdate: React.PropTypes.func,
     onAutoScrollUpdate: React.PropTypes.func,
-    interval: React.PropTypes.array.isRequired,
+    interval: React.PropTypes.arrayOf(React.PropTypes.number.isRequired).isRequired,
     autoscroll: React.PropTypes.bool.isRequired,
-    showMarker: PropTypes.bool,
+    replayPlaying: PropTypes.bool,
     markerTime: PropTypes.number,
   };
 
@@ -47,8 +47,8 @@ export default class Pin extends Component {
       onAutoScrollUpdate,
       interval,
       autoscroll,
-      showMarker,
-      markerTime
+      replayPlaying,
+      markerTime,
     } = this.props;
     const { id, mode, name, values, enabled, showingCode, min, max } = pin;
 
@@ -70,14 +70,14 @@ export default class Pin extends Component {
         <Translate content="pin.mode" />:
         <select
           value={pin.mode}
-          onChange={event => {
+          onChange={(event) => {
             // TODO: find a way to do this without using timeouts
             setTimeout(() => scrollIntoView(ReactDOM.findDOMNode(this)), 300);
             changeMode(pin, event.target.value);
           }}
-          disabled={supportedModes.length === 0}
+          disabled={supportedModes.length === 0 || replayPlaying}
         >
-          {supportedModes.map((supportedMode) => MODE_NAMES_TRANSLATED[supportedMode])}
+          {supportedModes.map(supportedMode => MODE_NAMES_TRANSLATED[supportedMode])}
         </select>
       </div>
     );
@@ -86,7 +86,7 @@ export default class Pin extends Component {
     pinClass += ` pin--${pin.isAnalogPin ? 'analog' : 'digital'}`;
     if (!enabled) pinClass += ' pin--disabled';
     if (mode === MODES.INPUT || mode === MODES.ANALOG) pinClass += ' pin--input';
-      else if (mode === MODES.OUTPUT || mode === MODES.PWM) pinClass += ' pin--output';
+    else if (mode === MODES.OUTPUT || mode === MODES.PWM) pinClass += ' pin--output';
 
 //    if (replay.playing) {
 //
@@ -95,7 +95,7 @@ export default class Pin extends Component {
     let controls = null;
     switch (mode) {
       case MODES.INPUT:
-        chart = <div className="pin__body">
+        chart = (<div className="pin__body">
           <DigitalInput
             values={values}
             interval={interval}
@@ -103,10 +103,10 @@ export default class Pin extends Component {
             onIntervalUpdate={onIntervalUpdate}
             onAutoScrollUpdate={onAutoScrollUpdate}
           />
-        </div>;
-      break;
+        </div>);
+        break;
       case MODES.ANALOG:
-        chart = <div className="pin__body">
+        chart = (<div className="pin__body">
           <AnalogInput
             values={values} min={min} max={max}
             interval={interval}
@@ -114,48 +114,48 @@ export default class Pin extends Component {
             onIntervalUpdate={onIntervalUpdate}
             onAutoScrollUpdate={onAutoScrollUpdate}
           />
-        </div>;
-      break;
+        </div>);
+        break;
       case MODES.OUTPUT:
-        controls = <div className="pin__controls">
-            <DigitalOutputControls
-              write={(value) => digitalWrite(id, value, name)} value={pin.value}
-            />
-          </div>;
-        chart = <div className="pin__body">
+        controls = (<div className="pin__controls">
+          <DigitalOutputControls
+            write={value => digitalWrite(id, value)}
+            value={pin.value}
+            disabled={replayPlaying}
+          />
+        </div>);
+        chart = (<div className="pin__body">
           <DigitalOutput
-            write={(value) => digitalWrite(id, value)}
-            value={pin.value}
             values={values}
             interval={interval}
             autoscroll={autoscroll}
             onIntervalUpdate={onIntervalUpdate}
             onAutoScrollUpdate={onAutoScrollUpdate}
-            showMarker={showMarker}
+            showMarker={replayPlaying}
             markerTime={markerTime}
           />
-        </div>;
-      break;
+        </div>);
+        break;
       case MODES.PWM:
-        controls = <div className="pin__controls">
+        controls = (<div className="pin__controls">
           <AnalogOutputControls
-            write={(value) => analogWrite(id, value, name)} value={pin.value}
-          />
-        </div>;
-        chart = <div className="pin__body">
-          <AnalogOutput
-            write={(value) => analogWrite(id, value)}
+            write={value => analogWrite(id, value)}
             value={pin.value}
+            disabled={replayPlaying}
+          />
+        </div>);
+        chart = (<div className="pin__body">
+          <AnalogOutput
             values={values}
             interval={interval}
             autoscroll={autoscroll}
             onIntervalUpdate={onIntervalUpdate}
             onAutoScrollUpdate={onAutoScrollUpdate}
-            showMarker={showMarker}
+            showMarker={replayPlaying}
             markerTime={markerTime}
           />
-        </div>;
-      break;
+        </div>);
+        break;
       default:
         controls = null;
         chart = null;
@@ -168,7 +168,7 @@ export default class Pin extends Component {
         </div> : null
     );
 
-        let digitalTag = '';
+    let digitalTag = '';
     if (contains(MODES.INPUT, supportedModes)) digitalTag += '_in';
     if (contains(MODES.OUTPUT, supportedModes)) digitalTag += '_out';
 
@@ -190,7 +190,7 @@ export default class Pin extends Component {
           {iconsForTag('digital', digitalTag)}
           {iconsForTag('analog', analogTag)}
           <div className="pin__header__right">
-            <Link onClick={() => setShowingCode(pin.id, !showingCode)} icon="code"/>
+            <Link onClick={() => setShowingCode(pin.id, !showingCode)} icon="code" />
             <Link
               className="visibility-controls" onClick={() => setEnabled(pin.id, !enabled)}
               icon={enabled ? 'minus-square' : 'plus-square'}

@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { sort } from 'ramda';
-import '../utils/l10n.js';
+import '../utils/l10n';
 import Link from './Link';
 import {
-  CHANGE_MODE,
+//  CHANGE_MODE,
   ANALOG_WRITE,
   DIGITAL_WRITE,
 } from '../actions/microcontroller';
@@ -19,7 +19,7 @@ export default class ReplayControls extends Component {
     // removeAllItems: PropTypes.func.isRequired,
     analogWrite: PropTypes.func.isRequired,
     digitalWrite: PropTypes.func.isRequired,
-    changeMode: PropTypes.func.isRequired,
+//    changeMode: PropTypes.func.isRequired,
 //    fitTimeline: PropTypes.func.isRequired,
 //    setShowingTimeline: PropTypes.func.isRequired,
   };
@@ -33,7 +33,7 @@ export default class ReplayControls extends Component {
       replay,
       digitalWrite,
       analogWrite,
-      changeMode,
+//      changeMode,
       ui,
       // removeAllItems,
 //      fitTimeline,
@@ -61,13 +61,16 @@ export default class ReplayControls extends Component {
 
       // Exit condition, no events
       if (head === undefined || !this.playing) return;
-
       if (head.timestamp >= start && head.timestamp <= end) {
         const delay = head.timestamp - start;
         this.pending = setTimeout(() => {
           replayEvent(head.replay);
           replayEvents(tail, head.timestamp, end);
         }, delay);
+        // a quick fix to match the visual representation if start and end values are different
+      } else if (head.timestamp < start && tail[0].timestamp >= start) {
+        replayEvent(head.replay);
+        replayEvents(tail, head.timestamp, end);
       } else {
         replayEvents(tail, start, end);
       }
@@ -109,11 +112,11 @@ export default class ReplayControls extends Component {
 //        />;
 
     const replayButton = replay.playing ?
-      <Link onClick={stopReplayElem} icon="stop" content="replay_controls.stop_replay" /> :
-        <Link
-          onClick={startReplayElem} enabled={!replay.recording} 
+       (<Link onClick={stopReplayElem} icon="stop" content="replay_controls.stop_replay" />) :
+        (<Link
+          onClick={startReplayElem} enabled={!replay.recording}
           icon="play" content="replay_controls.start_replay"
-        />;
+        />);
 
     // const removeAllItemsButton =
     //   <Link onClick={removeAllItems} enabled={!(replay.recording || replay.playing)} >

@@ -4,9 +4,9 @@ import d3 from 'd3';
 
 export default class Grid extends React.Component {
   static propTypes = {
-    height:	React.PropTypes.number,
-    grid:	React.PropTypes.func,
-    gridType:	React.PropTypes.oneOf(['x', 'y']),
+    height: React.PropTypes.number,
+    grid: React.PropTypes.func,
+    gridType: React.PropTypes.oneOf(['x', 'y']),
   };
 
   componentDidMount() {

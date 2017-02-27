@@ -9,6 +9,7 @@ export default class PinList extends Component {
   static propTypes = {
     pins: PropTypes.array.isRequired,
     ui: PropTypes.object.isRequired,
+    replay: PropTypes.object.isRequired,
     changeVisibleInterval: PropTypes.func.isRequired,
   };
 
@@ -26,9 +27,25 @@ export default class PinList extends Component {
       replayPlaying: false,
       markerTime: null,
     };
+
+    this.handleIntervalUpdate = this.handleIntervalUpdate.bind(this);
+    this.handleAutoScrollUpdate = this.handleAutoScrollUpdate.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
+    let foundValues = false;
+    for (let i = 0; i < nextProps.pins.length; i += 1) {
+      if (nextProps.pins[i].values.length !== 0) {
+        foundValues = true;
+        break;
+      }
+    }
+    if (!foundValues) {
+      // we have foudn values so set autoscroll true
+      this.setState({
+        autoscroll: true,
+      });
+    }
     if (this.state.replayPlaying !== nextProps.replay.playing) {
       if (nextProps.replay.playing) {
         const markerUpdate = () => {
@@ -37,14 +54,7 @@ export default class PinList extends Component {
               this.setState({
                 markerTime: this.state.markerTime + 200,
               });
-//            } else if (this.state.replayPlaying) {
-//              this.setState({
-//                markerTime:
-//                  nextProps.ui.interval[0]
-//                    + (this.state.markerTime - nextProps.ui.interval[1])
-//              });
             }
-//            this.forceUpdate();
           }, 200);
         };
         const markerLoop = () => {
@@ -58,6 +68,7 @@ export default class PinList extends Component {
         markerLoop();
         this.setState({
           replayPlaying: nextProps.replay.playing,
+          autoscroll: false,
 //          markerTime: nextProps.ui.interval[0]
         });
       } else {
@@ -104,7 +115,9 @@ export default class PinList extends Component {
   }
 
   handleIntervalUpdate(interval) {
-    this.props.changeVisibleInterval(interval);
+    if (!this.state.replayPlaying) {
+      this.props.changeVisibleInterval(interval);
+    }
 //    this.setState({
 //      interval
 //    });
@@ -112,10 +125,12 @@ export default class PinList extends Component {
   }
 
   handleAutoScrollUpdate(autoscroll) {
-    this.setState({
-      autoscroll
-    });
-    this.forceUpdate();
+    if (!this.state.replayPlaying) {
+      this.setState({
+        autoscroll
+      });
+      this.forceUpdate();
+    }
   }
 
   render() {
@@ -132,18 +147,18 @@ export default class PinList extends Component {
     }
 
     return (
-      <div className="pin-list" ref="pinlist">
-        {pins.map((pin) =>
+      <div className="pin-list">
+        {pins.map(pin =>
           <Pin
             key={pin.id}
             pin={pin}
-            scrollIntoView={(child) => this.scrollElementIntoViewIfNeeded(this, child)}
+            scrollIntoView={child => this.scrollElementIntoViewIfNeeded(this, child)}
             interval={interval}
             autoscroll={this.state.autoscroll}
-            showMarker={this.state.replayPlaying}
+            replayPlaying={this.state.replayPlaying}
             markerTime={this.state.markerTime}
-            onIntervalUpdate={this.handleIntervalUpdate.bind(this)}
-            onAutoScrollUpdate={this.handleAutoScrollUpdate.bind(this)}
+            onIntervalUpdate={this.handleIntervalUpdate}
+            onAutoScrollUpdate={this.handleAutoScrollUpdate}
           />)}
       </div>
     );

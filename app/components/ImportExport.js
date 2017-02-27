@@ -3,13 +3,13 @@ import fs from 'fs';
 import { map, pick, values } from 'ramda';
 import { remote } from 'electron';
 import jsonfile from 'jsonfile';
-import '../utils/l10n.js';
+import '../utils/l10n';
 import Link from '../components/Link';
 import { getFullCode } from '../utils/ino';
 
 const { dialog } = remote;
 
-const ImportExport = props => {
+const ImportExport = (props) => {
   const {
     changeMode,
     changeRange,
@@ -21,6 +21,7 @@ const ImportExport = props => {
     replay,
     startRecording,
     stopRecording,
+    ui,
   } = props;
 
   const handleImport = () => {
@@ -53,7 +54,7 @@ const ImportExport = props => {
           stopRecording();
           changeRange(new Date(config.replay.start), new Date(config.replay.end));
           Object.keys(config.visibilityFilter).forEach(
-            (key) => setVisibilityFilter(key, config.visibilityFilter[key])
+            key => setVisibilityFilter(key, config.visibilityFilter[key])
           );
         }
       });
@@ -89,11 +90,12 @@ const ImportExport = props => {
     });
 
     if (file) {
-      fs.writeFile(file, getFullCode(pins), (err) => {
-        if (err) {
-          // TODO: use error dialogs
-        }
-      });
+      fs.writeFile(file, getFullCode(pins, replay.events, ui.interval[0], ui.interval[1]),
+        (err) => {
+          if (err) {
+            // TODO: use error dialogs
+          }
+        });
     }
   };
 
@@ -117,6 +119,7 @@ ImportExport.propTypes = {
   addReplayEvent: PropTypes.func.isRequired,
   startRecording: PropTypes.func.isRequired,
   stopRecording: PropTypes.func.isRequired,
+  ui: PropTypes.object.isRequired,
 };
 
 export default ImportExport;

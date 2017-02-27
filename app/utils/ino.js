@@ -1,8 +1,13 @@
 // import * as five from 'johnny-five';
 import { filter, values } from 'ramda';
 import { MODES } from '../reducers/microcontrollerEnums';
+import {
+//  CHANGE_MODE,
+  ANALOG_WRITE,
+  DIGITAL_WRITE,
+} from '../actions/microcontroller';
 
-const pinName = (pin) => (pin.name.replace(' ', ''));
+const pinName = pin => (pin.name.replace(' ', ''));
 const pinInit = (pin) => {
   if (pin.mode === MODES.ANALOG) {
     // For analog pins pinName(pin) would be A0, A1, ...
@@ -108,7 +113,7 @@ export function getCode(pin) {
   }
 }
 
-export function getFullCode(pins) {
+export function getFullCode(pins, events, start, end) {
   let code = '';
   const activePins = filter(pin => (pin.mode !== MODES.NOT_SET), values(pins));
   activePins.forEach(pin => (code += `${pinInit(pin)}\n`));
@@ -137,21 +142,107 @@ export function getFullCode(pins) {
 
   code += '// this runs over and over again forever\n';
   code += 'void loop() {\n';
-  digitalOutPins.forEach(pin => {
-    const level = pin.value === 0 ? 'LOW' : 'HIGH';
-    code += '  // turn the pin on (HIGH = on, LOW = off)\n';
-    code += `  digitalWrite(${pinName(pin)}, ${level});\n`;
-  });
-  analogOutPins.forEach(pin => {
-    code += '   // turn the pin on (raw value, 0 to 255)\n';
-    code += `  analogWrite(${pinName(pin)}, ${Math.round(pin.value)});\n`;
-  });
-  digitalInPins.forEach(pin => {
+
+  digitalInPins.forEach((pin) => {
     code += `  ${pinValue(pin)} = digitalRead(${pinName(pin)});\n`;
   });
-  analogInPins.forEach(pin => {
+  analogInPins.forEach((pin) => {
     code += `  ${pinValue(pin)} = analogRead(${pinName(pin)});\n`;
   });
+
+  const writeDigital = (pin, value) => {
+    let currentPin;
+    digitalOutPins.forEach((item) => {
+      if (item.id / 1 === pin) {
+        currentPin = item;
+      }
+    });
+    const level = value === 0 ? 'LOW' : 'HIGH';
+    code += '  // turn the pin on (HIGH = on, LOW = off)\n';
+    code += `  digitalWrite(${pinName(currentPin)}, ${level});\n`;
+  };
+
+  const writeAnalog = (pin, value) => {
+    let currentPin;
+    analogOutPins.forEach((item) => {
+      if (item.id / 1 === pin) {
+        currentPin = item;
+      }
+    });
+    code += '   // turn the pin on (raw value, 0 to 255)\n';
+    code += `  analogWrite(${pinName(currentPin)}, ${value});\n`;
+  };
+
+  const writeDelay = (delay) => {
+    code += '  // delay until next event\n';
+    code += `  delay(${delay});\n`;
+  };
+
+  const firstReplay = [];
+  // set initial states of the pins in the replay timeframe
+  for (let i = 0; i < events.length; i += 1) {
+    if (events[i].timestamp >= start) {
+      // early exit
+      break;
+    }
+    const index = firstReplay.findIndex(item => item.pinId === events[i].replay.pinId);
+    if (index !== -1) {
+      firstReplay[index] = events[i].replay;
+    } else {
+      firstReplay.push(events[i].replay);
+    }
+  }
+
+  for (let i = 0; i < firstReplay.length; i += 1) {
+    switch (firstReplay[i].type) {
+      case DIGITAL_WRITE:
+        writeDigital(firstReplay[i].pinId, firstReplay[i].value);
+        break;
+      case ANALOG_WRITE:
+        writeAnalog(firstReplay[i].pinId, firstReplay[i].value);
+        break;
+      default:
+    }
+  }
+
+  let firstDelayWritten = false;
+  for (let i = 0; i < events.length; i += 1) {
+    if (events.timestamp > end) {
+      // early exit
+      break;
+    }
+    if (events[i].timestamp >= start) {
+      if (!firstDelayWritten) {
+        // write the initial delay
+        writeDelay(events[i].timestamp - start);
+        firstDelayWritten = true;
+      }
+      switch (events[i].replay.type) {
+        case DIGITAL_WRITE:
+          writeDigital(events[i].replay.pinId, events[i].replay.value);
+          break;
+        case ANALOG_WRITE:
+          writeAnalog(events[i].replay.pinId, events[i].replay.value);
+          break;
+        default:
+      }
+      const delay = events[i + 1] === undefined || events[i + 1].timestamp > end ?
+        end - events[i].timestamp :
+        events[i + 1].timestamp - events[i].timestamp;
+      writeDelay(delay);
+    }
+  }
+
+//  digitalOutPins.forEach((pin) => {
+//    const level = pin.value === 0 ? 'LOW' : 'HIGH';
+//    code += '  // turn the pin on (HIGH = on, LOW = off)\n';
+//    code += `  digitalWrite(${pinName(pin)}, ${level});\n`;
+//  });
+//  analogOutPins.forEach((pin) => {
+//    code += '   // turn the pin on (raw value, 0 to 255)\n';
+//    code += `  analogWrite(${pinName(pin)}, ${Math.round(pin.value)});\n`;
+//  });
+
   code += '\n\n';
   code += '  // insert your code here\n';
   code += '}';

@@ -86,7 +86,7 @@ export function searchFlashableBoards() {
         dispatch(tryFlashingBoard(supportedBoards[i].name));
         // calling actual flash function
         avrGirl.flash(supportedBoards[i].filename, fn);
-        i += i;
+        i += 1;
       } else {
         dispatch(flashingError());
       }

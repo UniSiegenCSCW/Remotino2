@@ -6,16 +6,16 @@ import React from 'react';
 export default class EventHandler extends React.Component {
 
   static propTypes = {
-    children:	React.PropTypes.oneOfType([
+    children: React.PropTypes.oneOfType([
       React.PropTypes.arrayOf(React.PropTypes.node),
       React.PropTypes.node,
     ]),
-    onZoom:	React.PropTypes.func.isRequired,
-    xScale:	React.PropTypes.func.isRequired,
-    width:	React.PropTypes.number.isRequired,
-    height:	React.PropTypes.number.isRequired,
-    startData:	React.PropTypes.number,
-    endData:	React.PropTypes.number,
+    onZoom: React.PropTypes.func.isRequired,
+    xScale: React.PropTypes.func.isRequired,
+    width: React.PropTypes.number.isRequired,
+    height: React.PropTypes.number.isRequired,
+    startData: React.PropTypes.number,
+    endData: React.PropTypes.number,
     onAutoScroll: React.PropTypes.func,
   };
 

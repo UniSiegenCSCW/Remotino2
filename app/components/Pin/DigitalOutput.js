@@ -3,16 +3,19 @@ import LineChart from '../Graph/LineChart';
 
 export default class DigitalOutput extends Component {
   static propTypes = {
-    write: PropTypes.func.isRequired,
-    values: PropTypes.array.isRequired,
-    value:	React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number,
-    ]),
+//    write: PropTypes.func.isRequired,
+    values: React.PropTypes.arrayOf(React.PropTypes.shape({
+      x: React.PropTypes.number,
+      y: React.PropTypes.number,
+    })),
+//    value: React.PropTypes.oneOfType([
+//      React.PropTypes.string,
+//      React.PropTypes.number,
+//    ]),
     showMarker: PropTypes.bool,
     markerTime: PropTypes.number,
     autoscroll: PropTypes.bool,
-    interval: PropTypes.array,
+    interval: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
     onIntervalUpdate: React.PropTypes.func,
     onAutoScrollUpdate: React.PropTypes.func,
   };

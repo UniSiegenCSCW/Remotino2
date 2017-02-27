@@ -1,15 +1,15 @@
 import React, { PropTypes } from 'react';
 import Translate from 'react-translate-component';
-import '../utils/l10n.js';
+import '../utils/l10n';
 import PinList from '../containers/PinList';
 import './Microcontroller.sass';
 import ReplayControls from '../containers/ReplayControls';
 import ImportExport from '../containers/ImportExport';
 import Checkbox from './Checkbox';
 
-const Microcontroller = props => {
+const Microcontroller = (props) => {
   const { visibilityFilter, setVisibilityFilter } = props;
-  const setFilter = (name) => (checked) => setVisibilityFilter(name, checked);
+  const setFilter = name => checked => setVisibilityFilter(name, checked);
   const {
     showDisabled,
     showDigitalIn,
@@ -59,7 +59,7 @@ const Microcontroller = props => {
         </div>
       </header>
       <PinList />
-        <ReplayControls />
+      <ReplayControls />
     </div>
   );
 };

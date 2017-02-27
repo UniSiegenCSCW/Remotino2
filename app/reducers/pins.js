@@ -1,6 +1,6 @@
 import update from 'react/lib/update';
 import { mapObjIndexed, merge } from 'ramda';
-import { timestamp } from '../utils/utils';
+// import { timestamp } from '../utils/utils';
 import {
   CHANGE_MODE,
   IDENTIFIED_BOARD,
@@ -11,7 +11,7 @@ import {
   CHANGE_VALUE,
 } from '../actions/microcontroller';
 
-const createPin = (action) => (
+const createPin = action => (
     Object.assign({
       name: `Pin ${action.id}`,
       mode: action.mode,
@@ -60,7 +60,7 @@ const pins = (state = {}, action) => {
           values:
           { $apply: values => addValue(
           values,
-          { x: timestamp(), y: action.value }, 2000) },
+          { x: action.timestamp, y: action.value }, 2000) },
           min:
           { $apply: old => (((action.value < old) && (state[action.id].values.length > 1)) ?
                   action.value : old) },
