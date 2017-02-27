@@ -9,8 +9,6 @@ if (process.env.NODE_ENV === 'development') {
   require('electron-debug')(); // eslint-disable-line global-require
 }
 
-require('electron-debug')();
-
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
 });
@@ -54,7 +52,6 @@ app.on('ready', async () => {
     width: 1024,
     height: 728
   });
-  mainWindow.openDevTools();
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
