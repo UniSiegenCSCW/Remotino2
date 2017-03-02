@@ -13,7 +13,7 @@ const getVisiblePins = (inPins, filter) => {
   // and all pins that belong to the 'Serial' categorie, e.g. TX1, RX1, etc,
   // because these might be confusing for the user
   pins = pins.filter(
-    pin => {
+    (pin) => {
       const supportedModes = intersection(
         pin.supportedModes,
         Object.keys(MODE_NAMES).map(k => parseInt(k, 10))
