@@ -58,6 +58,7 @@ const Microcontroller = (props) => {
           <ImportExport />
         </div>
       </header>
+      <center><Translate content="microcontroller.description" /></center>
       <PinList />
       <ReplayControls />
     </div>

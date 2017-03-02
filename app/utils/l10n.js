@@ -16,6 +16,8 @@ counterpart.registerTranslations('en', {
     analog_in_out: 'Analog In- / Output',
     not_set: 'Not Set',
     filter_pins: 'Filter Pins',
+    description: 'Hold down your mousebutton on the chart to drag it left and right.\n' +
+      'Use your mousewheel to zoom in and out.',
   },
   import_export: {
     load: 'Load',
@@ -58,6 +60,8 @@ counterpart.registerTranslations('de', {
     analog_in_out: 'Analog Ein- / Ausgang',
     not_set: 'Nicht gesetzt',
     filter_pins: 'Pins filtern',
+    description: 'Halte deine Maustaste auf dem Graph gedrückt um den Ausschnitt zu verschieben.\n'
+      + 'Benutze dein Mausrad um die Ausschnittsgröße zu verändern.',
   },
   import_export: {
     load: 'Laden',

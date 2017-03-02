@@ -1,5 +1,5 @@
 // import * as five from 'johnny-five';
-import { filter, values } from 'ramda';
+import { filter, values, sort } from 'ramda';
 import { MODES } from '../reducers/microcontrollerEnums';
 import {
 //  CHANGE_MODE,
@@ -113,7 +113,7 @@ export function getCode(pin) {
   }
 }
 
-export function getFullCode(pins, events, start, end) {
+export function getFullCode(pins, allEvents, start, end) {
   let code = '';
   const activePins = filter(pin => (pin.mode !== MODES.NOT_SET), values(pins));
   activePins.forEach(pin => (code += `${pinInit(pin)}\n`));
@@ -150,33 +150,27 @@ export function getFullCode(pins, events, start, end) {
     code += `  ${pinValue(pin)} = analogRead(${pinName(pin)});\n`;
   });
 
-  const writeDigital = (pin, value) => {
-    let currentPin;
-    digitalOutPins.forEach((item) => {
-      if (item.id / 1 === pin) {
-        currentPin = item;
-      }
-    });
+  const pinNames = [];
+  digitalOutPins.forEach(pin => (pinNames[pin.id * 1] = pin.name));
+  analogOutPins.forEach(pin => (pinNames[pin.id * 1] = pin.name));
+
+  const writeDigital = (pinId, value) => {
     const level = value === 0 ? 'LOW' : 'HIGH';
     code += '  // turn the pin on (HIGH = on, LOW = off)\n';
-    code += `  digitalWrite(${pinName(currentPin)}, ${level});\n`;
+    code += `  digitalWrite(${pinNames[pinId]}, ${level});\n`;
   };
 
-  const writeAnalog = (pin, value) => {
-    let currentPin;
-    analogOutPins.forEach((item) => {
-      if (item.id / 1 === pin) {
-        currentPin = item;
-      }
-    });
+  const writeAnalog = (pinId, value) => {
     code += '   // turn the pin on (raw value, 0 to 255)\n';
-    code += `  analogWrite(${pinName(currentPin)}, ${value});\n`;
+    code += `  analogWrite(${pinNames[pinId]}, ${value});\n`;
   };
 
   const writeDelay = (delay) => {
     code += '  // delay until next event\n';
     code += `  delay(${delay});\n`;
   };
+
+  const events = sort((a, b) => (a.timestamp - b.timestamp), allEvents);
 
   const firstReplay = [];
   // set initial states of the pins in the replay timeframe
@@ -207,7 +201,7 @@ export function getFullCode(pins, events, start, end) {
 
   let firstDelayWritten = false;
   for (let i = 0; i < events.length; i += 1) {
-    if (events.timestamp > end) {
+    if (events[i].timestamp > end) {
       // early exit
       break;
     }

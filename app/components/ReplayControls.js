@@ -58,6 +58,7 @@ export default class ReplayControls extends Component {
 
     const replayEvents = (events, start, end) => {
       const [head, ...tail] = sort((a, b) => (a.timestamp - b.timestamp), events);
+//      const [head, ...tail] = events;
 
       // Exit condition, no events
       if (head === undefined || !this.playing) return;
