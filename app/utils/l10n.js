@@ -1,10 +1,14 @@
 import counterpart from 'counterpart';
 
+// needed so babili won't break concat unicode strins. must be added to every line.
+const fix = '';
+
 counterpart.registerTranslations('en', {
   home: {
     refresh: 'Refresh',
-    flash: 'Flash the required firmware to a connected and supported Arduino, that is found first.',
-    flashing: 'Searching for %(boardType)s.'
+    flash: 'Flash the required firmware to a connected and supported Arduino.',
+    flashing: 'Searching for %(boardType)s.',
+    flash_done: 'Flashing of %(boardType)s was successfull.'
   },
   microcontroller: {
     hidden: 'Hidden',
@@ -46,9 +50,10 @@ counterpart.registerTranslations('en', {
 counterpart.registerTranslations('de', {
   home: {
     refresh: 'Aktualisieren',
-    flash: 'Flashe die benötigte Firmware auf einen angeschlossenen ' +
-      'und unterstützten Arduino, der zuerst gefunden wird.',
-    flashing: 'Suche nach %(boardType)s.'
+    flash: `Flashe die ben\xF6tigte Firmware auf einen angeschlossenen ${fix}` +
+      `und unterst\u00fctzten Arduino.${fix}`,
+    flashing: 'Suche nach %(boardType)s.',
+    flash_done: 'Das Flashen des %(boardType)s war erfolgreich.'
   },
   microcontroller: {
     hidden: 'Versteckt',
@@ -60,8 +65,8 @@ counterpart.registerTranslations('de', {
     analog_in_out: 'Analog Ein- / Ausgang',
     not_set: 'Nicht gesetzt',
     filter_pins: 'Pins filtern',
-    description: 'Halte deine Maustaste auf dem Graph gedrückt um den Ausschnitt zu verschieben.\n'
-      + 'Benutze dein Mausrad um die Ausschnittsgröße zu verändern.',
+    description: `Halte deine Maustaste auf dem Graph gedr\u00fcckt um den Ausschnitt zu verschieben. ${fix}`
+      + `Benutze dein Mausrad um die Ausschnittsgr\u00f6ße zu ver\u00e4ndern.${fix}`,
   },
   import_export: {
     load: 'Laden',
@@ -73,7 +78,7 @@ counterpart.registerTranslations('de', {
     stop_recording: 'Aufnahme stoppen',
     start_replay: 'Play',
     stop_replay: 'Stop',
-    clear_events: 'aufgenommene Ereignisse löschen',
+    clear_events: 'aufgenommene Ereignisse l\u00f6schen',
     focus_events: 'aufgenommene Ereignisse fokussieren',
   },
   pin: {
