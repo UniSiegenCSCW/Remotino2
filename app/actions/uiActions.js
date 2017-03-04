@@ -23,3 +23,17 @@ export function changeVisibleInterval(interval) {
     dispatch(visibleIntervalChanged(interval));
   };
 }
+
+export const AUTOSCROLLING_CHANGED = 'AUTOSCROLLING_CHANGED';
+export function autoscrollChanged(autoscroll) {
+  return {
+    type: AUTOSCROLLING_CHANGED,
+    autoscroll
+  };
+}
+
+export function changeAutoscroll(autoscroll) {
+  return (dispatch) => {
+    dispatch(autoscrollChanged(autoscroll));
+  };
+}
