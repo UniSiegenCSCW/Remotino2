@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { sort } from 'ramda';
 import '../utils/l10n';
+import { timestamp } from '../utils/utils';
 import Link from './Link';
 import {
 //  CHANGE_MODE,
@@ -40,6 +41,9 @@ export default class ReplayControls extends Component {
 //      setShowingTimeline,
     } = this.props;
 
+    this.autoscroll = ui.autoscroll;
+    this.interval = ui.interval;
+
     const replayEvent = (event) => {
       switch (event.type) {
         case DIGITAL_WRITE:
@@ -57,32 +61,50 @@ export default class ReplayControls extends Component {
     };
 
     const replayEvents = (events, start, end) => {
-      const [head, ...tail] = sort((a, b) => (a.timestamp - b.timestamp), events);
+      const [head, ...tail] = events;
 //      const [head, ...tail] = events;
 
       // Exit condition, no events
       if (head === undefined || !this.playing) return;
       if (head.timestamp >= start && head.timestamp <= end) {
         const delay = head.timestamp - start;
+        // we need this value to reduce the lag,
+        // especially during analog playbacks
+        const lag = Date.now() - this.startTime;
+        this.startTime = Date.now() + (delay - lag);
         this.pending = setTimeout(() => {
           replayEvent(head.replay);
           replayEvents(tail, head.timestamp, end);
-        }, delay);
+        }, delay - lag);
         // a quick fix to match the visual representation if start and end values are different
-      } else if (head.timestamp < start && tail[0].timestamp >= start) {
+      } else if (head.timestamp < start
+        && tail[0] !== undefined
+        && tail[0].timestamp >= start) {
         replayEvent(head.replay);
-        replayEvents(tail, head.timestamp, end);
+        replayEvents(tail, start, end);
       } else {
         replayEvents(tail, start, end);
       }
     };
 
     const startReplayElem = () => {
+      clearTimeout(this.loop);
+      clearInterval(this.pending);
+
+      const events = sort((a, b) => (a.timestamp - b.timestamp), replay.events);
       this.playing = true;
-      const time = ui.interval[1] - ui.interval[0];
+      this.startTime = Date.now();
+
+      let start = this.interval[0];
+      let end = this.interval[1];
+      const time = end - start;
+      if (this.autoscroll) {
+        end = timestamp();
+        start = end - time;
+      }
       this.loop = setTimeout(startReplayElem, time);
-      replayEvents(replay.events, ui.interval[0], ui.interval[1]);
-      startReplay();
+      replayEvents(events, start, end);
+      startReplay(start, end);
     };
 
     const stopReplayElem = () => {

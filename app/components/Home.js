@@ -5,6 +5,7 @@ import '../utils/l10n';
 import { CONNECTION_STATE } from '../reducers/microcontrollerEnums';
 import Microcontroller from '../containers/Microcontroller';
 import Link from '../components/Link';
+import Dialog from './Dialog';
 import LocaleSwitcher from '../containers/LocaleSwitcher';
 import './Home.sass';
 
@@ -41,7 +42,7 @@ export default class Home extends Component {
       flash,
     } = this.props;
 
-    const portElem = (port) => (
+    const portElem = port => (
       <li key={port.path}>
         <Link className="port" onClick={() => connectToBoard(port.path)}>
           <p>{port.name} ({port.path})</p>
@@ -76,6 +77,15 @@ export default class Home extends Component {
                 <Translate content="home.flash" />
               </Link>
             </div>
+            { flash.flashDone ?
+              <Dialog>
+                <Translate
+                  with={{ boardType: flash.boardType }}
+                  content="home.flash_done"
+                />
+              </Dialog> :
+              null
+            }
           </div>
         );
       case CONNECTION_STATE.FLASHING:

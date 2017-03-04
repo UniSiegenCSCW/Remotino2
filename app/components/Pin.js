@@ -184,21 +184,25 @@ export default class Pin extends Component {
     return (
       <div className={pinClass}>
         <div className="pin__header">
-          <div className="pin__header__left">
-            <h2 className="pin__name">{name}</h2>
+          <div className="pin__header__head">
+            <div className="pin__header__left">
+              <h2 className="pin__name">{name}</h2>
+            </div>
+            <div className="pin__header__right">
+              <Link onClick={() => setShowingCode(pin.id, !showingCode)} icon="code" />
+              <Link
+                className="visibility-controls" onClick={() => setEnabled(pin.id, !enabled)}
+                icon={enabled ? 'minus-square' : 'plus-square'}
+                content={enabled ? 'pin.hide' : 'pin.show'}
+              />
+            </div>
           </div>
-          {iconsForTag('digital', digitalTag)}
-          {iconsForTag('analog', analogTag)}
-          <div className="pin__header__right">
-            <Link onClick={() => setShowingCode(pin.id, !showingCode)} icon="code" />
-            <Link
-              className="visibility-controls" onClick={() => setEnabled(pin.id, !enabled)}
-              icon={enabled ? 'minus-square' : 'plus-square'}
-              content={enabled ? 'pin.hide' : 'pin.show'}
-            />
+          <div className="pin__header__body">
+            {iconsForTag('digital', digitalTag)}
+            {iconsForTag('analog', analogTag)}
+            {modeSelector}
+            {controls}
           </div>
-          {modeSelector}
-          {controls}
         </div>
         {showingCode ? codeElem : chart}
       </div>
