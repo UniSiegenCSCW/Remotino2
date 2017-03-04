@@ -167,7 +167,6 @@ export default class LineChart extends React.Component {
         ref={svg => (this.svg = svg)}
         width={width}
         height={height}
-        onWheel={this.handleMouseWheel}
       >
         <g transform={`translate(${this.state.margin.left}, ${this.state.margin.top})`}>
           <Grid
