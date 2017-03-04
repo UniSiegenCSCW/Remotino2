@@ -231,7 +231,7 @@ export default class EventHandler extends React.Component {
         <rect
           key="event-rect"
           ref={(rect) => { this.eventRect = rect; }}
-          style={{ opacity: 0.0, cursor }}
+          style={{ opacity: 0, cursor }}
           x={0} y={0}
           width={this.props.width}
           height={this.props.height}
