@@ -57,8 +57,12 @@ export function stopRecording() {
 }
 
 export const START_REPLAY = 'START_REPLAY';
-export function startReplay() {
-  return { type: START_REPLAY };
+export function startReplay(startTime, endTime) {
+  return {
+    type: START_REPLAY,
+    startTime,
+    endTime,
+  };
 }
 
 export const STOP_REPLAY = 'STOP_REPLAY';
