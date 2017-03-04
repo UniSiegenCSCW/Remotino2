@@ -11,6 +11,8 @@ import {
 const initalState = {
   playing: false,
   events: [],
+  replayStart: null,
+  replayEnd: null,
 };
 
 const removePinEvents = (events, pinId) => {
@@ -33,6 +35,8 @@ const replay = (state = initalState, action) => {
     case START_REPLAY:
       return update(state, {
         playing: { $set: true },
+        replayStart: { $set: action.startTime },
+        replayEnd: { $set: action.endTime },
       });
     case STOP_REPLAY:
       return update(state, {
