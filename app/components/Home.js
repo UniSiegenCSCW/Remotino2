@@ -40,17 +40,21 @@ export default class Home extends Component {
         return (
           <div className="port-list">
             <div>
+              <h4>Sprache / Language</h4>
               <LocaleSwitcher locale="de">Deutsch</LocaleSwitcher>
               <LocaleSwitcher locale="en">English</LocaleSwitcher>
             </div>
-            <Link onClick={detectPorts}>
-              { ports.remaining > 0 ?
-                <FontAwesome spin name="spinner" /> :
-                  <FontAwesome name="refresh" />
-              }
-              <Translate content="home.refresh" />
-            </Link>
-            <ul>{ports.names.map(portElem)}</ul>
+            <div>
+              <h4>Verbundene Geräte / Connected Boards</h4>
+              <Link onClick={detectPorts}>
+                { ports.remaining > 0 ?
+                  <FontAwesome spin name="spinner" /> :
+                    <FontAwesome name="refresh" />
+                }
+                <Translate content="home.refresh" />
+              </Link>
+              <ul>{ports.names.map(portElem)}</ul>
+            </div>
           </div>
         );
       case CONNECTION_STATE.CONNECTING:

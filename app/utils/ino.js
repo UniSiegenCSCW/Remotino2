@@ -85,9 +85,9 @@ function analogIn(pin) {
     `  ${pinValue(pin)} = analogRead(${pinName(pin)});\n\n` +
     '  // check if the sensor value is higher than some limit\n' +
     `  if (${pinValue(pin)} > 100) {\n` +
-    '    // if, do this\n' +
+    '    // if so, ...\n' +
     '  } else {\n' +
-    '    // if not, do this\n' +
+    '    // if not, ...\n' +
     '  }\n' +
     '}'
   );
